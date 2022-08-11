@@ -47,6 +47,7 @@
     <link rel="stylesheet" href="{{ asset('css/owl.theme.default.min.css') }}">
 
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/developer.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/my_custom.css') }}" />
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script>

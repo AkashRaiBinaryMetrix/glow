@@ -47,7 +47,9 @@
                   
                       <div class="detailevent-links">
                           <a href="javascript:void(0)" onclick="joinGroup({{$aGroupDetail->id}})" id="joinedGroup{{$aGroupDetail->id}}"><i class="lar la-star"></i> {{$isGroupCreatedByUserOrJoinedByUser && $isGroupCreatedByUserOrJoinedByUser == YES ? 'Joined' : 'Join Group'}}</a>
-                          <a href="javascript:void(0)"><i class="las la-envelope"></i> Invite</a>
+                          <!-- <a href="javascript:void(0)"><i class="las la-envelope"></i> Invite</a> -->
+                          <a href="javascript:void(0)" data-toggle="modal" data-target="#invitefrndmodal"><i class="las la-envelope"></i> Invite</a>
+
                           <a class="a2a_dd" href="https://www.addtoany.com/share"><i class="las la-share"></i> Share </a>
                           {{-- {!!Share::page(url('group-detail/'.$aGroupDetail->id), $aGroupDetail->name,["class"=>"social"])
                             ->facebook()
@@ -370,6 +372,61 @@
   </div>
 </div>
 <!----- group modal end ----->
+
+<!-----Invite modal-----> 
+<div class="modal fade common-modal" id="invitefrndmodal" tabindex="-1" role="dialog" aria-labelledby="invitefrndmodalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"><i class="las la-times"></i></span>
+        </button>
+      <div class="modal-body p-0">
+         <div class="login-wrapper">
+      <div class="login-form-col">
+        <h1>Invite friends to this group</h1>
+      <form class="invitefrnd-form" name="cform" method="post">
+        <div class="form-group search-form">
+                  <input type="text" class="form-control" name="" id="search" placeholder="Search..." required="">
+                   <button type="submit" class="search-ico"><i class="las la-search"></i></button>      
+                </div>
+                <div class="invitefrnd-list-col">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
+                    <label class="custom-control-label" for="customCheck"><span class="invitefrnd-pic"><img src="https://binarymetrix.in/glow/images/avatar-3.jpg" alt=""></span> John Carter</label>
+                  </div>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck2" name="example2">
+                    <label class="custom-control-label" for="customCheck2"><span class="invitefrnd-pic"><img src="https://binarymetrix.in/glow/images/avatar-2.jpg" alt=""></span> Christopher</label>
+                  </div>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck3" name="example3">
+                    <label class="custom-control-label" for="customCheck3"><span class="invitefrnd-pic"><img src="https://binarymetrix.in/glow/images/avatar-4.jpg" alt=""></span> Matthew Daniel</label>
+                  </div>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck4" name="example4">
+                    <label class="custom-control-label" for="customCheck4"><span class="invitefrnd-pic"><img src="https://binarymetrix.in/glow/images/avatar-5.jpg" alt=""></span> Anthony</label>
+                  </div>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck5" name="example5">
+                    <label class="custom-control-label" for="customCheck5"><span class="invitefrnd-pic"><img src="https://binarymetrix.in/glow/images/avatar-6.jpg" alt=""></span> Andrew Paul</label>
+                  </div>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck6" name="example6">
+                    <label class="custom-control-label" for="customCheck6"><span class="invitefrnd-pic"><img src="https://binarymetrix.in/glow/images/avatar-7.jpg" alt=""></span> Alexander </label>
+                  </div>    
+                </div> 
+         <div class="form-group">
+                <input type="reset" name="cancel" class="common-btn common-btn2" id="invitefrnd-cancel" value="Cancel">      
+        <input type="submit" name="submit" class="common-btn" id="invitefrnd-submit" value="Send Invitations"> 
+        </div>
+        </form>   
+      </div>
+     </div>
+      </div>
+    </div>
+  </div>
+</div> 
+<!-----Invite modal----->    
 
 <script>
     function joinGroup(iGroupId) {

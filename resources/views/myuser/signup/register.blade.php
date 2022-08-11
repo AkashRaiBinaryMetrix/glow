@@ -30,8 +30,8 @@
                                 <div class="form-group">
                                     <p class="contact-form-name">
                                         <label>First Name*</label>
-                                        <input type="text" size="30" name="firstName" id="firstName"
-                                            class="form-control" placeholder="Enter first name">
+                                        <input type="text" size="30" maxlength="30" name="firstName" id="firstName"
+                                            class="form-control" placeholder="Enter first name" >
                                     <p class="formError firstName"></p>
                                     </p>
 
@@ -42,7 +42,7 @@
                                 <div class="form-group">
                                     <p class="contact-form-name">
                                         <label>Last Name*</label>
-                                        <input type="text" size="30" name="lastName" id="lastName"
+                                        <input type="text" size="30" maxlength="30" name="lastName" id="lastName"
                                             class="form-control" placeholder="Enter last name">
                                     <p class="formError lastName"></p>
                                     </p>
@@ -53,15 +53,15 @@
                         <div class="form-group">
                             <p class="contact-form-name">
                               <label>Username</label>  
-                              <input type="text" name="username" id="username" class="form-control" placeholder="Username">
+                              <input type="text" maxlength="50" name="username" id="username" class="form-control" placeholder="Username">
                             </p>
                         </div>
 
                         <div class="form-group">
                             <p class="contact-form-name">
                                 <label>Email*</label>
-                                <input type="text" name="emailId" id="emailId" class="form-control"
-                                    placeholder="Enter email">
+                                <input type="email" name="emailId" id="emailId" class="form-control"
+                                    placeholder="Enter email" size="50" maxlength="50">
                             <p class="formError emailId"></p>
                             </p>
                         </div>
@@ -69,7 +69,7 @@
                         <div class="form-group">
                             <p class="contact-form-email">
                                 <label>Password*</label>
-                                <input type="password" name="password" id="password" class="form-control"
+                                <input type="password" size="50" maxlength="50" name="password" id="password" class="form-control"
                                     placeholder="Create password">
                             <div class="show-pass">Show Password</div>
                             <p class="formError password"></p>
@@ -81,7 +81,7 @@
                                 <div class="form-group">
                                     <p class="contact-form-name">
                                         <label>Zip Code*</label>
-                                        <input type="text" name="zipCode" id="zipCode" class="form-control"
+                                        <input type="text" size="6" maxlength="6" name="zipCode" id="zipCode" class="form-control"
                                             placeholder="Enter zip code">
                                     <p class="formError zipCode"></p>
                                     </p>
@@ -114,7 +114,7 @@
                         <div class="form-group">
                             <p class="contact-form-email">
                                 <label>Other Nonprofit Organization / Schools / Others</label>
-                                <input type="text" name="church" id="church" class="form-control"
+                                <input type="text" size="80" maxlength="50" name="church" id="church" class="form-control"
                                     placeholder="Currently attending or member">
                             <p class="formError church"></p>
                             </p>
@@ -129,6 +129,7 @@
                                 <label class="custom-control-label create-terms" for="lost-password">I have read and
                                     agree to the <a href="javascript:void(0)">Terms and Condions</a></label>
                             </div>
+                            <p class="formError terms_condition_error"></p>
                         </div>
 
                         <div class="form-group">
@@ -154,12 +155,35 @@
         </div>
     </div>
     <script>
+        $('#firstName').keypress(function (e) {
+            var regex = new RegExp("^[a-zA-Z ]+$");
+            var strigChar = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(strigChar)) {
+                return true;
+            }
+            return false
+        });
+
+        $('#lastName').keypress(function (e) {
+            var regex = new RegExp("^[a-zA-Z ]+$");
+            var strigChar = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(strigChar)) {
+                return true;
+            }
+            return false
+        });
+
+        $("#zipCode").keypress(function (e) {
+            if (String.fromCharCode(e.keyCode).match(/[^0-9]/g)) return false;
+        });
+
         let firstNameError = 0,
             lastNameError = 0,
             emailIdError = 0,
             passwordError = 0,
             zipCodeError = 0,
             denominationError = 0;
+            checkboxError = 0;
         $('#signUp').on('click', function() {
             const re =
                 /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -188,8 +212,7 @@
             if (emailId == '' || emailId == undefined || emailId == null) {
                 $('.emailId').html(`Email is required`);
                 emailIdError++;
-            } else if (emailId != '' && emailId != undefined && emailId != null && !re.test(String(emailId)
-                    .toLowerCase())) {
+            } else if (emailId != '' && emailId != undefined && emailId != null && !re.test(emailId)) {
                 $('.emailId').html(`Please enter valid email`);
                 return false;
             } else {
@@ -223,7 +246,10 @@
             if (firstNameError > 0 || lastNameError > 0 || emailIdError > 0 || passwordError > 0 ||
                 zipCodeError > 0 || denominationError > 0) {
                 return false;
-            } else {
+            } else if(!($('#lost-password').is(':checked'))){
+                $('.terms_condition_error').html(`Please click on terms and condition`).show();
+                checkboxError++;
+            }else {
                 $('#register').html(`<i class = "fa fa-circle-o-notch fa-spin" style = "font-size:24px"> 
                     </i>`);
                 $.ajax({
@@ -246,7 +272,11 @@
                             $('.success').show();
                             $('.success').toast('show');
                             $('.success .toast-body').html(`${result.msg}`);
+                            $('.terms_condition_error').hide();
                             $('#signUpForm')[0].reset();
+                            setTimeout(function(){
+                               window.location.reload(1);
+                            }, 2000);
                         } else {
                             $('.failure').show();
                             $('.failure').toast('show');
