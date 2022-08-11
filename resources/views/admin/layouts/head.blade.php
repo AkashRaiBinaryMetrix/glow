@@ -15,5 +15,6 @@
   <link rel="stylesheet" href="css/owl.carousel.min.css">
   <link rel="stylesheet" href="css/owl.theme.default.min.css">
   <link rel="stylesheet" href="css/custom.css" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('css/developer.css') }}" />
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 </head>
