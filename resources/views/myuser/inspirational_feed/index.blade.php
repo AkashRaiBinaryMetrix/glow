@@ -434,7 +434,7 @@ function sharePostOnTimeLine(iUserId,iPostId) {
 
 
   @if($aEventsList && count($aEventsList) > 0) 
-  <div class="social-event-sec white-box">
+  <div class="social-event-sec white-box" id="id="eventsJoinedOrCreated">
     <div class="social-head">
       <i class="las la-calendar-check"></i>
       <h3>Discover events</h3>  
@@ -560,7 +560,7 @@ function sharePostOnTimeLine(iUserId,iPostId) {
        <div class="login-wrapper">
          <div class="login-form-col">
           <h1>Create Event</h1>
-          <form class="login-form" name="cform" id="group" onsubmit="return createEventIns();" method="post">
+          <form class="login-form" name="cform" id="group_event" onsubmit="return createEventIns();" method="post">
            @csrf
             <div class="form-group">
               <p class="contact-form-name">
@@ -568,12 +568,21 @@ function sharePostOnTimeLine(iUserId,iPostId) {
              </p>
              <p class="formError eventNameError"></p>
            </div>
+         
            <div class="form-group">
             <p class="contact-form-name">
               <input type="datetime-local" name="eventStartDateTime" id="eventStartDateTime" class="form-control" placeholder="Start Date">
            </p>
            <p class="formError eventStartDateTime"></p>
          </div>
+
+         <div class="form-group">
+            <p class="contact-form-name">
+              <input type="datetime-local" name="eventEndDateTime" id="eventEndDateTime" class="form-control" placeholder="End Date">
+           </p>
+           <p class="formError eventEndDateTime"></p>
+         </div>
+
          <div class="form-group">
           <p class="contact-form-email">
             <select class="form-control" name="eventPrivacy" id="eventPrivacy">
@@ -600,7 +609,7 @@ function sharePostOnTimeLine(iUserId,iPostId) {
       <div class="form-group">
         <textarea class="form-control" name="eventDescription" id="eventDescription" placeholder="Description (Optional)" rows="2"></textarea>
       </div>
-      <div class="form-group">
+      <div class="form-group createEventBtn">
         <input type="submit" name="btnEventSubmit" class="common-btn w-100" id="quote-submit" value="Create Now"> 
       </div>
     </form>   
@@ -1152,11 +1161,12 @@ $('#activity_search').on('keyup', function() {
 
       <script>
         let eventNameError=0,eventprivacyTypeError=0,eventimageError=0,eventStartDateTimeError=0;
-        let eventLocationError=0;
+        let eventLocationError=0,eventEndDateTimeError=0;
 
         function createEventIns() {
           let eventName = $('#eventName').val();
           let eventStartDateTime = $("#eventStartDateTime").val();
+          let eventEndDateTime = $("#eventEndDateTime").val();
           let eventPrivacy = $('#eventPrivacy').val();
           let eventLocation = $("#eventLocation").val();
           let eventFile = $('#eventFile').val();
@@ -1178,6 +1188,15 @@ $('#activity_search').on('keyup', function() {
           } else {
            $('.eventStartDateTime').html(``);
            eventStartDateTimeError = 0;
+          }
+
+          //event end datetime
+          if(eventEndDateTime=='' || eventEndDateTime==undefined || eventEndDateTime==null) {
+           $('.eventEndDateTime').html('Event end date and time required');
+           eventEndDateTimeError++;
+          } else {
+           $('.eventEndDateTime').html(``);
+           eventEndDateTimeError = 0;
           }
 
           //event privacy
@@ -1207,36 +1226,36 @@ $('#activity_search').on('keyup', function() {
            eventimageError = 0;
           }
 
-           if(eventNameError > 0 || eventStartDateTimeError > 0 || eventprivacyTypeError > 0 || eventLocationError > 0 || eventimageError > 0) {
+           if(eventNameError > 0 || eventStartDateTimeError > 0 || eventprivacyTypeError > 0 || eventLocationError > 0 || eventimageError > 0 || eventEndDateTimeError > 0) {
              return false;
            } else {
-            // $('.createGroupBtn').html(`<i class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i>`);
+            $('.createEventBtn').html(`<i class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i>`);
 
-            // var fd = new FormData(document.getElementById("group"));
-            // $.ajax({
-            //   url: sBASEURL+"createGroup",
-            //   type: "POST",
-            //   data: fd,
-            //     processData: false,  // tell jQuery not to process the data
-            //     contentType: false   // tell jQuery not to set contentType
-            //   }).done(function( data ) {
-            //     console.log( data );
-            //     let result = JSON.parse(data);
-            //     if(result.status == 'success') {
-            //       $('#group')[0].reset();
-            //       $('#creategrupmodal').modal('hide');
-            //       $('.success').show();
-            //       $('.success').toast('show');
-            //       $('.success .toast-body').html(`${result.msg}`);
-            //       $('#groupsJoinedOrCreated').html(`${result.sOutput}`);
-            //     } else {
-            //       $('.failure').show();
-            //       $('.failure').toast('show');
-            //       $('.failure .toast-body').html(`${result.msg}`);
-            //     }
-            //     $('.createGroupBtn').html(`<input type="submit" name="submit" class="common-btn w-100" id="quote-submit" value="Create Now">`);
-            //   });
-            //   return false;
+            var fd = new FormData(document.getElementById("group_event"));
+            $.ajax({
+              url: sBASEURL+"createEventFront",
+              type: "POST",
+              data: fd,
+                processData: false,  // tell jQuery not to process the data
+                contentType: false   // tell jQuery not to set contentType
+              }).done(function( data ) {
+                console.log( data );
+                let result = JSON.parse(data);
+                if(result.status == 'success') {
+                  $('#group_event')[0].reset();
+                  $('#createeventmodal').modal('hide');
+                  $('.success').show();
+                  $('.success').toast('show');
+                  $('.success .toast-body').html(`${result.msg}`);
+                  $('#eventsJoinedOrCreated').html(`${result.sOutput}`);
+                } else {
+                  $('.failure').show();
+                  $('.failure').toast('show');
+                  $('.failure .toast-body').html(`${result.msg}`);
+                }
+                $('.createEventBtn').html(`<input type="submit" name="submit" class="common-btn w-100" id="quote-submit" value="Create Now">`);
+              });
+              return false;
           }
         }
       </script>

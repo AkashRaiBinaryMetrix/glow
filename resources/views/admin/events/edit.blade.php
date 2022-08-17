@@ -33,6 +33,15 @@
                   @enderror
                 </div>
               </div>
+               <div class="form-group row">
+                <label for="location" class="col-sm-3 col-form-label">Location<span style="color:red">*</span></label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="location" name="location" placeholder="Location" value="{{!empty($aDetail->location) ? $aDetail->location : old('location')}}">
+                  @error('location')
+                    <div class="invalid-error">{{ $message }}</div>
+                  @enderror
+                </div>
+              </div>
               <div class="form-group row">
                 <label for="description" class="col-sm-3 col-form-label">Description<span style="color:red">*</span></label>
                 <div class="col-sm-9">
@@ -55,21 +64,23 @@
               <div class="form-group row">
                 <label for="name" class="col-sm-3 col-form-label">Start Date/Time(YYYY-MM-DD)<span class="required" style="color:red">*</span></label>
                 <div class="col-sm-9">
-                <input class="form-control" id="eventStartDateTime" name="eventStartDateTime" placeholder="Select Event Start Date/Time" value="{{old('eventStartDateTime')}}">
+                <input class="form-control" id="eventStartDateTime" name="eventStartDateTime" placeholder="Select Event Start Date/Time" value="{{!empty($aDetail->start_date_time) ? $aDetail->start_date_time : old('eventStartDateTime')}}">
                 @error('eventStartDateTime')
                    <div class="invalid-error">{{ $message }}</div>
                 @enderror
               </div>
             </div>
+
             <div class="form-group row">
               <label for="name" class="col-sm-3 col-form-label">End Date/Time(YYYY-MM-DD)<span class="required" style="color:red">*</span></label>
               <div class="col-sm-9">
-              <input class="form-control" id="eventEndDateTime" name="eventEndDateTime" placeholder="Select Event End Date/Time" value="{{old('eventEndDateTime')}}">
+              <input class="form-control" id="eventEndDateTime" name="eventEndDateTime" placeholder="Select Event End Date/Time" value="{{!empty($aDetail->end_date_time) ? $aDetail->end_date_time : old('eventEndDateTime')}}">
               @error('eventEndDateTime')
                  <div class="invalid-error">{{ $message }}</div>
               @enderror
             </div>
           </div> 
+
               <div class="form-group row">
                 <label for="exampleInputPassword2" class="col-sm-3 col-form-label">Status</label>
                 <div class="col-sm-9">
@@ -79,6 +90,17 @@
                   </select>
                 </div>
               </div>
+              
+              <div class="form-group row">
+                <label for="exampleInputPassword2" class="col-sm-3 col-form-label">Privacy</label>
+                <div class="col-sm-9">
+                  <select name="privacy" id="privacy" class="form-control">
+                       <option value="<?=6?>" {{  ($aDetail->privacy == 6 ? 'selected' : old('privacy') == 6)  ?  'selected' : '' }}>Public</option>
+                       <option value="<?=5?>" {{  ($aDetail->privacy == 5 ? 'selected' : old('privacy') == 5)  ?  'selected' : '' }}>Private</option>
+                  </select>
+                </div>
+              </div>
+
               <button type="submit" class="btn btn-primary mr-2">Submit</button>
               <a href="{{url('admin/events-list')}}" class="btn btn-light">Cancel</a>
             </form>
