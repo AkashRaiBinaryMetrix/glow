@@ -33,6 +33,17 @@
                   @enderror
                 </div>
               </div>
+
+              <div class="form-group row">
+                <label for="location" class="col-sm-3 col-form-label">Location<span style="color:red">*</span></label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="location" name="location" placeholder="Location" value="{{old('location')}}">
+                  @error('location')
+                    <div class="invalid-error">{{ $message }}</div>
+                  @enderror
+                </div>
+              </div>
+
               <div class="form-group row">
                 <label for="description" class="col-sm-3 col-form-label">Description<span style="color:red">*</span></label>
                 <div class="col-sm-9">
@@ -78,6 +89,17 @@
                   </select>
                 </div>
               </div>
+
+              <div class="form-group row">
+                <label for="exampleInputPassword2" class="col-sm-3 col-form-label">Privacy</label>
+                <div class="col-sm-9">
+                  <select name="privacy" id="privacy" class="form-control">
+                     <option value="<?=6?>">Public</option>
+                     <option value="<?=5?>">Private</option>
+                  </select>
+                </div>
+              </div>
+
               <button type="submit" class="btn btn-primary mr-2">Submit</button>
               <a href="{{url('admin/events-list')}}" class="btn btn-light">Cancel</a>
             </form>

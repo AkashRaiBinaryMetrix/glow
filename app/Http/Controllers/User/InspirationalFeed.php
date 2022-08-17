@@ -481,4 +481,102 @@ class InspirationalFeed extends Controller
             echo json_encode(['status'=>'failure']);
          }
     }
+
+    //create events
+    public function createEventFront(Request $request) {
+         
+         $post =  $request->input();
+         
+         $eventName = $post['eventName'] ?? '';
+         $eventStartDateTime = $post['eventStartDateTime'] ?? '';
+         $eventEndDateTime = $post['eventEndDateTime'] ?? '';
+         $eventPrivacy = $post['eventPrivacy'] ?? '';
+         $eventLocation = $post['eventLocation'] ?? '';
+         $eventFile = $post['eventFile'] ?? '';
+         $eventDescription = $post['eventDescription'] ?? '';
+
+         /*-------------- check event exists --------------------*/
+         $isExists = DB::table('events')->where([['name',$eventName],['is_deleted',"n"]])->count();
+         if($isExists) {
+               echo json_encode(['status'=>'failure','msg'=>'This event already exists']);
+               exit;
+         }
+
+         /*-------------- check if user logged-in --------------------*/
+         $isUserLoggedIn = Session('isUserLoggedIn');
+         $iUserId = !empty($isUserLoggedIn->id) ? $isUserLoggedIn->id : '';
+         
+         /*------------------- get current date time -------------------*/
+         $sCurrentDateTime = getCurrentLocalDateTime();
+
+         /*------------------- check image -------------------*/
+         if($request->file('eventFile')){
+          $file= $request->file('eventFile');
+          $filename= date('YmdHi').'_'.$file->getClientOriginalName();
+          $file->move(public_path('public/images/events'), $filename);
+          $aData['image']= $filename;
+         }
+         /*------------------- check image -------------------*/
+
+         /*------------------- create event -------------------*/
+         $aData = [
+               'name'               => $eventName,
+               'image'              => $aData['image'],
+               'short_description'  => $eventDescription,
+               'long_description'   => $eventDescription,
+               'start_date_time'    => $eventStartDateTime,
+               'end_date_time'      => $eventEndDateTime,
+               'privacy'            => $eventPrivacy, 
+               'location'           => $eventLocation,
+               'created_at'         => $sCurrentDateTime,
+               'created_by'         => $iUserId
+         ];
+        
+         $iLastInsertedId = DB::table('events')->insertGetId($aData);
+         /*------------------- create event -------------------*/
+        
+         if($iLastInsertedId) {
+            /*------------- get all user event he have joined or created --------------------*/
+            $aEventsListSql = DB::table('events')
+                            ->where([['events.status',ACTIVE],['events.is_deleted',N]])
+                            ->limit(2)
+                            ->orderBy('id','desc')
+                            ->get();
+
+            $aGroupLists = array();
+            $aGroupLists = $aEventsListSql;
+            $sOutput = '';
+             
+            if(!empty($aGroupLists)) {
+                foreach($aGroupLists as $key=> $aGroup) {
+                    $iImage = 'public/images/groups/'.$aGroup->image;
+                    $sName = !empty($aGroup->name) ? $aGroup->name : '';
+                    $sURL  = url('group-detail/'.$aGroup->id);
+
+                    $sCreatedDateTime = !empty($aGroup->created_at) ? $aGroup->created_at : '';
+                    
+                    /*--------------- get current local Date Time from UTC ---------------*/
+                    $sCurrentDate = getCurrentLocalDateTime();
+                    /*--------------- get current local Date Time from UTC ---------------*/
+
+                    $first_date = !empty($sCreatedDateTime) ? new DateTime($sCreatedDateTime) : "";
+                    $second_date = !empty($sCurrentDate) ? new DateTime($sCurrentDate) : "";
+                    $difference = !empty($first_date) && !empty($second_date) ? $first_date->diff($second_date) : "";
+                    $sPosted     = !empty($difference) ? format_interval($difference) : "";   
+
+                    $sOutput .= '<div class="aside-groups-col">
+                      <a href="'.$sURL.'">
+                        <div class="aside-groups-pic"><img src="'.$iImage.'" alt="" data-pagespeed-url-hash="624115584" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></div>
+                        <div class="aside-groups-title">'.$sName.' <span class="event-post-time">Last active &bull; '.$sPosted.'</span></div>
+                      </a>
+                    </div>';
+                  }
+             }
+
+            /*------------- get all user event he have joined or created --------------------*/
+            echo json_encode(['status'=>'success','msg'=>'Event has been created successfully','sOutput'=>$sOutput]);
+        } else {
+            echo json_encode(['status'=>'failure','msg'=>'Event has not been created. Please try again']);
+        }
+     }
 }

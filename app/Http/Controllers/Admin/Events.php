@@ -45,6 +45,8 @@ class Events extends Controller
                   'Image'=>'required_without:old_image|max:2048|mimes:jpg,png,jpeg',
                   'eventStartDateTime'=>'required',
                   'eventEndDateTime'=>'required',
+                  'location' => 'required',
+
                ],
                [
                   'name.required'=>'Name is required',
@@ -54,13 +56,16 @@ class Events extends Controller
                   'Image.mimes'=>'Only jpg, jpeg and png images are allowed',
                   'eventStartDateTime.required'=>'Event start date time is required',
                   'eventEndDateTime.required'=>'Event end date time is required',
+                  'location.required' => 'Location is required'
                ]
            );
            $post = $request->input();
            $id = !empty($post['id'])  ? $post['id'] : '';
            $name = $post['name'];
+           $location = $port["location"];
            $description = $post['description'];
            $status = $post['status'];
+           $privacy = $post['privacy'];
            $eventStartDateTime = !empty($post['eventStartDateTime']) ? getCurrentLocalDateTime(TIME_ZONE_NAME,$post['eventStartDateTime']) : '';
            $sEventStartDateTime = !empty($eventStartDateTime) ? strtotime($eventStartDateTime) : '';
            $eventEndDateTime = !empty($post['eventEndDateTime']) ? getCurrentLocalDateTime(TIME_ZONE_NAME,$post['eventEndDateTime']) : '';
@@ -83,6 +88,8 @@ class Events extends Controller
               'created_at'=>$sCurrentDateTime,
               'start_date_time'=>$eventStartDateTime,
               'end_date_time'=>$eventEndDateTime,
+              'location' => $location,
+              'privacy' => $privacy
            ];
            if($request->file('Image')){
                   $file= $request->file('Image');
