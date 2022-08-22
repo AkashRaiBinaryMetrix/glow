@@ -27,14 +27,16 @@
         <div class="col-md-10">
           <div class="profile-right-sec">
             <div class="profile-top-head">
-              <div class="profile-name-top"><h1>Lores Nguyen <span class="profile-txdate">June 15, 1989</span></h1></div>
-              <div class="profile-edit-top"><a href="javascript:void(0)"><img src="{{ asset('images/follow-ico-blue.png') }}" alt="" data-pagespeed-url-hash="1581428935" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> Follow</a></div>    
+              <div class="profile-name-top"><h1>{{$userName}}
+                <!-- <span class="profile-txdate">June 15, 1989</span> -->
+              </h1></div>
+              <!-- <div class="profile-edit-top"><a href="javascript:void(0)"><img src="{{ asset('images/follow-ico-blue.png') }}" alt="" data-pagespeed-url-hash="1581428935" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> Follow</a></div>  -->   
             </div><!--profile-top-head-->
               
             <div class="profile-navs">
               <ul class="pronavbar-nav">
                 <li class="pronav-item pronav-active"><a href="javascript:void(0)">Post</a></li>
-                <li class="pronav-item"><a href="javascript:void(0)">About</a></li>
+                <li class="pronav-item"><a href="{{url('edit_details')}}">About</a></li>
                 <li class="pronav-item"><a href="javascript:void(0)">Following</a></li>		
                 <li class="pronav-item"><a href="javascript:void(0)">Photos</a></li>
                 <li class="pronav-item"><a href="javascript:void(0)">Videos</a></li>		
@@ -53,13 +55,14 @@
                       <div class="profile-pst-short">
                         <p><i class="las la-home"></i> Lives in <a href="javascript:void(0)">Florida, U.S.</a></p>
                         <p><i class="las la-map-marker"></i> From <a href="javascript:void(0)">Florida, U.S.</a></p>  
-                        <p><i class="las la-clock"></i> Joined on October 2010</p>
+                        <p><i class="las la-clock"></i> Joined on {{$joinedOn}}</p>
+                        <p><i class="las la-birthday-cake"></i> Born in October 2010</p>
                         <p><i class="las la-rss"></i> Followed by <a href="javascript:void(0)">130 people</a></p>    
                       </div>   
                         
                          
                         
-                      <a href="profile-about.html">Edit Details <i class="las la-angle-double-right"></i></a>    
+                      <a href="{{url('edit_details')}}">Edit Details <i class="las la-angle-double-right"></i></a>    
                     </div>
                         
                      
@@ -84,15 +87,15 @@
                 <div class="col-md-6 profile-custome-7">
                   <div class="profile-main-righside">
                       
-                    <div class="user-activity-sec white-box">
-                      <div class="user-activity-head">    
-                      <div class="user-pic"><a href="javascript:void(0)"><img src="{{ asset('images/lores.jpg') }}" alt="" data-pagespeed-url-hash="3548533874" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a></div>
-                      <div class="user-input"><input type="text" class="activity-input" placeholder="Inspire others with your love, blessings, gratitude"></div>    
-                    </div>
-            
-                 <div class="user-activity-btns">
+                <div class="user-activity-sec white-box">
+                  <div class="user-activity-head">    
+                    <div class="user-pic"><a href="javascript:void(0)"><img width="40px" height="23px" src="{{ !empty($aLoggedInUserDetail->profile_pic) ? asset('images/profile/'.$aLoggedInUserDetail->profile_pic) : '' }}" alt="" data-pagespeed-url-hash="399097396" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a></div>
+                    <div class="user-input"><input type="text" class="activity-input" placeholder="What’s on your mind?"></div>    
+                  </div>
+                  
+                  <div class="user-activity-btns">
                    <div class="user-live-btn"><a href="javascript:void(0)" data-toggle="modal" data-target="#postlivemodal"><img src="{{ asset('images/live-video-icon.png') }}" alt="" data-pagespeed-url-hash="1806690493" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> Testimony</a></div>
-                   <div class="user-photo-btn"><a href="javascript:void(0)" data-toggle="modal" data-target="#postmediamodal"><img src="{{ asset('images/camera-icon.png') }}" alt="" data-pagespeed-url-hash="676148810" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> Photo</a></div>
+                   <div class="user-photo-btn"><a href="javascript:void(0)" data-toggle="modal" data-target="#postmediamodal" class="postmediamodal"><img src="{{ asset('images/camera-icon.png') }}" alt="" data-pagespeed-url-hash="676148810" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> Photo</a></div>
                    <div class="user-feel-btn"><a href="javascript:void(0)" data-toggle="modal" data-target="#postfeelingmodal"><img src="{{ asset('images/smiley-icon.png') }}" alt="" data-pagespeed-url-hash="1049116682" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> Feeling /Activity</a></div>     
                  </div>    
                 </div>
@@ -263,4 +266,173 @@
       
   </div>      
 </div>
+
+
+
+
 @endsection
+<!----Add testimony---->
+<div class="modal fade common-modal" id="postlivemodal" tabindex="-1" role="dialog" aria-labelledby="postlivemodalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="las la-times"></i></span>
+      </button>
+      <div class="modal-body p-0">
+       <div class="login-wrapper">
+         <div class="login-form-col">
+          <h1>Create Testimony</h1>
+          <p></p>
+          <form id="inspirationalFeedCreateTestimony" onsubmit="return submitCreateTestimonyInspirationalFeed()">
+            @csrf
+            <div class="user-postmedia-head">    
+              <div class="user-pic"><a href="javascript:void(0)"><img src="{{ !empty($sLoggedInUserProfileImage) ? asset('images/profile/'.$sLoggedInUserProfileImage) : asset('images/avtar1.png') }}" width="40px" alt="" data-pagespeed-url-hash="399097396" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a></div>
+              <div class="user-input"><input type="text" name="whats_on_your_mind" id="whats_on_your_mind" class="activity-input" placeholder="What’s on your mind?">
+               <p class="formError whats_on_your_mind"></p>
+             </div>
+             <input type="file" accept="video/*" name="testimony_videos" id="testimony_videos" style="display: none;" />
+             <input type="hidden" name="feeling_id_testimony" id="feeling_id_testimony">
+             <input type="hidden" name="activity_id_testimony" id="activity_id_testimony">
+           </div>    
+
+           <div class="postlive-popcol">
+            <video autoplay="true" id="videoElement" class="w-100"></video>
+          </div>
+          <div class="testimonypostadd-icons">
+           <div class="testimonypostadd-camera">
+             <a href="javascript:void(0)" onclick="document.getElementById('testimony_videos').click();"><img src="{{ asset('images/camera-3Dicon.png') }}" alt="" data-pagespeed-url-hash="141198199" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> Browse Testimony video</a>   
+           </div>
+           <div class="testimonypostadd-emoji"><a href="javascript:void(0)" data-toggle="modal" data-target="#postfeelingmodal" title="Feeling /Activity"><img src="{{ asset('images/smiley-3Dicon.png') }}" alt="" data-pagespeed-url-hash="1141578551" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a></div>
+         </div>    
+         <div class="common-box">
+          <button type="submit" class="common-btn w-100">Upload Testimony</button>
+        </div>   
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+<!----Add testimony---->
+
+<!----Photo upload---->
+<div class="modal fade common-modal" id="postmediamodal" tabindex="-1" role="dialog" aria-labelledby="postmediamodalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="las la-times"></i></span>
+      </button>
+      <div class="modal-body p-0">
+       <div class="login-wrapper">
+         <div class="login-form-col">
+          <h1>Create Post</h1>
+          <p></p>
+          <form class="itemcreation-form" onsubmit="return submitCreatePostInspirationalFeed()" name="cform" id="inspirationalFeedCreatePost" method="post">
+            @csrf
+            <div class="postmedia-popcol">
+              <div class="user-postmedia-head">    
+                <div class="user-pic"><a href="javascript:void(0)"><img width="40px" src="{{ !empty($sLoggedInUserProfileImage) ? asset('images/profile/'.$sLoggedInUserProfileImage) : asset('images/avtar1.png') }}" alt="" data-pagespeed-url-hash="399097396" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a></div>
+                <div class="user-input"><input type="text" class="activity-input" id="whats_on_your_mind_post" name="whats_on_your_mind_post" placeholder="What’s on your mind?">
+                  <p class="formError whats_on_your_mind_post"></p>
+                </div>    
+              </div>
+              <div class="postmedia-inner">
+               <div class="file-loading">
+                 <input id="file-1" type="file" accept="image/jpg, image/png, image/jpeg" name="file" class="file" data-overwrite-initial="false" data-min-file-count="2">
+               </div>         
+             </div>    
+           </div>
+           <div class="postadd-icons">
+            <div class="postadd-txt">Add to your post</div>
+            <div class="postadd-emoji">
+             <a href="javascript:void(0)" title=""><img src="{{ asset('images/camera-3Dicon.png') }}" alt="" data-pagespeed-url-hash="141198199" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> Upload Photos</a>
+             <a href="javascript:void(0)" data-toggle="modal" data-target="#postfeelingmodal" title="Feeling /Activity"><img src="{{ asset('images/smiley-3Dicon.png') }}" alt="" data-pagespeed-url-hash="1141578551" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a>   
+           </div>    
+         </div>    
+         <input type="hidden" name="feeling_id_post" id="feeling_id_post">
+         <input type="hidden" name="activity_id_post" id="activity_id_post">
+         <div class="common-box">
+          <button type="submit" class="common-btn w-100">Post Now</button>
+        </div>   
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+<!----Photo upload---->
+
+<!----Feeling/Activity---->
+<div class="modal fade common-modal" id="postfeelingmodal" tabindex="-1" role="dialog" aria-labelledby="postfeelingmodalTitle" aria-hidden="true" style="z-index: 99999">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="las la-times"></i></span>
+      </button>
+      <div class="modal-body p-0">
+       <div class="login-wrapper">
+         <div class="login-form-col">
+          <h1>How are you feeling?</h1>
+          <div class="post-feeling-col">
+           <ul class="nav nav-pills mb-2" id="pills-tab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Feelings</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Activities</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+              <div class="postfeeling-inner">
+                <form class="search-form" name="cform" method="post">
+                  <div class="form-group mb-0">
+                    <input type="text" class="form-control" name="feeling_search" id="feeling_search" placeholder="Search...">
+                    {{-- <p class="formError feeling_search"></p> --}}
+                  </div>
+                  {{-- <button type="button" id="btnFeelingSearch" class="search-ico"><i class="las la-search"></i></button>   --}}
+                </form>
+                <div class="postfeeling-list">
+                  <ul>  
+                    @if($aFeelingLists && count($aFeelingLists) > 0)
+                    @foreach ($aFeelingLists as $aFeeling)
+                    <li><a href="javascript:void(0)" onclick="showFeelingAndActivity('{{$aFeeling->name}}','{{asset($aFeeling->image)}}',{{ $aFeeling->id }},'')"><span class="feelsmilyicon"><img src="{{ asset($aFeeling->image)}}" alt="" data-pagespeed-url-hash="1699137061" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></span> <span class="feelsmilytxt">{{$aFeeling->name}}</span></a></li>   
+                    @endforeach 
+                    @endif
+                  </ul>
+                </div>    
+
+              </div> 
+            </div><!--tab1--> 
+            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+              <div class="postfeeling-inner2">
+                <form class="search-form" name="cform" method="post">
+                  <div class="form-group mb-0">
+                    <input type="text" class="form-control" name="activity_search" id="activity_search" placeholder="Search...">
+                    {{-- <p class="formError activity_search"></p> --}}
+                  </div>
+                  {{-- <button type="button" id="btnActivitySearch" class="search-ico"><i class="las la-search"></i></button>  --}}
+                </form>
+                <div class="postfeeling-list2">
+                  <ul>  
+                    @if($aActivityLists && count($aActivityLists) > 0)
+                    @foreach ($aActivityLists as $aActivity)
+                    <li><a href="javascript:void(0)" onclick="showFeelingAndActivity('{{$aActivity->name}}','{{asset($aActivity->image)}}','',{{ $aActivity->id }})"><span class="feelsmilyicon"><img src="{{ asset($aActivity->image) }}" alt="" data-pagespeed-url-hash="1592760396" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></span> <span class="feelsmilytxt">{{ $aActivity->name }}</span> <i class="las la-angle-right"></i></a></li>
+                    @endforeach 
+                    @endif 
+                  </ul> 
+                </div>      
+              </div>
+            </div><!--tab2-->    
+          </div>    
+        </div>    
+        {{-- <div class="common-box"><a href="javascript:void(0)" class="common-btn w-100">Post</a></div>    --}}
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>  
+<!----Feeling/Activity---->

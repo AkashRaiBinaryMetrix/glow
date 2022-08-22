@@ -50,7 +50,7 @@ Route::get('auth-instagram-callback', [SignUp::class, 'handleInstagramCallback']
 Route::group(['middleware' => 'auth_user'],function () {
     Route::get('inspirational-feed',[InspirationalFeed::class,'index']);
     Route::post('createGroup',[InspirationalFeed::class,'createGroup']);
-    Route::post('createEventFront',[InspirationalFeed::class,'createEventFront']);
+    Route::post('createEvent',[InspirationalFeed::class,'createEvent']);
     Route::post('hideEventOrReport',[InspirationalFeed::class,'hideEventOrReport']);
     Route::post('fellingSearch', [InspirationalFeed::class, 'fellingSearch']);
     Route::post('activitySearch', [InspirationalFeed::class, 'activitySearch']);
@@ -74,6 +74,7 @@ Route::group(['middleware' => 'auth_user'],function () {
 
     Route::get('profile', [MyProfile::class, 'index']);
     Route::post('profile', [MyProfile::class, 'index']);
+    Route::get('edit_details', [MyProfile::class, 'edit_details']);
 });
 
 /*--------------------------------------- user routes ----------------------*/
