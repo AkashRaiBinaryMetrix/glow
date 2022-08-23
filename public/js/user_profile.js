@@ -5,7 +5,11 @@ function show_panel(value) {
     //3-places_lived_display
     //4-contact_info_display
     //5-family_info_display
+    
     $("#about_display_edit").hide();
+    $("#work_edu_display_edit").hide();
+    $("#places_display_edit").hide();
+
     if (val == 1 || val == "1") {
         $("#about_display").show();
         $("#work_edu_display").hide();
@@ -63,19 +67,109 @@ function show_panel(value) {
         $(".section_1").removeClass('profile-abactive');
     }
 }
-
+//about info
 function about_display_edit() {
     $("#about_display").hide();
     $("#about_display_edit").show();
+}
+//education
+function education_display_edit() {
+    $("#work_edu_display").hide();
+    $("#work_edu_display_edit").show();
 }
 
 function updateAboutInfo() {
     $.ajax({
         type: 'post',
-        url: 'post.php',
+        "_token": $('#token').val(),
+        url: sBASEURL + "saveAbout",
         data: $('#about_display_edit_form').serialize(),
         success: function() {
-            alert('Form data submitted successfully');
+            alert('Data updated successfully');
+            window.location.reload();
         }
     });
+}
+
+function updateEducationInfo() {
+    $.ajax({
+        type: 'post',
+        "_token": $('#token').val(),
+        url: sBASEURL + "saveEducation",
+        data: $('#work_edu_display_edit_form').serialize(),
+        success: function() {
+            alert('Data updated successfully');
+            window.location.reload();
+        }
+    });
+}
+
+function delete_education(id) {
+    let text = "Are you sure you want to delete this record?";
+    if (confirm(text) == true) {
+        $.ajax({
+            type: "POST",
+            url: sBASEURL + "deleteEducation",
+            data: {
+                id: id,
+                _token: '{{csrf_token()}}'
+            },
+            success: function(data) {
+                alert("Record deleted successfully");
+                window.location.reload();
+            },
+            error: function(data, textStatus, errorThrown) {
+                console.log(data);
+            },
+        });
+    } else {}
+}
+
+function modal_education(id) {
+    $.ajax({
+        type: "POST",
+        url: sBASEURL + "getEducation",
+        data: {
+            id: id,
+            _token: '{{csrf_token()}}'
+        },
+        success: function(data) {
+            var data = jQuery.parseJSON(data);
+            $("#type_modal").val(data.type);
+            $("#edu_description_modal").val(data.description);
+            $("#joining_year_modal").val(data.joining_year);
+            $("#completion_year_modal").val(data.completion_year);
+            $("#education_id").val(id);
+        },
+        error: function(data, textStatus, errorThrown) {
+            console.log(data);
+        },
+    });
+}
+
+function educationModalDataUpdate() {
+    $.ajax({
+        type: "POST",
+        url: sBASEURL + "modalUpdateEducation",
+        data: {
+            id: $("#education_id").val(),
+            type_modal: $("#type_modal").val(),
+            edu_description_modal: $("#edu_description_modal").val(),
+            joining_year_modal: $("#joining_year_modal").val(),
+            completion_year_modal: $("#completion_year_modal").val(),
+            _token: '{{csrf_token()}}'
+        },
+        success: function(data) {
+        	alert("Record updated successfully");
+            window.location.reload();
+        },
+        error: function(data, textStatus, errorThrown) {
+            console.log(data);
+        },
+    });
+}
+
+function places_display_edit(){
+	$("#places_lived_display").hide();
+    $("#places_display_edit").show();
 }
