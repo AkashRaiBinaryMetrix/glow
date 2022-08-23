@@ -62,25 +62,27 @@
                  <div class="profile-pstrightabout profile-whitebox" id="about_display">
                     <div class="timeline-postabout">
                      <div class="timeline-pst1">
+                      @foreach ($userAboutData as $userAboutDataResult)
                          <div class="text-sm-right editsma-btn"><a href="javascript:void(0)" onclick="about_display_edit();"><i class="las la-edit"></i> Edit</a></div>
-                        <p><i class="las la-graduation-cap"></i> Studied at ABC University </p>
-                        <p><i class="las la-home"></i> Lives in <a href="#">Florida, U.S.</a></p>  
-                        <p><i class="las la-map-marker"></i> From <a href="#">Florida, U.S.</a></p>   
-                        <p><i class="las la-heart"></i> Married</p>
-                        <p><i class="las la-phone"></i> +1 1234567890</p> 
+                        <p><i class="las la-graduation-cap"></i> Studied at {{$userAboutDataResult->studied_at}} </p>
+                        <p><i class="las la-home"></i> Lives in <a href="#">{{$userAboutDataResult->lives_in}}</a></p>  
+                        <p><i class="las la-map-marker"></i> From <a href="#">{{$userAboutDataResult->from}}</a></p>   
+                        <p><i class="las la-heart"></i> {{$userAboutDataResult->marital_status}}</p>
+                        <p><i class="las la-phone"></i> {{$userAboutDataResult->phone}}</p> 
                         <hr> 
                         <h5 class="small-title3">About You</h5> 
-                        <p>Think Positive &amp; Positive thinks will happen</p> 
+                        <p>{{$userAboutDataResult->about}}</p> 
                         <hr> 
                         <h5 class="small-title3">Account Info</h5> 
-                        <p>Dummy Name <small>First Name</small></p> 
-                        <p>Surname <small>Last Name</small></p>
-                        <p>Dummy12345 <small>Username</small></p>
-                        <p>testing@gmail.com <small>Email</small></p>
+                        <p>{{$firstName}}<small>First Name</small></p> 
+                        <p>{{$lastName}} <small>Last Name</small></p>
+                        <p>{{$aLoggedInUserDetail->username}} <small>Username</small></p>
+                        <p>{{$aLoggedInUserDetail->email}} <small>Email</small></p>
                         <p>******** <small>Password</small></p>
-                        <p>123456 <small>Zip Code</small></p>
-                        <p>Roman Catholic <small>Denomination</small></p>
-                        <p>Member <small>Other Nonprofit Organization / Schools / Others</small></p> 
+                        <p>{{$userAboutDataResult->zipcode}} <small>Zip Code</small></p>
+                        <p>{{$userAboutDataResult->denomination}} <small>Denomination</small></p>
+                        <p>Member <small>{{$userAboutDataResult->member}}</small></p> 
+                        @endforeach
                       </div>  
                     </div>  
                  </div>
@@ -88,19 +90,31 @@
 
                  <!--Work and education display content start-->
                  <div class="profile-pstrightabout profile-whitebox" id="work_edu_display" style="display:none;">
+                    
                     <div class="timeline-postabout">
                      <div class="timeline-pst1">
-                         <div class="text-sm-right editsma-btn"><a href="#"><i class="las la-edit"></i> Edit</a></div>
+                         <!-- <div class="text-sm-right editsma-btn"><a href="javascript:void(0)" onclick="education_display_edit();"><i class="las la-edit"></i> Edit</a></div> -->
                          <h5 class="small-title3">Work</h5>
-                        <p><a href="profile-editabout2.html" class="blue-text"><i class="las la-plus-circle"></i> Add a workplace</a> </p>
+                        <p><a href="javascript:void(0)" onclick="education_display_edit();" class="blue-text"><i class="las la-plus-circle"></i> Add a workplace/education</a> </p>
                          <hr>
-                         <h5 class="small-title3">University</h5>
-                        <p><i class="las la-graduation-cap"></i> Studied at ABC University </p>
+                         @foreach ($userEducationData as $userEducationDataResult)
+                         <h5 class="small-title3">{{$userEducationDataResult->type}}</h5>
+                         <p>
+                          @if($userEducationDataResult->type =='High School' || $userEducationDataResult->type =='Intermediate')         
+                            <i class="las la-university"></i>         
+                          @elseif($userEducationDataResult->type =='Work')
+                            <i class="las la-briefcase"></i>
+                          @else
+                            <i class="las la-graduation-cap"></i>    
+                          @endif
+                          Went to {{$userEducationDataResult->description}} <small>Joining year {{$userEducationDataResult->joining_year}} | Completion year {{$userEducationDataResult->completion_year}} | <a href="javascript:void(0)" class="blue-text" data-toggle="modal" data-target="#editEducationModal" onclick="modal_education({{$userEducationDataResult->id}});"><i class="las la-pen"></i></a>&nbsp;<a href="javascript:void(0)" onclick="delete_education({{$userEducationDataResult->id}});" class="blue-text"><i class="las la-trash"></i></a></small>
+                          </p>
+                         
                          <hr>
-                         <h5 class="small-title3">High School</h5>
-                        <p><i class="las la-university"></i> Went to XYZ School <small>School year 2010</small></p>
+                         @endforeach
                       </div>  
-                    </div>  
+                    </div> 
+                    
                   </div>
                  <!--Work and education display content end-->
 
@@ -108,12 +122,16 @@
                  <div class="profile-pstrightabout profile-whitebox" id="places_lived_display" style="display:none;">
                     <div class="timeline-postabout">
                      <div class="timeline-pst1">
-                         <div class="text-sm-right editsma-btn"><a href="#"><i class="las la-edit"></i> Edit</a></div>
-                         <h5 class="small-title3">Places lived</h5>
-                        <p><a href="profile-editabout2.html" class="blue-text"><i class="las la-plus-circle"></i> Add city</a> </p>
-                        <p><i class="las la-map-marker"></i> <a href="#">Florida, U.S.A</a> <small>Current town/city</small></p>
-                        <p><i class="las la-map-marker"></i> <a href="#">New York, U.S.A</a> <small>Home town</small></p> 
-                      </div>  
+                         <!-- <div class="text-sm-right editsma-btn"><a href="javascript:void(0)" onclick="education_display_edit();"><i class="las la-edit"></i> Edit</a></div> -->
+                         <h5 class="small-title3">Places Lived</h5>
+                        <p><a href="javascript:void(0)" onclick="places_display_edit();" class="blue-text"><i class="las la-plus-circle"></i> Add city</a> </p>
+                         @foreach ($userEducationData as $userEducationDataResult)
+                         <p>
+                          <i class="las la-map-marker"></i> 
+                          Went to {{$userEducationDataResult->description}} <small>Completion year {{$userEducationDataResult->completion_year}} | <a href="javascript:void(0)" class="blue-text" data-toggle="modal" data-target="#editEducationModal" onclick="modal_education({{$userEducationDataResult->id}});"><i class="las la-pen"></i></a>&nbsp;<a href="javascript:void(0)" onclick="delete_education({{$userEducationDataResult->id}});" class="blue-text"><i class="las la-trash"></i></a></small>
+                          </p>
+                         @endforeach
+                      </div> 
                     </div>  
                   </div>
                  <!--Places lived display content end-->
@@ -162,26 +180,27 @@
                     <div class="timeline-postabout">
                      <div class="timeline-pst1">
                       <form action="" method="post" id="about_display_edit_form">
-
+                        @foreach ($userAboutData as $userAboutDataResult)
+                        <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
                          <!-- <div class="text-sm-right editsma-btn"><a href="javascript:void(0)" onclick="about_display_edit();"><i class="las la-edit"></i> Edit</a></div> -->
                         <p> 
                           <div class="form-group">
                           <div class="contact-form-name">
-                            <input type="text" size="30" value="" name="studied_at" id="studied_at" class="form-control" placeholder="Studied At" required="">
+                            <input type="text" size="30" value="{{$userAboutDataResult->studied_at}}" name="studied_at" id="studied_at" class="form-control" placeholder="Studied At" required="">
                           </div>
                           </div>
                         </p>
                         <p>
                           <div class="form-group">
                           <div class="contact-form-name">
-                            <input type="text" size="30" value="" name="lives_in" id="lives_in" class="form-control" placeholder="Lives In" required="">
+                            <input type="text" size="30" value="{{$userAboutDataResult->lives_in}}" name="lives_in" id="lives_in" class="form-control" placeholder="Lives In" required="">
                           </div>
                           </div>
                         </p>  
                         <p> 
                           <div class="form-group">
                           <div class="contact-form-name">
-                            <input type="text" size="30" value="" name="from_city" id="from_city" class="form-control" placeholder="From" required="">
+                            <input type="text" size="30" value="{{$userAboutDataResult->from}}" name="from_city" id="from_city" class="form-control" placeholder="From" required="">
                           </div>
                           </div>
                         </p>   
@@ -190,8 +209,8 @@
                           <div class="contact-form-name">
                             <select name="marital_status" id="marital_status" class="form-control">
                               <option value="">Marital Status</option>
-                              <option value="Married">Married</option>
-                              <option value="Single">Single</option>
+                              <option value="Married" {{ ( $userAboutDataResult->marital_status == 'Married') ? 'selected' : '' }}>Married</option>
+                              <option value="Single" {{ ( $userAboutDataResult->marital_status == 'Single') ? 'selected' : '' }}>Single</option>
                             </select>
                           </div>
                           </div>
@@ -199,7 +218,7 @@
                         <p>
                           <div class="form-group">
                           <div class="contact-form-name">
-                            <input type="text" size="30" value="" name="phone_no" id="phone_no" class="form-control" placeholder="Phone" required="">
+                            <input type="text" size="30" value="{{$userAboutDataResult->phone}}" name="phone_no" id="phone_no" class="form-control" placeholder="Phone" required="">
                           </div>
                           </div>
                         </p> 
@@ -208,7 +227,7 @@
                         <p>
                           <div class="form-group">
                           <div class="contact-form-name">
-                            <textarea name="about_info" id="about_us" class="form-control" placeholder="About You"></textarea>
+                            <textarea name="about_info" id="about_us" class="form-control" placeholder="About You">{{$userAboutDataResult->about}}</textarea>
                           </div>
                           </div>
                         </p> 
@@ -216,39 +235,39 @@
                         <h5 class="small-title3">Account Info</h5> 
                         <p><div class="form-group">
                           <div class="contact-form-name">
-                            <input type="text" size="30" value="" name="first_name" id="first_name" class="form-control" placeholder="First Name" required="">
+                            <input type="text" size="30" value="{{$firstName}}" name="first_name" id="first_name" class="form-control" placeholder="First Name" required="">
                           </div>
                           </div></p> 
                         <p><div class="form-group">
                           <div class="contact-form-name">
-                            <input type="text" size="30" value="" name="last_name" id="last_name" class="form-control" placeholder="Last Name" required="">
+                            <input type="text" size="30" value="{{$lastName}}" name="last_name" id="last_name" class="form-control" placeholder="Last Name" required="">
                           </div>
                           </div></p>
                         <p><div class="form-group">
                           <div class="contact-form-name">
-                            <input type="text" size="30" value="" name="username" id="username" class="form-control" placeholder="Username" required="">
+                            <input type="text" size="30" value="{{$aLoggedInUserDetail->username}}" name="username" id="username" class="form-control" placeholder="Username" required="">
                           </div>
                           </div></p>
                         <p><div class="form-group">
                           <div class="contact-form-name">
-                            <input type="text" size="30" value="" name="email" id="email" class="form-control" placeholder="Email" required="">
+                            <input type="text" size="30" value="{{$aLoggedInUserDetail->email}}" name="email" id="email" class="form-control" placeholder="Email" required="">
                           </div>
                           </div></p>
                         <p><div class="form-group">
                           <div class="contact-form-name">
-                            <input type="text" size="30" value="" name="password" id="password" class="form-control" placeholder="Password" required="">
+                            <input type="text" size="30" value="{{$aLoggedInUserDetail->password}}" name="password" id="password" class="form-control" placeholder="Password" required="">
                           </div>
                           </div></p>
                         <p><div class="form-group">
                           <div class="contact-form-name">
-                            <input type="text" size="30" value="" name="zipcode" id="zipcode" class="form-control" placeholder="Zipcode" required="">
+                            <input type="text" size="30" value="{{$userAboutDataResult->zipcode}}" name="zipcode" id="zipcode" class="form-control" placeholder="Zipcode" required="">
                           </div>
                           </div></p>
                         <p><div class="form-group">
                           <div class="contact-form-name">
                             <select name="denomination" id="denomination" class="form-control">
                               <option value="Denomination">Denomination</option>
-                              <option value="Roman Catholic">Roman Catholic</option>
+                              <option value="Roman Catholic" {{ ( $userAboutDataResult->denomination == 'Roman Catholic') ? 'selected' : '' }}>Roman Catholic</option>
                             </select>
                           </div>
                           </div></p>
@@ -256,20 +275,112 @@
                           <div class="contact-form-name">
                             <select name="member" id="member" class="form-control">
                               <option value="Member">Member</option>
-                              <option value="Other Nonprofit Organization">Other Nonprofit Organization</option>
-                              <option value="Schools">Schools</option>
-                              <option value="Others">Others</option>
+                              <option value="Other Nonprofit Organization" {{ ( $userAboutDataResult->member == 'Other Nonprofit Organization') ? 'selected' : '' }}>Other Nonprofit Organization</option>
+                              <option value="Schools" {{ ( $userAboutDataResult->member == 'Schools') ? 'selected' : '' }}>Schools</option>
+                              <option value="Others" {{ ( $userAboutDataResult->member == 'Others') ? 'selected' : '' }}>Others</option>
                             </select>
                           </div>
                           </div></p>
                         <div class="form-group">
-                          <input type="butto" name="btnSubmitAbout" class="smallcommon-btn" id="quote-submit" value="Save" onclick="updateAboutInfo()"> 
+                          <input type="butto" name="btnSubmitAbout" class="smallcommon-btn" id="quote-submit" value="Update" onclick="updateAboutInfo()"> 
                         </div>
+                           @endforeach
                       </form>
                      </div>  
                     </div>  
                  </div>
                  <!--About display edit content end-->
+
+                  <!--Work edu display edit content start-->
+                 <div class="profile-pstrightabout profile-whitebox" id="work_edu_display_edit" style="display:none;">
+                    <div class="timeline-postabout">
+                     <div class="timeline-pst1">
+                      <form action="" method="post" id="work_edu_display_edit_form">
+                        <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+                         <!-- <div class="text-sm-right editsma-btn"><a href="javascript:void(0)" onclick="about_display_edit();"><i class="las la-edit"></i> Edit</a></div> -->
+                        <p>
+                          <div class="form-group">
+                          <div class="contact-form-name">
+                            <select name="type" id="type" class="form-control">
+                              <option value="">Type</option>
+                              <option value="High School">High School</option>
+                              <option value="Intermediate">Intermediate</option>
+                              <option value="Graduation">Graduation</option>
+                              <option value="Post Graduation">Post Graduation</option>
+                              <option value="Work">Work</option>
+                              <option value="Other">Other</option>
+                            </select>
+                          </div>
+                          </div>
+                        </p>
+                        <p>
+                          <div class="form-group">
+                          <div class="contact-form-name">
+                            <textarea name="edu_description" id="edu_description" class="form-control" placeholder="Description"></textarea>
+                          </div>
+                          </div>
+                        </p>
+                        <p> 
+                          <div class="form-group">
+                          <div class="contact-form-name">
+                            <input type="date" size="30" name="joining_year" id="joining_year" class="form-control" placeholder="Joining Year" required="">
+                          </div>
+                          </div>
+                            </p> 
+                        <p><div class="form-group">
+                          <div class="contact-form-name">
+                          <p> 
+                          <div class="form-group">
+                          <div class="contact-form-name">
+                            <input type="date" size="30" name="completion_year" id="completion_year" class="form-control" placeholder="Completion Year" required="">
+                          </div>
+                          </div>
+                            </p>
+                          </div>
+                          </div></p>
+                        <div class="form-group">
+                          <input type="butto" name="btnSubmitAbout" class="smallcommon-btn" id="quote-submit" value="Add" onclick="updateEducationInfo()"> 
+                        </div>
+                      </form>
+                     </div>  
+                    </div>  
+                 </div>
+                 <!--Work edu display edit content end-->
+
+                 <!--Places lived edit content start-->
+                 <div class="profile-pstrightabout profile-whitebox" id="places_display_edit" style="display:none;">
+                    <div class="timeline-postabout">
+                     <div class="timeline-pst1">
+                      <form action="" method="post" id="work_edu_display_edit_form">
+                        <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+                         <!-- <div class="text-sm-right editsma-btn"><a href="javascript:void(0)" onclick="about_display_edit();"><i class="las la-edit"></i> Edit</a></div> -->
+                        <p>
+                          <div class="form-group">
+                          <div class="contact-form-name">
+                            <select name="place_type" id="place_type" class="form-control">
+                              <option value="">Type</option>
+                              <option value="Home Town">Home Town</option>
+                              <option value="Current town/city">Current town/city</option>
+                            </select>
+                          </div>
+                          </div>
+                        </p>
+                        <p>
+                          <div class="form-group">
+                          <div class="contact-form-name">
+                            <textarea name="place_description" id="place_description" class="form-control" placeholder="Description"></textarea>
+                          </div>
+                          </div>
+                        </p>
+                        <div class="form-group">
+                          <input type="butto" name="btnSubmitAbout" class="smallcommon-btn" id="quote-submit" value="Add" onclick="updatePlacesLivedInfo()"> 
+                        </div>
+                      </form>
+                     </div>  
+                    </div>  
+                 </div>
+                 <!--Places lived edit content end-->
+
 
                 </div><!--profile-custome-7-->                  
               </div>  
@@ -281,3 +392,74 @@
   </div>      
 </div>
 @endsection
+
+<!--Edit education/work modal start-->
+<div class="modal fade" id="editEducationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit workplace/education</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="profile-pstrightabout profile-whitebox">
+                    <div class="timeline-postabout">
+                     <div class="timeline-pst1">
+                      <form action="" method="post" id="work_edu_display_edit_form">
+                        <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+                        <p>
+                          <div class="form-group">
+                          <div class="contact-form-name">
+                            <select name="type_modal" id="type_modal" class="form-control">
+                              <option value="">Type</option>
+                              <option value="High School">High School</option>
+                              <option value="Intermediate">Intermediate</option>
+                              <option value="Graduation">Graduation</option>
+                              <option value="Post Graduation">Post Graduation</option>
+                              <option value="Work">Work</option>
+                              <option value="Other">Other</option>
+                            </select>
+                          </div>
+                          </div>
+                        </p>
+                        <p>
+                          <div class="form-group">
+                          <div class="contact-form-name">
+                            <textarea name="edu_description_modal" id="edu_description_modal" class="form-control" placeholder="Description"></textarea>
+                          </div>
+                          </div>
+                        </p>
+                        <p> 
+                          <div class="form-group">
+                          <div class="contact-form-name">
+                            <input type="date" size="30" name="joining_year_modal" id="joining_year_modal" class="form-control" placeholder="Joining Year" required="">
+                          </div>
+                          </div>
+                            </p> 
+                        <p><div class="form-group">
+                          <div class="contact-form-name">
+                          <p> 
+                          <div class="form-group">
+                          <div class="contact-form-name">
+                            <input type="date" size="30" name="completion_year_modal" id="completion_year_modal" class="form-control" placeholder="Completion Year" required="">
+                          </div>
+                          </div>
+                            </p>
+                          </div>
+                          </div></p>
+                      </form>
+                     </div>  
+                    </div>  
+                 </div>
+      </div>
+      <div class="modal-footer">
+        <input type="hidden" name="education_id" id="education_id">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="educationModalDataUpdate();">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Edit education/work modal start-->
