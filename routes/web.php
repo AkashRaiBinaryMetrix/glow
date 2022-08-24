@@ -81,6 +81,18 @@ Route::group(['middleware' => 'auth_user'],function () {
     Route::post('deleteEducation', [MyProfile::class, 'deleteEducation'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
     Route::post('getEducation', [MyProfile::class, 'getEducation'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
     Route::post('modalUpdateEducation', [MyProfile::class, 'modalUpdateEducation'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+
+    Route::post('savePlacesLived', [MyProfile::class, 'savePlacesLived']);
+    Route::post('deletePlacesLived', [MyProfile::class, 'deletePlacesLived'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+    Route::post('getPlacesLived', [MyProfile::class, 'getPlacesLived'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+    Route::post('modalUpdatePlacesLived', [MyProfile::class, 'modalUpdatePlacesLived'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+
+    Route::post('saveContact', [MyProfile::class, 'saveContact']);
+
+    Route::post('saveFamily', [MyProfile::class, 'saveFamily']);
+    Route::post('deleteFamily', [MyProfile::class, 'deleteFamily'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+    Route::post('getFamily', [MyProfile::class, 'getFamily'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+    Route::post('updateFamily', [MyProfile::class, 'updateFamily'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 });
 
 /*--------------------------------------- user routes ----------------------*/

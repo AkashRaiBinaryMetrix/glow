@@ -62,8 +62,8 @@
                  <div class="profile-pstrightabout profile-whitebox" id="about_display">
                     <div class="timeline-postabout">
                      <div class="timeline-pst1">
+                      <div class="text-sm-right editsma-btn"><a href="javascript:void(0)" onclick="about_display_edit();"><i class="las la-edit"></i> Edit</a></div>
                       @foreach ($userAboutData as $userAboutDataResult)
-                         <div class="text-sm-right editsma-btn"><a href="javascript:void(0)" onclick="about_display_edit();"><i class="las la-edit"></i> Edit</a></div>
                         <p><i class="las la-graduation-cap"></i> Studied at {{$userAboutDataResult->studied_at}} </p>
                         <p><i class="las la-home"></i> Lives in <a href="#">{{$userAboutDataResult->lives_in}}</a></p>  
                         <p><i class="las la-map-marker"></i> From <a href="#">{{$userAboutDataResult->from}}</a></p>   
@@ -125,10 +125,10 @@
                          <!-- <div class="text-sm-right editsma-btn"><a href="javascript:void(0)" onclick="education_display_edit();"><i class="las la-edit"></i> Edit</a></div> -->
                          <h5 class="small-title3">Places Lived</h5>
                         <p><a href="javascript:void(0)" onclick="places_display_edit();" class="blue-text"><i class="las la-plus-circle"></i> Add city</a> </p>
-                         @foreach ($userEducationData as $userEducationDataResult)
+                         @foreach ($userPlacesLivedData as $userPlacesLivedDataResult)
                          <p>
                           <i class="las la-map-marker"></i> 
-                          Went to {{$userEducationDataResult->description}} <small>Completion year {{$userEducationDataResult->completion_year}} | <a href="javascript:void(0)" class="blue-text" data-toggle="modal" data-target="#editEducationModal" onclick="modal_education({{$userEducationDataResult->id}});"><i class="las la-pen"></i></a>&nbsp;<a href="javascript:void(0)" onclick="delete_education({{$userEducationDataResult->id}});" class="blue-text"><i class="las la-trash"></i></a></small>
+                          {{$userPlacesLivedDataResult->desc}} <small>{{$userPlacesLivedDataResult->type}} | <a href="javascript:void(0)" class="blue-text" data-toggle="modal" data-target="#editPlacesLivedModal" onclick="modal_placeslived({{$userPlacesLivedDataResult->id}});"><i class="las la-pen"></i></a>&nbsp;<a href="javascript:void(0)" onclick="delete_places({{$userPlacesLivedDataResult->id}});" class="blue-text"><i class="las la-trash"></i></a></small>
                           </p>
                          @endforeach
                       </div> 
@@ -140,18 +140,18 @@
                  <div class="profile-pstrightabout profile-whitebox"  id="contact_info_display" style="display:none;"> 
                     <div class="timeline-postabout">
                      <div class="timeline-pst1">
-                         <div class="text-sm-right editsma-btn"><a href="profile-editabout4.html"><i class="las la-edit"></i> Edit</a></div>
+                         <div class="text-sm-right editsma-btn"><a href="javascript:void(0)" onclick="contact_display_edit();"><i class="las la-edit"></i> Edit</a></div>
                          <h5 class="small-title3">Contact info</h5>
-                        <p><i class="las la-phone"></i> +1 1234567890 <small>Mobile</small></p>
-                        <p><i class="las la-map-marked"></i> Florida, U.S.A  <small>Address</small></p>
-                        <p><i class="las la-envelope"></i> testing@gmail.com <small>Email</small></p>
+                        <p><i class="las la-phone"></i> {{$aLoggedInUserDetail->mobile}} <small>Mobile</small></p>
+                        <p><i class="las la-map-marked"></i> {{$aLoggedInUserDetail->address}}  <small>Address</small></p>
+                        <p><i class="las la-envelope"></i> {{$aLoggedInUserDetail->email}} <small>Email</small></p>
                         <hr> 
                         <h5 class="small-title3">Basic info</h5> 
-                        <p><i class="las la-user"></i> Male <small>Gender</small></p>
-                        <p><i class="las la-birthday-cake"></i> 25 August <small>Birth date</small></p> 
-                        <p><i class="las la-calendar-check"></i> 1992 <small>Birth year</small></p>
-                        <p><i class="las la-language"></i> English, Frech, Spanish <small>Languages</small></p> 
-                        <p><i class="las la-female"></i> Women <small>Interested in</small></p>
+                        <p><i class="las la-user"></i> {{$aLoggedInUserDetail->gender}} <small>Gender</small></p>
+                        <p><i class="las la-birthday-cake"></i> {{$aLoggedInUserDetail->dob}} <small>Birth date</small></p> 
+                        <p><i class="las la-calendar-check"></i> {{$aLoggedInUserDetail->year}} <small>Birth year</small></p>
+                        <p><i class="las la-language"></i> {{$aLoggedInUserDetail->languages}} <small>Languages</small></p> 
+                        <p><i class="las la-female"></i> {{$aLoggedInUserDetail->interested_in}} <small>Interested in</small></p>
                       </div>  
                     </div>  
                   </div>
@@ -161,14 +161,19 @@
                  <div class="profile-pstrightabout profile-whitebox" id="family_info_display" style="display:none;">
                     <div class="timeline-postabout">
                      <div class="timeline-pst1">
-                         <div class="text-sm-right editsma-btn"><a href="#"><i class="las la-edit"></i> Edit</a></div>
-                         <h5 class="small-title3">Relationship</h5>
-                         <p><i class="las la-heart"></i> Married</p>
-                         <hr>
-                          <h5 class="small-title3">Family members</h5>
-                        <p><a href="profile-editabout2.html" class="blue-text"><i class="las la-plus-circle"></i> Add a family member</a> </p>
-                        <p><span class="user-pic mr-2"><img src="images/lores.jpg" alt="" data-pagespeed-url-hash="3548533874" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></span> <a href="#">Josef Buttler</a> <small>Brother</small></p> 
-                      </div>  
+                         <!-- <div class="text-sm-right editsma-btn"><a href="javascript:void(0)" onclick="education_display_edit();"><i class="las la-edit"></i> Edit</a></div> -->
+                         <h5 class="small-title3">Family members</h5>
+                        <p>
+                          <a href="javascript:void(0)" onclick="family_display_edit();" class="blue-text"><i class="las la-plus-circle"></i> Add a family member</a> </p>
+                         @foreach ($userFamilyData as $userFamilyDataResult)
+                         <p>
+                          <span class="user-pic mr-2">
+                            <img src="{{ !empty($userFamilyDataResult->image) ? asset('images/profile/'.$userFamilyDataResult->image) : asset('images/avtar1.png') }}" width="40px" alt="" data-pagespeed-url-hash="399097396" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                          </span> 
+                          {{$userFamilyDataResult->name}} <small>{{$userFamilyDataResult->relation}} | <a href="javascript:void(0)" class="blue-text" data-toggle="modal" data-target="#editFamilyModal" onclick="modal_family({{$userFamilyDataResult->id}});"><i class="las la-pen"></i></a>&nbsp;<a href="javascript:void(0)" onclick="delete_family({{$userFamilyDataResult->id}});" class="blue-text"><i class="las la-trash"></i></a></small>
+                          </p>
+                         @endforeach
+                      </div> 
                     </div>  
                   </div>
                  <!--Family info display content end-->
@@ -351,7 +356,7 @@
                  <div class="profile-pstrightabout profile-whitebox" id="places_display_edit" style="display:none;">
                     <div class="timeline-postabout">
                      <div class="timeline-pst1">
-                      <form action="" method="post" id="work_edu_display_edit_form">
+                      <form action="" method="post" id="places_lived_display_edit_form">
                         <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
                          <!-- <div class="text-sm-right editsma-btn"><a href="javascript:void(0)" onclick="about_display_edit();"><i class="las la-edit"></i> Edit</a></div> -->
                         <p>
@@ -381,6 +386,110 @@
                  </div>
                  <!--Places lived edit content end-->
 
+                 <!--Contact display edit content start-->
+                 <div class="profile-pstrightabout profile-whitebox" id="contact_display_edit" style="display:none;">
+                    <div class="timeline-postabout">
+                     <div class="timeline-pst1">
+                      <form action="" method="post" id="contact_display_edit_form">
+                        <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+                         <!-- <div class="text-sm-right editsma-btn"><a href="javascript:void(0)" onclick="about_display_edit();"><i class="las la-edit"></i> Edit</a></div> -->
+                        <h5 class="small-title3">Contact info</h5>
+                        <p> 
+                          <div class="form-group">
+                          <div class="contact-form-name">
+                            <input type="text" size="30" value="{{$aLoggedInUserDetail->mobile}}" name="contact_mobile" id="contact_mobile" class="form-control" placeholder="Mobile" required="">
+                          </div>
+                          </div>
+                        </p>
+                        <p>
+                          <div class="form-group">
+                          <div class="contact-form-name">
+                            <input type="text" size="30" value="{{$aLoggedInUserDetail->address}}" name="contact_address" id="contact_address" class="form-control" placeholder="Address" required="">
+                          </div>
+                          </div>
+                        </p>  
+                        <hr> 
+                        <h5 class="small-title3">Basic Info</h5>
+                        <p>
+                          <div class="form-group">
+                          <div class="contact-form-name">
+                            <input type="text" size="30" value="{{$aLoggedInUserDetail->gender}}" name="contact_gender" id="contact_gender" class="form-control" placeholder="Gender" required="">
+                          </div>
+                          </div>
+                        </p>
+                        <p>
+                          <div class="form-group">
+                          <div class="contact-form-name">
+                            <input type="date" size="30" value="{{$aLoggedInUserDetail->dob}}" name="contact_dob" id="contact_dob" class="form-control" placeholder="DOB" required="">
+                          </div>
+                          </div>
+                        </p>
+                         <p>
+                          <div class="form-group">
+                          <div class="contact-form-name">
+                            <input type="text" size="30" value="{{$aLoggedInUserDetail->year}}" name="contact_year" id="contact_year" class="form-control" placeholder="Year" required="">
+                          </div>
+                          </div>
+                        </p>
+                        <p>
+                          <div class="form-group">
+                          <div class="contact-form-name">
+                            <input type="text" size="30" value="{{$aLoggedInUserDetail->languages}}" name="contact_languages" id="contact_languages" class="form-control" placeholder="Languages" required="">
+                          </div>
+                          </div>
+                        </p>
+                        <p>
+                          <div class="form-group">
+                          <div class="contact-form-name">
+                            <input type="text" size="30" value="{{$aLoggedInUserDetail->interested_in}}" name="contact_interested_in" id="contact_interested_in" class="form-control" placeholder="Interested In" required="">
+                          </div>
+                          </div>
+                        </p>
+                        <div class="form-group">
+                          <input type="butto" name="btnSubmitAbout" class="smallcommon-btn" id="quote-submit" value="Update" onclick="updateContactInfo()"> 
+                        </div>
+                      </form>
+                     </div>  
+                    </div>  
+                 </div>
+                 <!--Contact display edit content end-->
+
+                  <!--Family edit content start-->
+                 <div class="profile-pstrightabout profile-whitebox" id="family_info_display_edit" style="display:none;">
+                    <div class="timeline-postabout">
+                     <div class="timeline-pst1">
+                      <form action="" method="post" id="family_display_edit_form" enctype="multipart/form-data">
+                        <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+                         <!-- <div class="text-sm-right editsma-btn"><a href="javascript:void(0)" onclick="about_display_edit();"><i class="las la-edit"></i> Edit</a></div> -->
+                         <p> 
+                          <div class="form-group">
+                          <div class="contact-form-name">
+                                <input type="file" id="family_pic" name="family_pic" multiple="" accept="image/x-png,image/gif,image/jpeg"/>
+                          </div>
+                          </div>
+                         </p>
+                         <p> 
+                          <div class="form-group">
+                          <div class="contact-form-name">
+                            <input type="text" size="30" name="family_name" id="family_name" class="form-control" placeholder="Name" required="">
+                          </div>
+                          </div>
+                        </p>
+                        <p> 
+                          <div class="form-group">
+                          <div class="contact-form-name">
+                            <input type="text" size="30" name="family_relation" id="family_relation" class="form-control" placeholder="Relationship" required="">
+                          </div>
+                          </div>
+                        </p>
+                        <div class="form-group">
+                          <input type="butto" name="btnSubmitAbout" class="smallcommon-btn" id="quote-submit" value="Add" onclick="updateFamilyInfo()">
+                        </div>
+                      </form>
+                     </div>  
+                    </div>  
+                 </div>
+                 <!--Family edit content end-->
 
                 </div><!--profile-custome-7-->                  
               </div>  
@@ -407,7 +516,7 @@
         <div class="profile-pstrightabout profile-whitebox">
                     <div class="timeline-postabout">
                      <div class="timeline-pst1">
-                      <form action="" method="post" id="work_edu_display_edit_form">
+                      <form action="" method="post" id="">
                         <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
                         <p>
                           <div class="form-group">
@@ -463,3 +572,105 @@
   </div>
 </div>
 <!--Edit education/work modal start-->
+
+<!--Edit places modal start-->
+<div class="modal fade" id="editPlacesLivedModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Places Lived</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="profile-pstrightabout profile-whitebox">
+                    <div class="timeline-postabout">
+                     <div class="timeline-pst1">
+                      <form action="" method="post" id="">
+                        <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+                        <p>
+                          <div class="form-group">
+                          <div class="contact-form-name">
+                            <select name="type_placeslived_modal" id="type_placeslived_modal" class="form-control">
+                              <option value="">Type</option>
+                              <option value="Home Town">Home Town</option>
+                              <option value="Current town/city">Current town/city</option>
+                            </select>
+                          </div>
+                          </div>
+                        </p>
+                        <p>
+                          <div class="form-group">
+                          <div class="contact-form-name">
+                            <input type="text" name="placeslived_description_modal" id="placeslived_description_modal" class="form-control" placeholder="Description">
+                          </div>
+                          </div>
+                        </p>
+                      </form>
+                     </div>  
+                    </div>  
+                 </div>
+      </div>
+      <div class="modal-footer">
+        <input type="hidden" name="placeslived_id" id="placeslived_id">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="placeslivedModalDataUpdate();">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Edit places lived modal start-->
+
+<!--Edit family modal start-->
+<div class="modal fade" id="editFamilyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit family member</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="profile-pstrightabout profile-whitebox" id="">
+                    <div class="timeline-postabout">
+                     <div class="timeline-pst1">
+                      <form action="" method="post" id="editFamilyModalForm" enctype="multipart/form-data">
+                        <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+                         <!-- <div class="text-sm-right editsma-btn"><a href="javascript:void(0)" onclick="about_display_edit();"><i class="las la-edit"></i> Edit</a></div> -->
+                         <p> 
+                          <div class="form-group">
+                          <div class="contact-form-name">
+                                <input type="file" id="modal_family_pic" name="modal_family_pic" multiple="" accept="image/x-png,image/gif,image/jpeg"/>
+                          </div>
+                          </div>
+                         </p>
+                         <p> 
+                          <div class="form-group">
+                          <div class="contact-form-name">
+                            <input type="text" size="30" name="modal_family_name" id="modal_family_name" class="form-control" placeholder="Name" required="">
+                          </div>
+                          </div>
+                        </p>
+                        <p> 
+                          <div class="form-group">
+                          <div class="contact-form-name">
+                            <input type="text" size="30" name="modal_family_relation" id="modal_family_relation" class="form-control" placeholder="Relationship" required="">
+                          </div>
+                          </div>
+                        </p>
+                                <input type="hidden" name="modal_family_id" id="modal_family_id">
+                      </form>
+                     </div>  
+                    </div>  
+                 </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="familyModalDataUpdate();">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Edit family modal start-->
