@@ -51,13 +51,13 @@
                   <div class="profile-main-lefside">
                     <div class="profile-pstabout profile-whitebox">
                       <div class="profile-white-head">About</div> 
-                      <div class="post-about-para">Think Positive & Positive thinks will happen</div>
+                      <div class="post-about-para">{{$about_line}}</div>
                       <div class="profile-pst-short">
-                        <p><i class="las la-home"></i> Lives in <a href="javascript:void(0)">Florida, U.S.</a></p>
-                        <p><i class="las la-map-marker"></i> From <a href="javascript:void(0)">Florida, U.S.</a></p>  
+                        <p><i class="las la-home"></i> Lives in <a href="javascript:void(0)">{{$livesin_line}}</a></p>
+                        <p><i class="las la-map-marker"></i> From <a href="javascript:void(0)">{{$from_line}}</a></p>  
                         <p><i class="las la-clock"></i> Joined on {{$joinedOn}}</p>
-                        <p><i class="las la-birthday-cake"></i> Born in October 2010</p>
-                        <p><i class="las la-rss"></i> Followed by <a href="javascript:void(0)">130 people</a></p>    
+                        <p><i class="las la-birthday-cake"></i> Born in {{$dob_line}}</p>
+                        <p><i class="las la-rss"></i> Followed by <a href="javascript:void(0)">0 people</a></p>    
                       </div>   
                         
                          
