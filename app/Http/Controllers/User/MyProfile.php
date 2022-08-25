@@ -50,7 +50,15 @@ class MyProfile extends Controller
           $dobyear = date("Y",strtotime($aLoggedInUserDetail->dob));
           $dobOn = $dobName.' '.$dobyear;
 
-          return view('myuser.profile.index',['aLoggedInUserDetail'=>$aLoggedInUserDetail, 'userName' => $userName, 'joinedOn' => $joinedOn, 'aFeelingLists'=>$aFeelingLists,'aActivityLists'=>$aActivityLists, 'about_line' => $userAboutData[0]->about, 'from_line' => $userAboutData[0]->from,'livesin_line' => $userAboutData[0]->lives_in, "dob_line" => $dobOn]);
+          return view('myuser.profile.index',['aLoggedInUserDetail'=>$aLoggedInUserDetail, 
+'userName' => $userName, 
+'joinedOn' => $joinedOn, 
+'aFeelingLists'=>$aFeelingLists,
+'aActivityLists'=>$aActivityLists, 
+'about_line' => isset($userAboutData[0]->about)? $userAboutData[0]->about : "", 
+'from_line' => isset($userAboutData[0]->from) ? $userAboutData[0]->from : "",
+'livesin_line' => isset($userAboutData[0]->lives_in)? $userAboutData[0]->lives_in : "", 
+"dob_line" => $dobOn]);
      }
 
      public function edit_details(Request $request) {
@@ -127,8 +135,8 @@ class MyProfile extends Controller
                [
                     "name" => $final_full_name,
                     "username" => $post["username"], 
-                    "email" => $post["email"], 
-                    "password" => !empty($password) ? Crypt::encryptString($post["password"]) : '' 
+                    //"email" => $post["email"], 
+                    //"password" => !empty($password) ? Crypt::encryptString($post["password"]) : '' 
                ]
           );
 

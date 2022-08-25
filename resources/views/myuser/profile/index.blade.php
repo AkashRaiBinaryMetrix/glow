@@ -126,7 +126,9 @@
 
                            <div class="newsfeed-desc"><p>Part of spiritual and emotional maturity is recognizing that it’s not like you’re going to try to fix yourself and become a different person. You remain the same person, but you become awakened.</p></div>
 
-                           <div class="newsfeed-mainpic"><img src="{{ asset('images/timeline-1.jpg') }}" alt="" data-pagespeed-url-hash="52605886" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></div>
+                           <div class="newsfeed-mainpic">
+                            <!-- <img src="{{ asset('images/timeline-1.jpg') }}" alt="" data-pagespeed-url-hash="52605886" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> -->
+                          </div>
 
                            <div class="newsfeed-licosh-col">
                             <div class="feednewlikes"><a href="javascript:void(0)"><img src="{{ asset('images/like-ico.png') }}" alt="" data-pagespeed-url-hash="1279223300" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> <span>Like</span></a> </div>
@@ -219,7 +221,9 @@
                            <div class="newsfeed-desc"><p>More smiling, less worrying. More compassion, less judgment. More blessed, less stressed. More love, less hate.</p></div>
 
 
-                           <div class="newsfeed-mainpic"><img src="{{ asset('images/timeline-2.jpg') }}" alt="" data-pagespeed-url-hash="347105807" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></div>
+                           <div class="newsfeed-mainpic">
+                            <!-- <img src="{{ asset('images/timeline-2.jpg') }}" alt="" data-pagespeed-url-hash="347105807" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> -->
+                          </div>
 
                            <div class="newsfeed-licosh-col">
                             <div class="feednewlikes"><a href="javascript:void(0)"><img src="{{ asset('images/like-ico.png') }}" alt="" data-pagespeed-url-hash="1279223300" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> <span>Like</span></a> </div>

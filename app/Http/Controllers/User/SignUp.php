@@ -54,6 +54,14 @@ class SignUp extends Controller
             'created_at' => $sCurrentDateTime,
         ];
         $iId = DB::table('users')->insertGetId($aData);
+
+        $aDataAbout = [
+            'user_id' => $iId,
+            'created_at' => $sCurrentDateTime,
+        ];
+        $iIdAbout = DB::table('userabout')->insertGetId($aDataAbout);
+
+
         if ($iId) {
             $sFullName = $firstName .' '. $lastName;
             Mail::send('myuser.mail_template.signup_mail', ['sFullName' => $sFullName], function ($message) use ($emailId) {
