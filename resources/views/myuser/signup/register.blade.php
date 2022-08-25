@@ -102,6 +102,7 @@
                                             <option value="Unaffiliated Christian">Unaffiliated Christian</option>
                                             <option value="Evangelical">Evangelical</option>
                                             <option value="Pentecostal/Charismatic">Pentecostal/Charismatic</option>
+                                            <option value="Non-denomination">Non-denomination</option>
                                             <option value="Other">Other</option>
                                         </select>
                                     <p class="formError denomination"></p>
