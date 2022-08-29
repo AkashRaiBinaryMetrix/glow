@@ -75,6 +75,7 @@ Route::group(['middleware' => 'auth_user'],function () {
     Route::get('profile', [MyProfile::class, 'index']);
     Route::post('profile', [MyProfile::class, 'index']);
     Route::get('edit_details', [MyProfile::class, 'edit_details']);
+    Route::get('edit_photos', [MyProfile::class, 'edit_photos']);
     Route::post('saveAbout', [MyProfile::class, 'saveAbout']);
     Route::post('saveEducation', [MyProfile::class, 'saveEducation']);
     
@@ -93,6 +94,10 @@ Route::group(['middleware' => 'auth_user'],function () {
     Route::post('deleteFamily', [MyProfile::class, 'deleteFamily'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
     Route::post('getFamily', [MyProfile::class, 'getFamily'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
     Route::post('updateFamily', [MyProfile::class, 'updateFamily'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+
+    Route::post('deletePhoto', [MyProfile::class, 'deletePhoto'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+
+    Route::post('uploadPhoto', [MyProfile::class, 'uploadPhoto'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 });
 
 /*--------------------------------------- user routes ----------------------*/

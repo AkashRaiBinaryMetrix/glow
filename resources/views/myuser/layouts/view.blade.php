@@ -49,6 +49,8 @@
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/developer.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/my_custom.css') }}" />
+        <link rel="stylesheet" href="{{asset('css/simple-lightbox.css')}}">
+
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script>
         let sBASEURL = '<?php echo BASE_URL; ?>';
@@ -171,6 +173,8 @@
     <!-- AddToAny BEGIN -->
       <script async src="https://static.addtoany.com/menu/page.js"></script>
     <!-- AddToAny END -->
+    <script src="{{asset('js/simple-lightbox.js')}}"></script>
+<script>$(function(){var gallery=$('.gallery a').simpleLightbox({navText:['&lsaquo;','&rsaquo;']});});</script>
 </body>
 
 </html>
