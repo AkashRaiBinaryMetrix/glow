@@ -36,9 +36,9 @@
             <div class="profile-navs">
               <ul class="pronavbar-nav">
                 <li class="pronav-item pronav-active"><a href="javascript:void(0)">Post</a></li>
-                <li class="pronav-item"><a href="{{url('edit_details')}}">About</a></li>
+                <li class="pronav-item"><a href="javascript:void(0)">About</a></li>
                 <li class="pronav-item"><a href="javascript:void(0)">Following</a></li>		
-                <li class="pronav-item"><a href="{{url('edit_photos')}}">Photos</a></li>
+                <li class="pronav-item"><a href="javascript:void(0)">Photos</a></li>
                 <li class="pronav-item"><a href="javascript:void(0)">Videos</a></li>		
                 </ul>  
             </div>  
@@ -51,18 +51,18 @@
                   <div class="profile-main-lefside">
                     <div class="profile-pstabout profile-whitebox">
                       <div class="profile-white-head">About</div> 
-                      <div class="post-about-para">{{$about_line}}</div>
+                      <div class="post-about-para">Think Positive & Positive thinks will happen</div>
                       <div class="profile-pst-short">
-                        <p><i class="las la-home"></i> Lives in <a href="javascript:void(0)">{{$livesin_line}}</a></p>
-                        <p><i class="las la-map-marker"></i> From <a href="javascript:void(0)">{{$from_line}}</a></p>  
+                        <p><i class="las la-home"></i> Lives in <a href="javascript:void(0)">Florida, U.S.</a></p>
+                        <p><i class="las la-map-marker"></i> From <a href="javascript:void(0)">Florida, U.S.</a></p>  
                         <p><i class="las la-clock"></i> Joined on {{$joinedOn}}</p>
-                        <p><i class="las la-birthday-cake"></i> Born in {{$dob_line}}</p>
-                        <p><i class="las la-rss"></i> Followed by <a href="javascript:void(0)">0 people</a></p>    
+                        <p><i class="las la-birthday-cake"></i> Born in October 2010</p>
+                        <p><i class="las la-rss"></i> Followed by <a href="javascript:void(0)">130 people</a></p>    
                       </div>   
                         
                          
                         
-                      <a href="{{url('edit_details')}}">Edit Details <i class="las la-angle-double-right"></i></a>    
+                      <a href="edit_details">Edit Details <i class="las la-angle-double-right"></i></a>    
                     </div>
                         
                      
@@ -126,9 +126,7 @@
 
                            <div class="newsfeed-desc"><p>Part of spiritual and emotional maturity is recognizing that it’s not like you’re going to try to fix yourself and become a different person. You remain the same person, but you become awakened.</p></div>
 
-                           <div class="newsfeed-mainpic">
-                            <!-- <img src="{{ asset('images/timeline-1.jpg') }}" alt="" data-pagespeed-url-hash="52605886" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> -->
-                          </div>
+                           <div class="newsfeed-mainpic"><img src="{{ asset('images/timeline-1.jpg') }}" alt="" data-pagespeed-url-hash="52605886" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></div>
 
                            <div class="newsfeed-licosh-col">
                             <div class="feednewlikes"><a href="javascript:void(0)"><img src="{{ asset('images/like-ico.png') }}" alt="" data-pagespeed-url-hash="1279223300" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> <span>Like</span></a> </div>
@@ -221,9 +219,7 @@
                            <div class="newsfeed-desc"><p>More smiling, less worrying. More compassion, less judgment. More blessed, less stressed. More love, less hate.</p></div>
 
 
-                           <div class="newsfeed-mainpic">
-                            <!-- <img src="{{ asset('images/timeline-2.jpg') }}" alt="" data-pagespeed-url-hash="347105807" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> -->
-                          </div>
+                           <div class="newsfeed-mainpic"><img src="{{ asset('images/timeline-2.jpg') }}" alt="" data-pagespeed-url-hash="347105807" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></div>
 
                            <div class="newsfeed-licosh-col">
                             <div class="feednewlikes"><a href="javascript:void(0)"><img src="{{ asset('images/like-ico.png') }}" alt="" data-pagespeed-url-hash="1279223300" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> <span>Like</span></a> </div>

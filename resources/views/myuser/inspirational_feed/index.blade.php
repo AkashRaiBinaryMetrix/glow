@@ -75,8 +75,10 @@ $sLoggedInUserProfileImage = getValueByColumnNameAndId('users','id',$iUserId,'pr
      </div><!--newsfeed-tophead-->  
 
      <div class="newsfeed-desc"><p>{{ !empty($aInspirational->whats_on_your_mind) ? $aInspirational->whats_on_your_mind : '' }}</p></div>
-     @if(!empty($aInspirational->photo))
+     @if(!empty($aInspirational->photo) && empty($aInspirational->user_profile_photo_upload_id))
      <div class="newsfeed-mainpic"><img src="{{ asset('images/inspirational_feed/'.$aInspirational->photo) }}" alt="" data-pagespeed-url-hash="943057311" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></div>
+     @elseif (!empty($aInspirational->photo) && !empty($aInspirational->user_profile_photo_upload_id))
+     <div class="newsfeed-mainpic"><img src="{{ asset('images/userphotos/'.$aInspirational->photo) }}" alt="" data-pagespeed-url-hash="943057311" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></div>
      @elseif (!empty($aInspirational->videos))
      <div class="newsfeed-mainpic">
       <video width="100%" height="240" controls>

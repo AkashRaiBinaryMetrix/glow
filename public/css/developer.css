@@ -1,0 +1,32 @@
+.invitefrnd-list-col { height: 250px; overflow-y: scroll; margin-bottom:10px;  }
+
+.search-form{ position: relative; }
+
+.invitefrnd-form .form-control {
+    border: 1px solid #eff2f5;
+    font-size: 13px;
+    background: #eff2f5;
+    border-radius: 6px;
+}
+
+.invitefrnd-list-col .custom-control{ margin-bottom:10px; }
+
+.invitefrnd-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    vertical-align: middle;
+    margin-right: 10px;
+     margin-left: 10px;
+}
+.invitefrnd-pic img{ height:40px; object-fit:cover; }
+.invitefrnd-list-col .custom-control-label{ font-weight:500; font-size:16px; }
+.invitefrnd-list-col .custom-control-label::before{ top: 0.75rem; width: 1.1rem; height: 1.1rem; }
+.invitefrnd-list-col .custom-control-label::after{ top: 0.75rem; width: 1.1rem; height: 1.1rem; }
+
+.photos_upload{float: right;}
+
+.upload_form{
+    margin-bottom: 11px;
+}

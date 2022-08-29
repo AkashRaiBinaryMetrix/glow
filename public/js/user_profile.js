@@ -382,3 +382,68 @@ function familyModalDataUpdate() {
         }
     });
 }
+
+function delete_photo(id,url){
+    let text = "Are you sure you want to delete this photo?";
+    if (confirm(text) == true) {
+        $.ajax({
+            type: "POST",
+            url: sBASEURL + "deletePhoto",
+            data: {
+                id: id,
+                url: url,
+                _token: '{{csrf_token()}}'
+            },
+            success: function(data) {
+                alert("Deleted successfully");
+                window.location.reload();
+            },
+            error: function(data, textStatus, errorThrown) {
+                console.log(data);
+            },
+        });
+    } else {}
+}
+
+$(document).ready(function(){
+    // File upload via Ajax
+    $("#uploadForm").on('submit', function(e){
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: sBASEURL + "uploadPhoto",  
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData:false,
+            beforeSend: function(){
+                $('#uploadStatus').html('<img src="images/uploading.gif"/>');
+            },
+            error:function(){
+                $('#uploadStatus').html('<span style="color:#EA4335;">Images upload failed, please try again.<span>');
+            },
+            success: function(data){
+                $('#uploadForm')[0].reset();
+                $('#uploadStatus').html('<span style="color:#28A74B;">Images uploaded successfully.<span>');
+                //$('.gallery').html(data);
+                window.location.reload();
+            }
+        });
+    });
+    
+    // File type validation
+    $("#fileInput").change(function(){
+        var fileLength = this.files.length;
+        var match= ["image/jpeg","image/png","image/jpg","image/gif"];
+        var i;
+        for(i = 0; i < fileLength; i++){ 
+            var file = this.files[i];
+            var imagefile = file.type;
+            if(!((imagefile==match[0]) || (imagefile==match[1]) || (imagefile==match[2]) || (imagefile==match[3]))){
+                alert('Please select a valid image file (JPEG/JPG/PNG/GIF).');
+                $("#fileInput").val('');
+                return false;
+            }
+        }
+    });
+});
