@@ -90,6 +90,7 @@
                $sLoggedInUserProfileImage = getValueByColumnNameAndId('users','id',$iUserId,'profile_pic');
            @endphp
            <div class="menu-ham-ico">
+            <div class="top-notify"><img src="images/bell-ico.png" alt="" data-pagespeed-url-hash="6734172" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> <span>0</span></div>
             <div class="top-user-profile">
            <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{ !empty($sLoggedInUserProfileImage) ? asset('images/profile/'.$sLoggedInUserProfileImage) : asset('images/user.png') }}" alt="" width="25px" height="25px" data-pagespeed-url-hash="2638378100" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
            </a>
@@ -112,6 +113,52 @@
             
         </div>
         </header>
+        <div class="notification-wrapper">
+  <div id="notification" class="notification-bar" style="display: none;">
+    <div class="noti-head"><h3>Notifications</h3> <a href="#">Mark All As Read</a></div>
+    
+    <div class="inner-noti-sec">
+        
+      <div class="noti-col"><a href="#">
+        <div class="noti-ico"><img src="images/avatar-3.jpg" alt="" data-pagespeed-url-hash="1407164496" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></div>
+        <p>Dummy Name followed your profile.</p>
+        <small>Just Now</small></a>  
+      </div>
+        
+      <div class="noti-col"><a href="#">
+        <div class="noti-ico"><img src="images/home-service-4.jpg" alt="" data-pagespeed-url-hash="1407309899" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></div>
+        <p>New Event has been updated!</p>
+        <small>12 hrs</small></a>  
+      </div>
+        
+      <div class="noti-col"><a href="#">
+        <div class="noti-ico"><img src="images/avatar-7.jpg" alt="" data-pagespeed-url-hash="2585164180" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></div>
+        <p>Justin Liked your photo</p>
+        <small>Just Now</small></a>  
+      </div>
+        
+      <div class="noti-col"><a href="#">
+        <div class="noti-ico"><img src="images/group-figure-1.jpg" alt="" data-pagespeed-url-hash="791246335" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></div>
+        <p>John Wick commented on your photo</p>
+        <small>Just Now</small></a>  
+      </div>
+        
+      <div class="noti-col"><a href="#">
+        <div class="noti-ico"><img src="images/img-1.jpg" alt="" data-pagespeed-url-hash="1247596316" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></div>
+        <p>New Event has been updated!</p>
+        <small>1 day ago</small></a>  
+      </div>
+        
+      <div class="noti-col"><a href="#">
+        <div class="noti-ico"><img src="images/home-service-5.jpg" alt="" data-pagespeed-url-hash="1701809820" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></div>
+        <p>Marley Octa Liked your photo Marley Octa Liked your photo</p>
+        <small>Just Now</small></a>  
+      </div>    
+      
+    </div>  
+      
+  </div>    
+</div>
      @if(empty($sCURL))
       </div>  
      @endif
@@ -175,6 +222,8 @@
     <!-- AddToAny END -->
     <script src="{{asset('js/simple-lightbox.js')}}"></script>
 <script>$(function(){var gallery=$('.gallery a').simpleLightbox({navText:['&lsaquo;','&rsaquo;']});});</script>
+<script>$(".top-notify").click(function(){$("#notification").toggle();});</script>
+
 </body>
 
 </html>
