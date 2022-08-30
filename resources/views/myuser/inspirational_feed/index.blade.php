@@ -79,16 +79,20 @@ $sLoggedInUserProfileImage = getValueByColumnNameAndId('users','id',$iUserId,'pr
      <div class="newsfeed-mainpic"><img src="{{ asset('images/inspirational_feed/'.$aInspirational->photo) }}" alt="" data-pagespeed-url-hash="943057311" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></div>
      @elseif (!empty($aInspirational->photo) && !empty($aInspirational->user_profile_photo_upload_id))
      <div class="newsfeed-mainpic"><img src="{{ asset('images/userphotos/'.$aInspirational->photo) }}" alt="" data-pagespeed-url-hash="943057311" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></div>
-     @elseif (!empty($aInspirational->videos))
+     @elseif (!empty($aInspirational->videos) && empty($aInspirational->user_profile_video_upload_id))
      <div class="newsfeed-mainpic">
       <video width="100%" height="240" controls>
        <source src="{{ asset('videos/inspirational_feed/'.$aInspirational->videos) }}">
        </video>
      </div>
+     @elseif (!empty($aInspirational->videos) && !empty($aInspirational->user_profile_video_upload_id))
+     <div class="newsfeed-mainpic">
+      <video width="100%" height="240" controls>
+       <source src="{{ asset('images/uservideo/'.$aInspirational->videos) }}">
+       </video>
+     </div>
      @else
-
      @endif
-
 
      <div class="newsfeed-licosh-col">
        <div class="feednewlikes"><a href="javascript:void(0)" onclick="likePost({{ $iUserId}},{{ $aInspirational->id}})"><img src="{{ asset('images/like-ico.png')}}" alt="" data-pagespeed-url-hash="1279223300" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> <span>Like</span></a> </div>

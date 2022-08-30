@@ -735,4 +735,140 @@ class MyProfile extends Controller
          }
      }
 
+     public function edit_video(Request $request) {
+          $iUserId = getLoggedInUserId();
+          
+          $post = $request->input();
+          if(!empty($post)) {
+            if($request->file('profilePic')) {
+                $file= $request->file('profilePic');
+                $filename= date('YmdHi').'_'.$file->getClientOriginalName();
+                $file->move(public_path('images/profile'), $filename);
+                DB::table('users')->where('id',$iUserId)->update(['profile_pic'=>$filename]);
+             }
+          }
+          
+          /*--------------------- get profile pic -----------------*/
+          $aLoggedInUserDetail = getRowByColumnNameAndId('users','id',$iUserId);
+          /*--------------------- get profile pic -----------------*/
+
+          /*-------------- get feelings and activity ----------------------*/
+          $aFeelingLists = DB::table('feelings')->where([['status',ACTIVE],['is_deleted',N]])->get();
+          $aActivityLists = DB::table('activities')->where([['status',ACTIVE],['is_deleted',N]])->get();
+          /*-------------- get feelings and activity ----------------------*/
+
+          $userName = str_replace("_*_"," ",$aLoggedInUserDetail->name);
+          $monthNum  = date("m",strtotime($aLoggedInUserDetail->created_at));
+          $monthName = date('F', mktime(0, 0, 0, $monthNum, 10)); // March
+          $year = date("Y",strtotime($aLoggedInUserDetail->created_at));
+          $joinedOn = $monthName.' '.$year;
+
+          $explodeName = explode(" ",$userName);
+     
+          //get photos
+          $userVideoData = DB::table('uservideo')->where([['user_id',$iUserId]])->get();
+
+          return view('myuser.profile.editVideo',['aLoggedInUserDetail'=>$aLoggedInUserDetail, 'userName' => $userName, 'joinedOn' => $joinedOn, 'aFeelingLists'=>$aFeelingLists,'aActivityLists'=>$aActivityLists,'userVideoData'=>$userVideoData]);
+     }
+
+     public function uploadVideo(Request $request) {
+          $iUserId = getLoggedInUserId();
+          
+          $post = $request->input();
+          
+          /*--------------------- get profile pic -----------------*/
+          $aLoggedInUserDetail = getRowByColumnNameAndId('users','id',$iUserId);
+          /*--------------------- get profile pic -----------------*/
+
+          /*-------------- get feelings and activity ----------------------*/
+          $aFeelingLists = DB::table('feelings')->where([['status',ACTIVE],['is_deleted',N]])->get();
+          $aActivityLists = DB::table('activities')->where([['status',ACTIVE],['is_deleted',N]])->get();
+          /*-------------- get feelings and activity ----------------------*/
+
+          $userName = str_replace("_*_"," ",$aLoggedInUserDetail->name);
+          $monthNum  = date("m",strtotime($aLoggedInUserDetail->created_at));
+          $monthName = date('F', mktime(0, 0, 0, $monthNum, 10)); // March
+          $year = date("Y",strtotime($aLoggedInUserDetail->created_at));
+          $joinedOn = $monthName.' '.$year;
+
+          $sCurrentDateTime = getCurrentLocalDateTime();
+
+          //unlink($_SERVER['DOCUMENT_ROOT'].'/images/userphotos/'.$post["url"]);
+
+          //DB::table('userphoto')->where('id', '=',  $post["id"])->delete();
+
+         // File upload configuration
+         $targetDir = $_SERVER['DOCUMENT_ROOT'].'/images/uservideo/';
+         $allowTypes = array('mp4');
+         
+         $images_arr = array();
+         foreach($_FILES['videos']['name'] as $key=>$val){
+             $image_name = $_FILES['videos']['name'][$key];
+             $tmp_name   = $_FILES['videos']['tmp_name'][$key];
+             $size       = $_FILES['videos']['size'][$key];
+             $type       = $_FILES['videos']['type'][$key];
+             $error      = $_FILES['videos']['error'][$key];
+             
+             // File upload path
+             $fileName = rand(1,100).date("Ymd").$iUserId.basename($_FILES['videos']['name'][$key]);
+             $targetFilePath = $targetDir . $fileName;
+             
+             // Check whether file type is valid
+             $fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
+             if(in_array($fileType, $allowTypes)){    
+                 // Store images on the server
+                 if(move_uploaded_file($_FILES['videos']['tmp_name'][$key],$targetFilePath)){
+                     $images_arr[] = $targetFilePath;
+                 }
+             }
+
+             //store data
+             $fileName = trim(substr($targetFilePath, strrpos($targetFilePath, '/') + 1));
+
+             $iId = DB::table('uservideo')->insertGetId([
+                    'user_id' => $iUserId,
+                    'url' => $fileName,
+                    'created_at' => $sCurrentDateTime
+             ]);
+
+             DB::table('insprational_feed')->insertGetId([
+                    'user_id' => $iUserId,
+                    'user_profile_video_upload_id' => $iId,
+                    'whats_on_your_mind' => "Uploaded a video",
+                    'videos' => $fileName,
+                    'is_deleted' => 'n',
+                    'status' => 1,
+                    'created_at' => $sCurrentDateTime
+             ]);
+         }
+     }
+
+     public function deleteVideo(Request $request) {
+          $iUserId = getLoggedInUserId();
+          
+          $post = $request->input();
+          
+          /*--------------------- get profile pic -----------------*/
+          $aLoggedInUserDetail = getRowByColumnNameAndId('users','id',$iUserId);
+          /*--------------------- get profile pic -----------------*/
+
+          /*-------------- get feelings and activity ----------------------*/
+          $aFeelingLists = DB::table('feelings')->where([['status',ACTIVE],['is_deleted',N]])->get();
+          $aActivityLists = DB::table('activities')->where([['status',ACTIVE],['is_deleted',N]])->get();
+          /*-------------- get feelings and activity ----------------------*/
+
+          $userName = str_replace("_*_"," ",$aLoggedInUserDetail->name);
+          $monthNum  = date("m",strtotime($aLoggedInUserDetail->created_at));
+          $monthName = date('F', mktime(0, 0, 0, $monthNum, 10)); // March
+          $year = date("Y",strtotime($aLoggedInUserDetail->created_at));
+          $joinedOn = $monthName.' '.$year;
+
+          $sCurrentDateTime = getCurrentLocalDateTime();
+
+          unlink($_SERVER['DOCUMENT_ROOT'].'/images/uservideo/'.$post["url"]);
+
+          DB::table('uservideo')->where('id', '=',  $post["id"])->delete();
+          DB::table('insprational_feed')->where('user_profile_video_upload_id', '=',  $post["id"])->delete();
+     }
+
 }
