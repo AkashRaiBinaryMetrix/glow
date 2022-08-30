@@ -447,3 +447,69 @@ $(document).ready(function(){
         }
     });
 });
+
+//video upload
+$(document).ready(function(){
+    // File upload via Ajax
+    $("#uploadFormVideo").on('submit', function(e){
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: sBASEURL + "uploadVideo",  
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData:false,
+            beforeSend: function(){
+                $('#uploadStatus').html('<img src="images/uploading.gif"/>');
+            },
+            error:function(){
+                $('#uploadStatus').html('<span style="color:#EA4335;">Images upload failed, please try again.<span>');
+            },
+            success: function(data){
+                $('#uploadFormVideo')[0].reset();
+                $('#uploadStatus').html('<span style="color:#28A74B;">Images uploaded successfully.<span>');
+                //$('.gallery').html(data);
+                window.location.reload();
+            }
+        });
+    });
+    
+    // File type validation
+    $("#fileInputVideo").change(function(){
+        var fileLength = this.files.length;
+        var match= ["video/mp4"];
+        var i;
+        for(i = 0; i < fileLength; i++){ 
+            var file = this.files[i];
+            var imagefile = file.type;
+            if(!((imagefile==match[0]) || (imagefile==match[1]) || (imagefile==match[2]) || (imagefile==match[3]))){
+                alert('Please select a valid image file (MP4).');
+                $("#fileInput").val('');
+                return false;
+            }
+        }
+    });
+});
+
+function delete_video(id,url){
+    let text = "Are you sure you want to delete this video?";
+    if (confirm(text) == true) {
+        $.ajax({
+            type: "POST",
+            url: sBASEURL + "deleteVideo",
+            data: {
+                id: id,
+                url: url,
+                _token: '{{csrf_token()}}'
+            },
+            success: function(data) {
+                alert("Deleted successfully");
+                window.location.reload();
+            },
+            error: function(data, textStatus, errorThrown) {
+                console.log(data);
+            },
+        });
+    } else {}
+}

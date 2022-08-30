@@ -34,33 +34,37 @@
                 <li class="pronav-item"><a href="{{url('profile')}}">Post</a></li>
                 <li class="pronav-item"><a href="{{url('edit_details')}}">About</a></li>
                 <li class="pronav-item"><a href="javascript:void(0)">Following</a></li>   
-                <li class="pronav-item pronav-active"><a href="{{url('edit_photos')}}">Photos</a></li>
-                <li class="pronav-item"><a href="{{url('edit_video')}}">Videos</a></li>		
+                <li class="pronav-item"><a href="{{url('edit_photos')}}">Photos</a></li>
+                <li class="pronav-item pronav-active"><a href="{{url('edit_video')}}">Videos</a></li>		
                 </ul>  
             </div>  
           <div class="profile-main-right">
               <div class="profile-following-page profile-whitebox">
                <div class="upload-div">
-    <!-- File upload form -->
-    <form id="uploadForm" enctype="multipart/form-data" class="upload_form">
-        <input type="file" name="images[]" id="fileInput" multiple >
-        <input type="submit" name="submit" value="UPLOAD"/>
-    </form>
-  
-    <!-- Display upload status -->
-    <div id="uploadStatus"></div>
-</div>
-                <div class="clearfix"></div>
-                <div class="clearfix"></div>
-                <div id="gallery">  
-                <div class="profilegallery-sec gallery">
-                   @foreach ($userPhotoData as $userPhotoDataResult)
-                    <div class="profile-phots-col">
-                      <a href="{{ asset('images/userphotos/'.$userPhotoDataResult->url)}}"><img src="{{ asset('images/userphotos/'.$userPhotoDataResult->url)}}" alt="" data-pagespeed-url-hash="1247596316" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a>
-                      <div class="pdelete-ico" onclick="delete_photo({{$userPhotoDataResult->id}},'{{$userPhotoDataResult->url}}');"><i class="las la-times"></i></div>    
-                    </div>
-                   @endforeach
+                  <!-- File upload form -->
+                  <form id="uploadFormVideo" enctype="multipart/form-data" class="upload_form">
+                    <input type="file" name="videos[]" id="fileInputVideo" multiple >
+                    <input type="submit" name="submit" value="UPLOAD"/>
+                  </form>
+                  <!-- Display upload status -->
+                  <div id="uploadStatus"></div>
                 </div>
+                <div class="clearfix"></div>
+                <div class="clearfix"></div>
+                <div class="video-gallery-pg">  
+                  <div class="row no-gutters">
+                    @foreach ($userVideoData as $userVideoDataResult)
+                    <div class="col-lg-3 col-md-4 col-sm-6">
+                      <div class="inner-videogal-col">
+                        <video controls="">
+                          <source src="{{ asset('images/uservideo/'.$userVideoDataResult->url)}}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                      <div class="pdelete-ico" onclick="delete_video({{$userVideoDataResult->id}},'{{$userVideoDataResult->url}}');"><i class="las la-times"></i></div>
+                      </div> 
+                    </div>
+                    @endforeach
+                  </div>
                 </div>
               </div>  
             </div> 
