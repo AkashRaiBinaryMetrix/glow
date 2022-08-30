@@ -430,10 +430,11 @@ function sharePostOnTimeLine(iUserId,iPostId) {
           </a>
         </div>
         @endforeach
-        <div class="common-box"><a href="{{ url('groups-list') }}" class="smallcommon-btn">View All</a></div>
         @endif
 
-      </div>   
+      </div>  
+              <div class="common-box"><a href="{{ url('groups-list') }}" class="smallcommon-btn">View All</a></div>
+ 
     </div>
 
   </div><!--social-group-sec-->
