@@ -21,7 +21,49 @@ class Home extends Controller
                     ->orderBy('id','desc')
                     ->get();
         /*--------------- get all events list ------------------*/
-        return view('myuser.events.index', ['aEventsList'=>$aEventsList]);
+
+        $iUserId = getLoggedInUserId();
+         /*-------------- get testimony or post created ----------------------*/
+          $aInspirationalFeed = DB::table('insprational_feed')
+                            ->leftJoin('users','insprational_feed.user_id','=','users.id')
+                            ->select('insprational_feed.*','users.name','users.profile_pic')
+                            ->where([['insprational_feed.status',ACTIVE],['insprational_feed.is_deleted',N]])
+                            ->orderBy('id','desc')
+                            ->get(); 
+         /*-------------- get testimony or post created ----------------------*/
+
+        /*--------------- get user group created and joined -------------------*/
+        $aPublicGroupLists = DB::table('groups')
+                       ->where('group_type',PUBLIC_GROUP_TYPE)
+                       ->where([['status',ACTIVE],['is_deleted',N]])
+                       ->orderBy('id','desc')
+                       ->limit(3)
+                       ->get();
+        
+        $aPrivateGroupLists = DB::table('groups')
+                ->where('group_type',PRIVATE_GROUP_TYPE)
+                ->where('user_id',$iUserId)
+                ->where([['status',ACTIVE],['is_deleted',N]])
+                ->orderBy('id','desc')
+                ->limit(3)
+                ->get();
+        
+        $aGroupLists = array();
+        if(($aPublicGroupLists && count($aPublicGroupLists) > 0) && ($aPrivateGroupLists && count($aPrivateGroupLists) > 0)) {
+          $aGroupLists = (object) array_merge($aPrivateGroupLists->toArray(),$aPublicGroupLists->toArray());
+        } else if(($aPublicGroupLists && count($aPublicGroupLists) == 0) && ($aPrivateGroupLists && count($aPrivateGroupLists) > 0)) {
+              $aGroupLists = $aPrivateGroupLists;
+        } else {
+              $aGroupLists = $aPublicGroupLists;
+        }
+        /*--------------- get user group created and joined -------------------*/
+        
+        /*-------------- get feelings and activity ----------------------*/
+           $aFeelingLists = DB::table('feelings')->where([['status',ACTIVE],['is_deleted',N]])->get();
+           $aActivityLists = DB::table('activities')->where([['status',ACTIVE],['is_deleted',N]])->get();
+        /*-------------- get feelings and activity ----------------------*/
+
+        return view('myuser.events.index', ['aEventsList'=>$aEventsList,'aGroupLists'=>$aGroupLists]);
     }
     public function eventDetail(Request $request, $iEventId) {
         $aEventDetail = DB::table('events')
