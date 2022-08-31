@@ -32,7 +32,7 @@ $sLoggedInUserProfileImage = getValueByColumnNameAndId('users','id',$iUserId,'pr
                         $isUserInterested = !empty($aEvents->id) ? isUsersInterestedInEvents($aEvents->id) : '';
                       /*---------------------- check logged in users is interested or not -------------*/
                   @endphp
-                  <div class="col-md-4">
+                  <div class="col-md-6">
                     <div class="mainevent-col">
                       <a href="{{ url('event-detail/'.$aEvents->id) }}">
                         <div class="mainevent-pic"><img src="{{ asset('public/images/events/'.$aEvents->image) }}" alt="" data-pagespeed-url-hash="1704642141" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></div></a>
