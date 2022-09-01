@@ -112,7 +112,7 @@ $sLoggedInUserProfileImage = getValueByColumnNameAndId('users','id',$iUserId,'pr
 
              @elseif (!empty($aInspirational->activity_id) && empty($aInspirational->feeling_id) && !empty($aFeelingOrActityDetail))
 
-             is <span class="feelsmilyicon" style="width: 34px;height: 34px;border: 1px solid #adc8cf;padding: 6px;border-radius: 50%;background: #E5F9FE;line-height: 19px;margin-right: 8px;"><img src="{{$aFeelingOrActityDetail->image}}"></span> {{ $aFeelingOrActityDetail->name }}
+             is <span class="feelsmilyicon" style="width: 34px;height: 34px;border: 1px solid #adc8cf;padding: 6px;border-radius: 50%;background: #E5F9FE;line-height: 19px;margin-right: 8px;"><img src="{{ asset($aFeelingOrActityDetail->image) }}"></span> {{ $aFeelingOrActityDetail->name }}
 
              @endif 
 
@@ -2031,6 +2031,14 @@ $('#activity_search').on('keyup', function() {
             var fd = new FormData(document.getElementById('inspirationalFeedCreatePost'));
 
             fd.append("label", "WEBUPLOAD");
+
+            
+            if($(".file-preview-image").length == 0) {
+              //it doesn't exist
+              fd.append("photo_upload", "");
+            }else{
+              fd.append("photo_upload", $(".file-preview-image").attr('title'));
+            }
 
             $.ajax({
 
