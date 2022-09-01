@@ -264,12 +264,18 @@ class InspirationalFeed extends Controller
               'activity_id'=>$activity_id_post,
               'created_at'=>$sCurrentDateTime,
           ];
-        if($request->file('file')){
-            $file= $request->file('file');
-            $filename= date('YmdHi').'_'.$file->getClientOriginalName();
-            $file->move(public_path('images/inspirational_feed'), $filename);
-            $aData['photo']= $filename;
+
+          if(!empty($post['photo_upload'])){
+                $aData['photo']= date('Ymd').$iUserId.$post['photo_upload'];
+          }else{
+            if($request->file('file')){
+                $file= $request->file('file');
+                $filename= date('YmdHi').'_'.$file->getClientOriginalName();
+                $file->move(public_path('images/inspirational_feed'), $filename);
+                $aData['photo']= $filename;
+          }
         }
+
         $iLastInsertedId = DB::table('insprational_feed')->insertGetId($aData);
         if($iLastInsertedId) {
             echo json_encode(['status'=>'success','msg'=>'Inspirational feed has been posted successfully']);
@@ -629,12 +635,6 @@ class InspirationalFeed extends Controller
                  }
              }
 
-             echo json_encode($output); 
-
-             //store data
-             //$fileName = trim(substr($targetFilePath, strrpos($targetFilePath, '/') + 1));
-
-             
-
- }
+             echo json_encode($output);    
+    }
 }
