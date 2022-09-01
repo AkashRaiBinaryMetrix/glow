@@ -30,7 +30,7 @@ $sLoggedInUserProfileImage = getValueByColumnNameAndId('users','id',$iUserId,'pr
 
             <div class="user-pic"><a href="javascript:void(0)"><img width="40px" height="23px" src="{{ !empty($sLoggedInUserProfileImage) ? asset('images/profile/'.$sLoggedInUserProfileImage) : asset('images/avtar1.png') }}" alt="" data-pagespeed-url-hash="399097396" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a></div>
 
-            <div class="user-input"><input type="text" class="activity-input" placeholder="What’s on your mind?"></div>    
+            <div class="user-input"><input type="text" class="activity-input" placeholder="Inspire others with your love, blessings, gratitude"></div>    
 
           </div>
 
@@ -1016,6 +1016,9 @@ function sharePostOnTimeLine(iUserId,iPostId) {
 
 </a>
 
+
+
+</div>   
 <div class="social-event-share"><a href="javascript:void(0)">
 
   <a class="a2a_dd" href="https://www.addtoany.com/share">
@@ -1046,9 +1049,7 @@ function sharePostOnTimeLine(iUserId,iPostId) {
 
   !!}  --}}
 
-</a></div>
-
-</div>    
+</a></div> 
 
 
 
@@ -1856,6 +1857,9 @@ $('#activity_search').on('keyup', function() {
 
                  <input id="file-1" type="file" accept="image/jpg, image/png, image/jpeg" name="file" class="file" data-overwrite-initial="false" data-min-file-count="2">
 
+                 <div id="kv-error-2" style="margin-top:10px;display:none"></div>
+<div id="kv-success-2" class="alert alert-success" style="margin-top:10px;display:none"></div>
+
                </div>         
 
              </div>    
@@ -1870,7 +1874,7 @@ $('#activity_search').on('keyup', function() {
 
             <div class="postadd-emoji">
 
-             <a href="javascript:void(0)" title=""><img src="{{ asset('images/camera-3Dicon.png') }}" alt="" data-pagespeed-url-hash="141198199" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> Upload Photos</a>
+             <a href="javascript:void(0)" title="" onclick="click_browse();"><img src="{{ asset('images/camera-3Dicon.png') }}" alt="" data-pagespeed-url-hash="141198199" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> Upload Photos</a>
 
              <a href="javascript:void(0)" data-toggle="modal" data-target="#postfeelingmodal" title="Feeling /Activity"><img src="{{ asset('images/smiley-3Dicon.png') }}" alt="" data-pagespeed-url-hash="1141578551" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a>   
 
@@ -1993,6 +1997,8 @@ $('#activity_search').on('keyup', function() {
           $('.postmediamodal').on('click', function() {
 
            $(document).find('.file-drop-zone-title').text('Upload and preview image');
+
+           $(".file-caption-main").hide();
 
          });
 

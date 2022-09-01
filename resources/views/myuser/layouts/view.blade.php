@@ -213,7 +213,32 @@
     <script src="{{ asset('js/theme.js') }}" type="text/javascript"></script>
     
     
-    <script type="text/javascript">$("#file-1").fileinput({theme:'fa',uploadUrl:"/imageUpload.php",allowedFileExtensions:['jpg','png','gif'],overwriteInitial:false,maxFileSize:2000,maxFilesNum:10,slugCallback:function(filename){return filename.replace('(','_').replace(']','_');}});var video=document.querySelector("#videoElement");if(navigator.mediaDevices.getUserMedia){navigator.mediaDevices.getUserMedia({video:true}).then(function(stream){video.srcObject=stream;}).catch(function(err0r){console.log("Something went wrong!");});}</script>    
+    <script type="text/javascript">
+    $("#file-1").fileinput({theme:'fa',uploadUrl:sBASEURL+"feedImageUpload",allowedFileExtensions:['jpg','png','gif'],overwriteInitial:false,maxFileSize:2000,maxFilesNum:10,slugCallback:function(filename){return filename.replace('(','_').replace(']','_');}});
+
+    $(document).ready(function() {
+    $("#file-1").fileinput({
+        uploadUrl: sBASEURL+"feedImageUpload",
+        uploadAsync: false,
+        showPreview: false,
+        allowedFileExtensions: ['jpg', 'png', 'gif'],
+        maxFileCount: 5,
+        elErrorContainer: '#kv-error-2'
+    }).on('filebatchpreupload', function(event, data, id, index) {
+        $('#kv-success-2').html('<h4>Upload Status</h4><ul></ul>').hide();
+    }).on('filebatchuploadsuccess', function(event, data) {
+        var out = '';
+        $.each(data.files, function(key, file) {
+            var fname = file.name;
+            out = out + '<li>' + 'Uploaded file # ' + (key + 1) + ' - '  +  fname + ' successfully.' + '</li>';
+            //alert(out);
+        });
+        $('#kv-success-2 ul').append(out);
+        $('#kv-success-2').fadeIn('slow');
+    });
+});
+
+var video=document.querySelector("#videoElement");if(navigator.mediaDevices.getUserMedia){navigator.mediaDevices.getUserMedia({video:true}).then(function(stream){video.srcObject=stream;}).catch(function(err0r){console.log("Something went wrong!");});}</script>    
         
     <script>$(document).ready(function(){$('[data-toggle="tooltip"]').tooltip();});</script>
     <script src="{{ asset('js/share.js') }}"></script>

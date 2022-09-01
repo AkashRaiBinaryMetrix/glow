@@ -43,7 +43,7 @@
                <div class="upload-div">
     <!-- File upload form -->
     <form id="uploadForm" enctype="multipart/form-data" class="upload_form">
-        <input type="file" name="images[]" id="fileInput" multiple >
+        <input type="file" name="images[]" id="fileInput" multiple required>
         <input type="submit" name="submit" value="UPLOAD"/>
     </form>
   

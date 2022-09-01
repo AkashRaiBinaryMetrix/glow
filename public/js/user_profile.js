@@ -513,3 +513,7 @@ function delete_video(id,url){
         });
     } else {}
 }
+
+function click_browse(){
+    $("#file-1").click();
+}

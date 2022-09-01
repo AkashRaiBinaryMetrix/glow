@@ -43,7 +43,7 @@
                <div class="upload-div">
                   <!-- File upload form -->
                   <form id="uploadFormVideo" enctype="multipart/form-data" class="upload_form">
-                    <input type="file" name="videos[]" id="fileInputVideo" multiple >
+                    <input type="file" name="videos[]" id="fileInputVideo" multiple required>
                     <input type="submit" name="submit" value="UPLOAD"/>
                   </form>
                   <!-- Display upload status -->
