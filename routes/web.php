@@ -102,6 +102,9 @@ Route::group(['middleware' => 'auth_user'],function () {
     Route::get('edit_video', [MyProfile::class, 'edit_video']);
     Route::post('uploadVideo', [MyProfile::class, 'uploadVideo'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
     Route::post('deleteVideo', [MyProfile::class, 'deleteVideo'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+
+    Route::post('feedImageUpload', [InspirationalFeed::class, 'feedImageUpload'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+;
 });
 
 /*--------------------------------------- user routes ----------------------*/

@@ -579,4 +579,62 @@ class InspirationalFeed extends Controller
             echo json_encode(['status'=>'failure','msg'=>'Event has not been created. Please try again']);
         }
      }
+
+    public function feedImageUpload(Request $request){
+          $iUserId = getLoggedInUserId();
+          
+          $post = $request->input();
+          
+          /*--------------------- get profile pic -----------------*/
+          $aLoggedInUserDetail = getRowByColumnNameAndId('users','id',$iUserId);
+          /*--------------------- get profile pic -----------------*/
+
+          /*-------------- get feelings and activity ----------------------*/
+          $aFeelingLists = DB::table('feelings')->where([['status',ACTIVE],['is_deleted',N]])->get();
+          $aActivityLists = DB::table('activities')->where([['status',ACTIVE],['is_deleted',N]])->get();
+          /*-------------- get feelings and activity ----------------------*/
+
+          $userName = str_replace("_*_"," ",$aLoggedInUserDetail->name);
+          $monthNum  = date("m",strtotime($aLoggedInUserDetail->created_at));
+          $monthName = date('F', mktime(0, 0, 0, $monthNum, 10)); // March
+          $year = date("Y",strtotime($aLoggedInUserDetail->created_at));
+          $joinedOn = $monthName.' '.$year;
+
+          $sCurrentDateTime = getCurrentLocalDateTime();
+
+          // File upload configuration
+          $targetDir = $_SERVER['DOCUMENT_ROOT'].'/images/inspirational_feed/';
+          $allowTypes = array('jpg','png','jpeg','gif');
+         
+             $image_name = $_FILES['file']['name'];
+             $tmp_name   = $_FILES['file']['tmp_name'];
+             $size       = $_FILES['file']['size'];
+             $type       = $_FILES['file']['type'];
+             $error      = $_FILES['file']['error'];
+            
+             // File upload path
+             $fileName = date("Ymd").$iUserId.basename($_FILES['file']['name']);
+             $targetFilePath = $targetDir . $fileName;
+             
+             // Check whether file type is valid
+             $fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
+             if(in_array($fileType, $allowTypes)){    
+                 // Store images on the server
+                 if(move_uploaded_file($_FILES['file']['tmp_name'],$targetFilePath)){
+                     //$images_arr[] = $targetFilePath;
+                    $output = array('uploaded' => 'OK' );
+                 }else{
+                    $output = array('uploaded' => 'OK' );
+             
+                 }
+             }
+
+             echo json_encode($output); 
+
+             //store data
+             //$fileName = trim(substr($targetFilePath, strrpos($targetFilePath, '/') + 1));
+
+             
+
+ }
 }

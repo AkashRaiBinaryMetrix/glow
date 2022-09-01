@@ -90,7 +90,7 @@
                 <div class="user-activity-sec white-box">
                   <div class="user-activity-head">    
                     <div class="user-pic"><a href="javascript:void(0)"><img width="40px" height="23px" src="{{ !empty($aLoggedInUserDetail->profile_pic) ? asset('images/profile/'.$aLoggedInUserDetail->profile_pic) : '' }}" alt="" data-pagespeed-url-hash="399097396" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a></div>
-                    <div class="user-input"><input type="text" class="activity-input" placeholder="What’s on your mind?"></div>    
+                    <div class="user-input"><input type="text" class="activity-input" placeholder="Inspire others with your love, blessings, gratitude"></div>    
                   </div>
                   
                   <div class="user-activity-btns">
