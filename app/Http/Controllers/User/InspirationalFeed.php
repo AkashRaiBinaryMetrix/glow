@@ -359,7 +359,7 @@ class InspirationalFeed extends Controller
     $iLastInsertedId = DB::table('insprational_feed_share_on_timeline')->insertGetId($aData);
     if($iLastInsertedId) {
          $iTotalShares = DB::table('insprational_feed_share_on_timeline')->where([['insprational_feed_id',$iPostId]])->count();
-         $msg =  $iTotalShares == 1 ? 'You share': 'You and '.$iTotalShares.' others shares';
+         $msg =  $iTotalShares == 1 ? 'You shared': 'You and '.$iTotalShares.' others shares';
          echo json_encode(['status'=>'success','msg'=>'You have shared this post successfully','iTotalShares'=>$msg]); 
     } else {
          echo json_encode(['status'=>'failure','msg'=>'You have not shared this post. Please try again']); 
