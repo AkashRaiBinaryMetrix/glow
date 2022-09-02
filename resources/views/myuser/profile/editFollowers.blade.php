@@ -37,12 +37,12 @@ $sLoggedInUserProfileImage = getValueByColumnNameAndId('users','id',$iUserId,'pr
             </div><!--profile-top-head-->
             <div class="profile-navs">
               <ul class="pronavbar-nav">
-                <li class="pronav-item"><a href="{{url('profile')}}">Post</a></li>
+                <li class="pronav-item"><a href="{{url('profile')}}">Profile</a></li>
                 <li class="pronav-item"><a href="{{url('edit_details')}}">About</a></li>
                 <li class="pronav-item pronav-active"><a href="{{url('edit_followers')}}">Followers</a></li>
                 <li class="pronav-item"><a href="{{url('edit_following')}}">Following</a></li>   
                 <li class="pronav-item"><a href="{{url('edit_photos')}}">Photos</a></li>
-                <li class="pronav-item"><a href="{{url('edit_video')}}">Videos</a></li>		
+                <li class="pronav-item"><a href="{{url('edit_video')}}">Testimony</a></li>		
                 </ul>  
             </div>  
           <div class="profile-main-right">
