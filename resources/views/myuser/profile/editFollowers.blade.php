@@ -1,6 +1,12 @@
 @extends('myuser.layouts.view')
 @section('title', 'Register')
 @section('content')
+
+@php
+$iUserId  = getLoggedInUserId();
+$sLoggedInUserProfileImage = getValueByColumnNameAndId('users','id',$iUserId,'profile_pic');
+@endphp
+
 <div class="inner-page">
   <div class="container">
     <div class="inner-title">My Profile</div>
@@ -33,37 +39,41 @@
               <ul class="pronavbar-nav">
                 <li class="pronav-item"><a href="{{url('profile')}}">Post</a></li>
                 <li class="pronav-item"><a href="{{url('edit_details')}}">About</a></li>
-                <li class="pronav-item"><a href="{{url('edit_followers')}}">Followers</a></li>
+                <li class="pronav-item pronav-active"><a href="{{url('edit_followers')}}">Followers</a></li>
                 <li class="pronav-item"><a href="{{url('edit_following')}}">Following</a></li>   
-                <li class="pronav-item pronav-active"><a href="{{url('edit_photos')}}">Photos</a></li>
+                <li class="pronav-item"><a href="{{url('edit_photos')}}">Photos</a></li>
                 <li class="pronav-item"><a href="{{url('edit_video')}}">Videos</a></li>		
                 </ul>  
             </div>  
           <div class="profile-main-right">
               <div class="profile-following-page profile-whitebox">
-               <div class="upload-div">
-    <!-- File upload form -->
-    <form id="uploadForm" enctype="multipart/form-data" class="upload_form">
-        <input type="file" name="images[]" id="fileInput" multiple required>
-        <input type="submit" name="submit" value="UPLOAD"/>
-    </form>
-  
-    <!-- Display upload status -->
-    <div id="uploadStatus"></div>
-</div>
-                <div class="clearfix"></div>
-                <div class="clearfix"></div>
-                <div id="gallery">  
-                <div class="profilegallery-sec gallery">
-                   @foreach ($userPhotoData as $userPhotoDataResult)
-                    <div class="profile-phots-col">
-                      <a href="{{ asset('images/userphotos/'.$userPhotoDataResult->url)}}"><img src="{{ asset('images/userphotos/'.$userPhotoDataResult->url)}}" alt="" data-pagespeed-url-hash="1247596316" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a>
-                      <div class="pdelete-ico" onclick="delete_photo({{$userPhotoDataResult->id}},'{{$userPhotoDataResult->url}}');"><i class="las la-times"></i></div>    
-                    </div>
-                   @endforeach
-                </div>
-                </div>
-              </div>  
+                  
+                <div class="community-columns">
+          <div class="row">
+
+          @foreach ($userFollowersData as $userFollowersDataResult)
+
+           @php
+                $results = DB::select( DB::raw("SELECT * FROM users WHERE id = :var1"), array(
+                    'var1' => $userFollowersDataResult->followed_by_user_by,
+                ));
+           @endphp
+
+          <div class="col-md-4 col-xl-3 col-6">
+            <div class="community-col"><a href="#">
+            <div class="community-fig"><img src="{{asset('/images/profile/'.$results[0]->profile_pic)}}" alt="" data-pagespeed-url-hash="1112664575" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></div>
+            <div class="community-text">
+              <h4>{!! str_replace('_*_', ' ',$results[0]->name) !!}</h4>
+                <button type="button" class="comjoin-btn" id="follow_button" onclick="remove_follow({{$userFollowersDataResult->id}});">Remove</button>
+            </div>
+            </a></div>  
+          </div>
+
+          @endforeach
+
+          </div>
+          </div>      
+              </div>
             </div> 
           </div> 
         </div><!--col-md-10--> 

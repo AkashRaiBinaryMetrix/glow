@@ -35,9 +35,10 @@
               
             <div class="profile-navs">
               <ul class="pronavbar-nav">
-                <li class="pronav-item pronav-active"><a href="javascript:void(0)">Post</a></li>
+                <li class="pronav-item pronav-active"><a href="{{url('profile')}}">Post</a></li>
                 <li class="pronav-item"><a href="{{url('edit_details')}}">About</a></li>
-                <li class="pronav-item"><a href="javascript:void(0)">Following</a></li>		
+                <li class="pronav-item"><a href="{{url('edit_followers')}}">Followers</a></li>   
+                <li class="pronav-item"><a href="{{url('edit_following')}}">Following</a></li>		
                 <li class="pronav-item"><a href="{{url('edit_photos')}}">Photos</a></li>
                 <li class="pronav-item"><a href="{{url('edit_video')}}">Videos</a></li>		
                 </ul>  

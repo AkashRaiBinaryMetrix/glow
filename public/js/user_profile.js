@@ -273,22 +273,18 @@ function family_display_edit() {
 
 function updateFamilyInfo() {
     var data = new FormData();
-
     //Form data
     var form_data = $('#family_display_edit_form').serializeArray();
-    $.each(form_data, function (key, input) {
+    $.each(form_data, function(key, input) {
         data.append(input.name, input.value);
     });
-
     //File data
     var file_data = $('input[name="family_pic"]')[0].files;
     for (var i = 0; i < file_data.length; i++) {
         data.append("family_pic[]", file_data[i]);
     }
-
     //Custom data
     data.append('key', 'value');
-
     $.ajax({
         "_token": $('#token').val(),
         url: sBASEURL + "saveFamily",
@@ -296,11 +292,11 @@ function updateFamilyInfo() {
         processData: false,
         contentType: false,
         data: data,
-        success: function (data) {
+        success: function(data) {
             alert('Data updated successfully');
             window.location.reload();
         },
-        error: function (e) {
+        error: function(e) {
             //error
         }
     });
@@ -349,23 +345,19 @@ function modal_family(id) {
 
 function familyModalDataUpdate() {
     var data = new FormData();
-
     //Form data
     var form_data = $('#editFamilyModalForm').serializeArray();
     alert(form_data);
-    $.each(form_data, function (key, input) {
+    $.each(form_data, function(key, input) {
         data.append(input.name, input.value);
     });
-
     //File data
     var file_data = $('input[name="modal_family_pic"]')[0].files;
     for (var i = 0; i < file_data.length; i++) {
         data.append("modal_family_pic[]", file_data[i]);
     }
-
     //Custom data
     data.append('key', 'value');
-
     $.ajax({
         "_token": $('#token').val(),
         url: sBASEURL + "updateFamily",
@@ -373,17 +365,17 @@ function familyModalDataUpdate() {
         processData: false,
         contentType: false,
         data: data,
-        success: function (data) {
+        success: function(data) {
             alert('Data updated successfully');
             window.location.reload();
         },
-        error: function (e) {
+        error: function(e) {
             //error
         }
     });
 }
 
-function delete_photo(id,url){
+function delete_photo(id, url) {
     let text = "Are you sure you want to delete this photo?";
     if (confirm(text) == true) {
         $.ajax({
@@ -404,25 +396,24 @@ function delete_photo(id,url){
         });
     } else {}
 }
-
-$(document).ready(function(){
+$(document).ready(function() {
     // File upload via Ajax
-    $("#uploadForm").on('submit', function(e){
+    $("#uploadForm").on('submit', function(e) {
         e.preventDefault();
         $.ajax({
             type: 'POST',
-            url: sBASEURL + "uploadPhoto",  
+            url: sBASEURL + "uploadPhoto",
             data: new FormData(this),
             contentType: false,
             cache: false,
-            processData:false,
-            beforeSend: function(){
+            processData: false,
+            beforeSend: function() {
                 $('#uploadStatus').html('<img src="images/uploading.gif"/>');
             },
-            error:function(){
+            error: function() {
                 $('#uploadStatus').html('<span style="color:#EA4335;">Images upload failed, please try again.<span>');
             },
-            success: function(data){
+            success: function(data) {
                 $('#uploadForm')[0].reset();
                 $('#uploadStatus').html('<span style="color:#28A74B;">Images uploaded successfully.<span>');
                 //$('.gallery').html(data);
@@ -430,16 +421,15 @@ $(document).ready(function(){
             }
         });
     });
-    
     // File type validation
-    $("#fileInput").change(function(){
+    $("#fileInput").change(function() {
         var fileLength = this.files.length;
-        var match= ["image/jpeg","image/png","image/jpg","image/gif"];
+        var match = ["image/jpeg", "image/png", "image/jpg", "image/gif"];
         var i;
-        for(i = 0; i < fileLength; i++){ 
+        for (i = 0; i < fileLength; i++) {
             var file = this.files[i];
             var imagefile = file.type;
-            if(!((imagefile==match[0]) || (imagefile==match[1]) || (imagefile==match[2]) || (imagefile==match[3]))){
+            if (!((imagefile == match[0]) || (imagefile == match[1]) || (imagefile == match[2]) || (imagefile == match[3]))) {
                 alert('Please select a valid image file (JPEG/JPG/PNG/GIF).');
                 $("#fileInput").val('');
                 return false;
@@ -447,26 +437,25 @@ $(document).ready(function(){
         }
     });
 });
-
 //video upload
-$(document).ready(function(){
+$(document).ready(function() {
     // File upload via Ajax
-    $("#uploadFormVideo").on('submit', function(e){
+    $("#uploadFormVideo").on('submit', function(e) {
         e.preventDefault();
         $.ajax({
             type: 'POST',
-            url: sBASEURL + "uploadVideo",  
+            url: sBASEURL + "uploadVideo",
             data: new FormData(this),
             contentType: false,
             cache: false,
-            processData:false,
-            beforeSend: function(){
+            processData: false,
+            beforeSend: function() {
                 $('#uploadStatus').html('<img src="images/uploading.gif"/>');
             },
-            error:function(){
+            error: function() {
                 $('#uploadStatus').html('<span style="color:#EA4335;">Images upload failed, please try again.<span>');
             },
-            success: function(data){
+            success: function(data) {
                 $('#uploadFormVideo')[0].reset();
                 $('#uploadStatus').html('<span style="color:#28A74B;">Images uploaded successfully.<span>');
                 //$('.gallery').html(data);
@@ -474,16 +463,15 @@ $(document).ready(function(){
             }
         });
     });
-    
     // File type validation
-    $("#fileInputVideo").change(function(){
+    $("#fileInputVideo").change(function() {
         var fileLength = this.files.length;
-        var match= ["video/mp4"];
+        var match = ["video/mp4"];
         var i;
-        for(i = 0; i < fileLength; i++){ 
+        for (i = 0; i < fileLength; i++) {
             var file = this.files[i];
             var imagefile = file.type;
-            if(!((imagefile==match[0]) || (imagefile==match[1]) || (imagefile==match[2]) || (imagefile==match[3]))){
+            if (!((imagefile == match[0]) || (imagefile == match[1]) || (imagefile == match[2]) || (imagefile == match[3]))) {
                 alert('Please select a valid image file (MP4).');
                 $("#fileInput").val('');
                 return false;
@@ -492,7 +480,7 @@ $(document).ready(function(){
     });
 });
 
-function delete_video(id,url){
+function delete_video(id, url) {
     let text = "Are you sure you want to delete this video?";
     if (confirm(text) == true) {
         $.ajax({
@@ -514,6 +502,59 @@ function delete_video(id,url){
     } else {}
 }
 
-function click_browse(){
+function click_browse() {
     $("#file-1").click();
+}
+
+function button_follow(following_user_id, followed_by_user_by) {
+    $.ajax({
+        type: "POST",
+        url: sBASEURL + "processFollowing",
+        data: {
+            following_user_id: following_user_id,
+            followed_by_user_by: followed_by_user_by,
+            _token: '{{csrf_token()}}'
+        },
+        success: function(data) {
+            window.location.reload();
+        },
+        error: function(data, textStatus, errorThrown) {
+            console.log(data);
+        },
+    });
+}
+
+function button_unfollow(following_user_id, followed_by_user_by) {
+    $.ajax({
+        type: "POST",
+        url: sBASEURL + "deleteFollowing",
+        data: {
+            following_user_id: following_user_id,
+            followed_by_user_by: followed_by_user_by,
+            _token: '{{csrf_token()}}'
+        },
+        success: function(data) {
+            window.location.reload();
+        },
+        error: function(data, textStatus, errorThrown) {
+            console.log(data);
+        },
+    });
+}
+
+function remove_follow(id) {
+    $.ajax({
+        type: "POST",
+        url: sBASEURL + "deleteFollower",
+        data: {
+            id: id,
+            _token: '{{csrf_token()}}'
+        },
+        success: function(data) {
+            window.location.reload();
+        },
+        error: function(data, textStatus, errorThrown) {
+            console.log(data);
+        },
+    });
 }
