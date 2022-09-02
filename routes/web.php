@@ -50,7 +50,7 @@ Route::get('auth-instagram-callback', [SignUp::class, 'handleInstagramCallback']
 Route::group(['middleware' => 'auth_user'],function () {
     Route::get('inspirational-feed',[InspirationalFeed::class,'index']);
     Route::post('createGroup',[InspirationalFeed::class,'createGroup']);
-    Route::post('createEvent',[InspirationalFeed::class,'createEvent']);
+    Route::post('createEventFront',[InspirationalFeed::class,'createEventFront']);
     Route::post('hideEventOrReport',[InspirationalFeed::class,'hideEventOrReport']);
     Route::post('fellingSearch', [InspirationalFeed::class, 'fellingSearch']);
     Route::post('activitySearch', [InspirationalFeed::class, 'activitySearch']);
@@ -76,6 +76,7 @@ Route::group(['middleware' => 'auth_user'],function () {
     Route::post('profile', [MyProfile::class, 'index']);
     Route::get('edit_details', [MyProfile::class, 'edit_details']);
     Route::get('edit_photos', [MyProfile::class, 'edit_photos']);
+    Route::get('edit_following', [MyProfile::class, 'edit_following']);
     Route::post('saveAbout', [MyProfile::class, 'saveAbout']);
     Route::post('saveEducation', [MyProfile::class, 'saveEducation']);
     
@@ -104,7 +105,14 @@ Route::group(['middleware' => 'auth_user'],function () {
     Route::post('deleteVideo', [MyProfile::class, 'deleteVideo'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
     Route::post('feedImageUpload', [InspirationalFeed::class, 'feedImageUpload'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
-;
+
+    Route::post('processFollowing', [MyProfile::class, 'processFollowing'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+    
+    Route::post('deleteFollowing', [MyProfile::class, 'deleteFollowing'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+
+    Route::get('edit_followers', [MyProfile::class, 'edit_followers'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+
+    Route::post('deleteFollower', [MyProfile::class, 'deleteFollower'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 });
 
 /*--------------------------------------- user routes ----------------------*/

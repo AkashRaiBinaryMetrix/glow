@@ -9,6 +9,7 @@ use App\Models\Userabout;
 use App\Models\Userwork;
 use App\Models\Userplaces;
 use App\Models\Userfamily;
+use App\Models\Following;
 
 class MyProfile extends Controller
 {
@@ -869,6 +870,212 @@ class MyProfile extends Controller
 
           DB::table('uservideo')->where('id', '=',  $post["id"])->delete();
           DB::table('insprational_feed')->where('user_profile_video_upload_id', '=',  $post["id"])->delete();
+     }
+
+     public function edit_following(Request $request) {
+          $iUserId = getLoggedInUserId();
+          
+          $post = $request->input();
+          if(!empty($post)) {
+            if($request->file('profilePic')) {
+                $file= $request->file('profilePic');
+                $filename= date('YmdHi').'_'.$file->getClientOriginalName();
+                $file->move(public_path('images/profile'), $filename);
+                DB::table('users')->where('id',$iUserId)->update(['profile_pic'=>$filename]);
+             }
+          }
+          
+          /*--------------------- get profile pic -----------------*/
+          $aLoggedInUserDetail = getRowByColumnNameAndId('users','id',$iUserId);
+          /*--------------------- get profile pic -----------------*/
+
+          /*-------------- get feelings and activity ----------------------*/
+          $aFeelingLists = DB::table('feelings')->where([['status',ACTIVE],['is_deleted',N]])->get();
+          $aActivityLists = DB::table('activities')->where([['status',ACTIVE],['is_deleted',N]])->get();
+          /*-------------- get feelings and activity ----------------------*/
+
+          $userName = str_replace("_*_"," ",$aLoggedInUserDetail->name);
+          $monthNum  = date("m",strtotime($aLoggedInUserDetail->created_at));
+          $monthName = date('F', mktime(0, 0, 0, $monthNum, 10)); // March
+          $year = date("Y",strtotime($aLoggedInUserDetail->created_at));
+          $joinedOn = $monthName.' '.$year;
+
+          $explodeName = explode(" ",$userName);
+     
+          //get photos
+          $userPhotoData = DB::table('userphoto')->where([['user_id',$iUserId]])->get();
+
+          //get all users list
+          $userFollowingData = DB::table('users')->where([['id','!=',$iUserId],['status',1]])->get();
+
+          return view('myuser.profile.editFollowing',['aLoggedInUserDetail'=>$aLoggedInUserDetail, 'userName' => $userName, 'joinedOn' => $joinedOn, 'aFeelingLists'=>$aFeelingLists,'aActivityLists'=>$aActivityLists,'userPhotoData'=>$userPhotoData, 'userFollowingData'=>$userFollowingData]);
+     }
+
+     public function processFollowing(Request $request){
+          $iUserId = getLoggedInUserId();
+          
+          $post = $request->input();
+          if(!empty($post)) {
+            if($request->file('profilePic')) {
+                $file= $request->file('profilePic');
+                $filename= date('YmdHi').'_'.$file->getClientOriginalName();
+                $file->move(public_path('images/profile'), $filename);
+                DB::table('users')->where('id',$iUserId)->update(['profile_pic'=>$filename]);
+             }
+          }
+          
+          /*--------------------- get profile pic -----------------*/
+          $aLoggedInUserDetail = getRowByColumnNameAndId('users','id',$iUserId);
+          /*--------------------- get profile pic -----------------*/
+
+          /*-------------- get feelings and activity ----------------------*/
+          $aFeelingLists = DB::table('feelings')->where([['status',ACTIVE],['is_deleted',N]])->get();
+          $aActivityLists = DB::table('activities')->where([['status',ACTIVE],['is_deleted',N]])->get();
+          /*-------------- get feelings and activity ----------------------*/
+
+          $userName = str_replace("_*_"," ",$aLoggedInUserDetail->name);
+          $monthNum  = date("m",strtotime($aLoggedInUserDetail->created_at));
+          $monthName = date('F', mktime(0, 0, 0, $monthNum, 10)); // March
+          $year = date("Y",strtotime($aLoggedInUserDetail->created_at));
+          $joinedOn = $monthName.' '.$year;
+
+          $explodeName = explode(" ",$userName);
+     
+          //get photos
+          $userPhotoData = DB::table('userphoto')->where([['user_id',$iUserId]])->get();
+
+          //get all users list
+          $userFollowingData = DB::table('users')->where([['id','!=',$iUserId],['status',1]])->get();
+
+          $sCurrentDateTime = getCurrentLocalDateTime();
+
+          $iId = DB::table('follow_following')->insertGetId([
+                    'following_user_id' => $post["following_user_id"],
+                    'followed_by_user_by' => $post["followed_by_user_by"],
+                    'created_at' => $sCurrentDateTime
+          ]);
+          
+     }
+
+     public function deleteFollowing(Request $request){
+          $iUserId = getLoggedInUserId();
+          
+          $post = $request->input();
+          if(!empty($post)) {
+            if($request->file('profilePic')) {
+                $file= $request->file('profilePic');
+                $filename= date('YmdHi').'_'.$file->getClientOriginalName();
+                $file->move(public_path('images/profile'), $filename);
+                DB::table('users')->where('id',$iUserId)->update(['profile_pic'=>$filename]);
+             }
+          }
+          
+          /*--------------------- get profile pic -----------------*/
+          $aLoggedInUserDetail = getRowByColumnNameAndId('users','id',$iUserId);
+          /*--------------------- get profile pic -----------------*/
+
+          /*-------------- get feelings and activity ----------------------*/
+          $aFeelingLists = DB::table('feelings')->where([['status',ACTIVE],['is_deleted',N]])->get();
+          $aActivityLists = DB::table('activities')->where([['status',ACTIVE],['is_deleted',N]])->get();
+          /*-------------- get feelings and activity ----------------------*/
+
+          $userName = str_replace("_*_"," ",$aLoggedInUserDetail->name);
+          $monthNum  = date("m",strtotime($aLoggedInUserDetail->created_at));
+          $monthName = date('F', mktime(0, 0, 0, $monthNum, 10)); // March
+          $year = date("Y",strtotime($aLoggedInUserDetail->created_at));
+          $joinedOn = $monthName.' '.$year;
+
+          $explodeName = explode(" ",$userName);
+     
+          //get photos
+          $userPhotoData = DB::table('userphoto')->where([['user_id',$iUserId]])->get();
+
+          //get all users list
+          $userFollowingData = DB::table('users')->where([['id','!=',$iUserId],['status',1]])->get();
+
+          $sCurrentDateTime = getCurrentLocalDateTime();
+
+          Following::where('following_user_id',$post["following_user_id"])->where('followed_by_user_by',$post["followed_by_user_by"])->delete();
+     }
+
+     public function edit_followers(Request $request){
+          $iUserId = getLoggedInUserId();
+          
+          $post = $request->input();
+          if(!empty($post)) {
+            if($request->file('profilePic')) {
+                $file= $request->file('profilePic');
+                $filename= date('YmdHi').'_'.$file->getClientOriginalName();
+                $file->move(public_path('images/profile'), $filename);
+                DB::table('users')->where('id',$iUserId)->update(['profile_pic'=>$filename]);
+             }
+          }
+          
+          /*--------------------- get profile pic -----------------*/
+          $aLoggedInUserDetail = getRowByColumnNameAndId('users','id',$iUserId);
+          /*--------------------- get profile pic -----------------*/
+
+          /*-------------- get feelings and activity ----------------------*/
+          $aFeelingLists = DB::table('feelings')->where([['status',ACTIVE],['is_deleted',N]])->get();
+          $aActivityLists = DB::table('activities')->where([['status',ACTIVE],['is_deleted',N]])->get();
+          /*-------------- get feelings and activity ----------------------*/
+
+          $userName = str_replace("_*_"," ",$aLoggedInUserDetail->name);
+          $monthNum  = date("m",strtotime($aLoggedInUserDetail->created_at));
+          $monthName = date('F', mktime(0, 0, 0, $monthNum, 10)); // March
+          $year = date("Y",strtotime($aLoggedInUserDetail->created_at));
+          $joinedOn = $monthName.' '.$year;
+
+          $explodeName = explode(" ",$userName);
+     
+          //get photos
+          $userPhotoData = DB::table('userphoto')->where([['user_id',$iUserId]])->get();
+
+          //get all users list
+          $userFollowersData = DB::table('follow_following')->where([['following_user_id','=',$iUserId]])->get();
+
+          return view('myuser.profile.editFollowers',['aLoggedInUserDetail'=>$aLoggedInUserDetail, 'userName' => $userName, 'joinedOn' => $joinedOn, 'aFeelingLists'=>$aFeelingLists,'aActivityLists'=>$aActivityLists,'userPhotoData'=>$userPhotoData, 'userFollowersData'=>$userFollowersData]);
+     }
+
+     public function deleteFollower(Request $request){
+          $iUserId = getLoggedInUserId();
+          
+          $post = $request->input();
+          if(!empty($post)) {
+            if($request->file('profilePic')) {
+                $file= $request->file('profilePic');
+                $filename= date('YmdHi').'_'.$file->getClientOriginalName();
+                $file->move(public_path('images/profile'), $filename);
+                DB::table('users')->where('id',$iUserId)->update(['profile_pic'=>$filename]);
+             }
+          }
+          
+          /*--------------------- get profile pic -----------------*/
+          $aLoggedInUserDetail = getRowByColumnNameAndId('users','id',$iUserId);
+          /*--------------------- get profile pic -----------------*/
+
+          /*-------------- get feelings and activity ----------------------*/
+          $aFeelingLists = DB::table('feelings')->where([['status',ACTIVE],['is_deleted',N]])->get();
+          $aActivityLists = DB::table('activities')->where([['status',ACTIVE],['is_deleted',N]])->get();
+          /*-------------- get feelings and activity ----------------------*/
+
+          $userName = str_replace("_*_"," ",$aLoggedInUserDetail->name);
+          $monthNum  = date("m",strtotime($aLoggedInUserDetail->created_at));
+          $monthName = date('F', mktime(0, 0, 0, $monthNum, 10)); // March
+          $year = date("Y",strtotime($aLoggedInUserDetail->created_at));
+          $joinedOn = $monthName.' '.$year;
+
+          $explodeName = explode(" ",$userName);
+     
+          //get photos
+          $userPhotoData = DB::table('userphoto')->where([['user_id',$iUserId]])->get();
+
+          //get all users list
+          $userFollowingData = DB::table('users')->where([['id','!=',$iUserId],['status',1]])->get();
+
+          $sCurrentDateTime = getCurrentLocalDateTime();
+
+          Following::where('id',$post["id"])->delete();
      }
 
 }
