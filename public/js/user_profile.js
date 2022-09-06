@@ -558,3 +558,37 @@ function remove_follow(id) {
         },
     });
 }
+
+function mark_all_read(id){
+     $.ajax({
+        type: "POST",
+        url: sBASEURL + "markAllRead",
+        data: {
+            id: id,
+            _token: '{{csrf_token()}}'
+        },
+        success: function(data) {
+            window.location.reload();
+        },
+        error: function(data, textStatus, errorThrown) {
+            console.log(data);
+        },
+    });
+}
+
+function searchUser(){
+     $.ajax({
+        type: "POST",
+        url: sBASEURL + "getUsersList",
+        data: {
+            query: $("#search_user").val(),
+            _token: '{{csrf_token()}}'
+        },
+        success: function(data) {
+            
+        },
+        error: function(data, textStatus, errorThrown) {
+            console.log(data);
+        },
+    });
+}

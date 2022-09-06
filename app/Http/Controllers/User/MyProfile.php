@@ -10,11 +10,30 @@ use App\Models\Userwork;
 use App\Models\Userplaces;
 use App\Models\Userfamily;
 use App\Models\Following;
+use App\Models\Notification;
 
 class MyProfile extends Controller
 {
      public function index(Request $request) {
           $iUserId = getLoggedInUserId();
+
+           /*-------------- get testimony or post created ----------------------*/
+          $aInspirationalFeed = DB::table('insprational_feed')
+                            ->leftJoin('users','insprational_feed.user_id','=','users.id')
+                            ->select('insprational_feed.*','users.name','users.profile_pic')
+                            ->where([['insprational_feed.status',ACTIVE],['insprational_feed.is_deleted',N],['insprational_feed.user_id',$iUserId]])
+                            ->orderBy('id','desc')
+                            ->get(); 
+         /*-------------- get testimony or post created ----------------------*/
+
+         /*--------------- get events post by admin ---------------------------*/
+          $aEventsList = DB::table('events')
+                            ->where([['events.status',ACTIVE],['events.is_deleted',N]])
+                            ->limit(2)
+                            ->orderBy('id','desc')
+                            ->get();
+        /*--------------- get events post by admin ---------------------------*/
+
           
           $post = $request->input();
           if(!empty($post)) {
@@ -51,6 +70,10 @@ class MyProfile extends Controller
           $dobyear = date("Y",strtotime($aLoggedInUserDetail->dob));
           $dobOn = $dobName.' '.$dobyear;
 
+
+          //get photos
+          $userLightPhotoData = DB::table('userphoto')->where([['user_id',$iUserId]])->get();
+
           return view('myuser.profile.index',['aLoggedInUserDetail'=>$aLoggedInUserDetail, 
 'userName' => $userName, 
 'joinedOn' => $joinedOn, 
@@ -58,7 +81,10 @@ class MyProfile extends Controller
 'aActivityLists'=>$aActivityLists, 
 'about_line' => isset($userAboutData[0]->about)? $userAboutData[0]->about : "", 
 'from_line' => isset($userAboutData[0]->from) ? $userAboutData[0]->from : "",
-'livesin_line' => isset($userAboutData[0]->lives_in)? $userAboutData[0]->lives_in : "", 
+'livesin_line' => isset($userAboutData[0]->lives_in)? $userAboutData[0]->lives_in : "",
+'aInspirationalFeed'=>$aInspirationalFeed, 
+'aEventsList'=>$aEventsList,
+'userLightPhotoData' => $userLightPhotoData,
 "dob_line" => $dobOn]);
      }
 
@@ -949,7 +975,19 @@ class MyProfile extends Controller
 
           $sCurrentDateTime = getCurrentLocalDateTime();
 
-          $iId = DB::table('follow_following')->insertGetId([
+          $followed_by_user_byData = DB::table('users')->where([['id','=',$iUserId],['status',1]])->get();
+
+          //create following notification
+          DB::table('notification')->insertGetId([
+                    'for_user' => $post["following_user_id"],
+                    'by_user' => $post["followed_by_user_by"],
+                    'type' => 'following',
+                    'status' => 'unread',
+                    'description' => str_replace('_*_',' ',$followed_by_user_byData[0]->name).' has started following you',
+                    'created_at' => $sCurrentDateTime
+          ]);
+
+          DB::table('follow_following')->insertGetId([
                     'following_user_id' => $post["following_user_id"],
                     'followed_by_user_by' => $post["followed_by_user_by"],
                     'created_at' => $sCurrentDateTime
@@ -994,6 +1032,18 @@ class MyProfile extends Controller
           $userFollowingData = DB::table('users')->where([['id','!=',$iUserId],['status',1]])->get();
 
           $sCurrentDateTime = getCurrentLocalDateTime();
+
+          $followed_by_user_byData = DB::table('users')->where([['id','=',$iUserId],['status',1]])->get();
+
+          //create following notification
+          DB::table('notification')->insertGetId([
+                    'for_user' => $post["following_user_id"],
+                    'by_user' => $post["followed_by_user_by"],
+                    'type' => 'following',
+                    'status' => 'unread',
+                    'description' => str_replace('_*_',' ',$followed_by_user_byData[0]->name).' has un followed you',
+                    'created_at' => $sCurrentDateTime
+          ]);
 
           Following::where('following_user_id',$post["following_user_id"])->where('followed_by_user_by',$post["followed_by_user_by"])->delete();
      }
@@ -1076,6 +1126,22 @@ class MyProfile extends Controller
           $sCurrentDateTime = getCurrentLocalDateTime();
 
           Following::where('id',$post["id"])->delete();
+     }
+
+     public function markAllRead(Request $request){
+          $iUserId = getLoggedInUserId();
+          $post = $request->input();
+          $sCurrentDateTime = getCurrentLocalDateTime();
+
+          DB::table('notification')->where('for_user',$iUserId)->update(['status'=>'read']);
+     }
+
+     public function getUsersList(Request $request){
+          $iUserId = getLoggedInUserId();
+          $post = $request->input();
+          $sCurrentDateTime = getCurrentLocalDateTime();
+
+
      }
 
 }

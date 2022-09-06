@@ -113,6 +113,10 @@ Route::group(['middleware' => 'auth_user'],function () {
     Route::get('edit_followers', [MyProfile::class, 'edit_followers'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
     Route::post('deleteFollower', [MyProfile::class, 'deleteFollower'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+
+    Route::post('markAllRead', [MyProfile::class, 'markAllRead'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+
+    Route::post('getUsersList', [MyProfile::class, 'getUsersList'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 });
 
 /*--------------------------------------- user routes ----------------------*/
