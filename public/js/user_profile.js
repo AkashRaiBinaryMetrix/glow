@@ -585,7 +585,7 @@ function searchUser(){
             _token: '{{csrf_token()}}'
         },
         success: function(data) {
-            
+            $("#search_result").html(data).show();
         },
         error: function(data, textStatus, errorThrown) {
             console.log(data);

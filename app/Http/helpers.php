@@ -1,7 +1,8 @@
 <?php
 use Illuminate\Support\Facades\DB;
 define('SITE_NAME', "GOD'S LUVING WORDS (godluv.org)");
-define('BASE_URL', "https://binarymetrix-dev.com/glow/");
+//define('BASE_URL', "https://binarymetrix-dev.com/glow/");
+define('BASE_URL', "http://127.0.0.1:8000/");
 define('ACTIVE', '1');
 define('INACTIVE', '0');
 define('Y', 'y');
@@ -13,6 +14,7 @@ define('PUBLIC_GROUP_TYPE','Public');
 define('PRIVATE_GROUP_TYPE','Private');
 define('TIME_ZONE_NAME','America/Los_Angeles');
 define('PRAYER','prayer');
+
 function pr($aData)
 {
     echo '<pre>';
@@ -120,7 +122,7 @@ function getTotalSharedPost($iUserId,$iInspirationalPostId) {
     $iTotalShares = DB::table('insprational_feed_share_on_timeline')->where([['insprational_feed_id',$iInspirationalPostId]])->count();
     $msg = 0;
     if($isUserShare > 0 && $iTotalShares == 1) {
-        $msg = $isUserShare > 0 && $iTotalShares == 1 ? 'You share': 'You and '.$iTotalShares.' others shares';
+        $msg = $isUserShare > 0 && $iTotalShares == 1 ? 'You shared': 'You and '.$iTotalShares.' others shares';
     } else if($iTotalShares > 0){
         $msg = $iTotalShares.' shares';
     }

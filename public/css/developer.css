@@ -30,3 +30,12 @@
 .upload_form{
     margin-bottom: 11px;
 }
+
+#profile-edit-top-anchor {
+    background: none;
+    color: #fff;
+    font-size: 0px;
+    margin-left: 0px;
+    padding: 0px;
+    border-radius: 0px;
+}

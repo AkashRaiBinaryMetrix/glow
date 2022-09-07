@@ -85,7 +85,9 @@ class MyProfile extends Controller
 'aInspirationalFeed'=>$aInspirationalFeed, 
 'aEventsList'=>$aEventsList,
 'userLightPhotoData' => $userLightPhotoData,
-"dob_line" => $dobOn]);
+"dob_line" => $dobOn,
+"iUserIdCheck" => $iUserId
+]);
      }
 
      public function edit_details(Request $request) {
@@ -1141,7 +1143,133 @@ class MyProfile extends Controller
           $post = $request->input();
           $sCurrentDateTime = getCurrentLocalDateTime();
 
+          $html ="";
 
+          //get all users list
+          $userData = DB::table('users')->where([['id','!=',$iUserId],['status',1],['name','like','%' .$post["query"].'%']])->get();
+
+          $html .='<div class="table-responsive"><table class="table table bordered">';
+          
+          if(count($userData) == 0){
+               $html .='<tr>
+                              <td>No data found</td>
+                    </tr>';
+          }else{
+              foreach($userData as $userDataResult){
+                    $html .='<tr>
+                              <td><img src="'.asset('images/profile/'.$userDataResult->profile_pic).'" alt="" data-pagespeed-url-hash="2338652753" onload="pagespeed.CriticalImages.checkImageForCriticality(this);" style="width: 56px;height: 53px;overflow: hidden;border-radius: 50%;"></td>
+                              <td style="vertical-align: middle;border-top: 0px solid #dee2e6;"><a href="view-profile/'.$userDataResult->id.'" id="profile-edit-top-anchor"><p style="margin-right: 99px;margin-top: 19px;">'.str_replace("_*_", " ", $userDataResult->name).'</p></a></td>
+                    </tr>';
+              }  
+          }
+          
+          $html .="</table></div>";
+
+          echo $html;
+     }
+
+     public function viewDifferentProfile($id){
+          $iUserId = getLoggedInUserId();
+
+          /*-------------- get testimony or post created ----------------------*/
+          $aInspirationalFeed = DB::table('insprational_feed')
+                            ->leftJoin('users','insprational_feed.user_id','=','users.id')
+                            ->select('insprational_feed.*','users.name','users.profile_pic')
+                            ->where([['insprational_feed.status',ACTIVE],['insprational_feed.is_deleted',N],['insprational_feed.user_id',$id]])
+                            ->orderBy('id','desc')
+                            ->get(); 
+          /*-------------- get testimony or post created ----------------------*/
+
+          /*--------------- get events post by admin ---------------------------*/
+          $aEventsList = DB::table('events')
+                            ->where([['events.status',ACTIVE],['events.is_deleted',N]])
+                            ->limit(2)
+                            ->orderBy('id','desc')
+                            ->get();
+          /*--------------- get events post by admin ---------------------------*/
+
+          /*--------------------- get profile pic -----------------*/
+          $aLoggedInUserDetail = getRowByColumnNameAndId('users','id',$id);
+          /*--------------------- get profile pic -----------------*/
+
+          /*-------------- get feelings and activity ----------------------*/
+          $aFeelingLists = DB::table('feelings')->where([['status',ACTIVE],['is_deleted',N]])->get();
+          $aActivityLists = DB::table('activities')->where([['status',ACTIVE],['is_deleted',N]])->get();
+          /*-------------- get feelings and activity ----------------------*/
+
+          $userName = str_replace("_*_"," ",$aLoggedInUserDetail->name);
+          
+          $monthNum  = date("m",strtotime($aLoggedInUserDetail->created_at));
+          $monthName = date('F', mktime(0, 0, 0, $monthNum, 10)); // March
+          $year = date("Y",strtotime($aLoggedInUserDetail->created_at));
+          $joinedOn = $monthName.' '.$year;
+
+          //get userabout details
+          $userAboutData = DB::table('userabout')->where([['user_id',$id]])->get();
+          
+          $dob = $aLoggedInUserDetail->dob;
+          $dobNum  = date("m",strtotime($aLoggedInUserDetail->dob));
+          $dobName = date('F', mktime(0, 0, 0, $dobNum, 10)); // March
+          $dobyear = date("Y",strtotime($aLoggedInUserDetail->dob));
+          $dobOn = $dobName.' '.$dobyear;
+
+          //get photos
+          $userLightPhotoData = DB::table('userphoto')->where([['user_id',$id]])->get();
+
+           //get photos
+          $userVideoData = DB::table('uservideo')->where([['user_id',$id]])->get();
+
+          //get photos
+          $userPhotoData = DB::table('userphoto')->where([['user_id',$id]])->get();
+
+          //get all users list
+          $userFollowingData = DB::table('follow_following')->where([['followed_by_user_by',$id]])->get();
+
+          //get all users list
+          $userFollowersData = DB::table('follow_following')->where([['following_user_id',$id]])->get();
+
+          //get userabout details
+          $userAboutData = DB::table('userabout')->where([['user_id',$id]])->get();
+
+          //get education details
+          $userEducationData = DB::table('userwork')->where([['user_id',$id]])->get();
+
+          //get places lived
+          $userPlacesLivedData = DB::table('userplaces')->where([['user_id',$id]])->get();
+     
+          //get places lived
+          $userFamilyData = DB::table('userfamily')->where([['user_id',$id]])->get();
+
+          $userName = str_replace("_*_"," ",$aLoggedInUserDetail->name);
+          
+          $joinedOn = $monthName.' '.$year;
+
+          $explodeName = explode(" ",$userName);
+
+          return view('myuser.profile.viewDifferentProfile',['aLoggedInUserDetail'=>$aLoggedInUserDetail, 
+               'userName' => $userName, 
+               'joinedOn' => $joinedOn, 
+               'aFeelingLists'=>$aFeelingLists,
+               'aActivityLists'=>$aActivityLists, 
+               'about_line' => isset($userAboutData[0]->about)? $userAboutData[0]->about : "", 
+               'from_line' => isset($userAboutData[0]->from) ? $userAboutData[0]->from : "",
+               'livesin_line' => isset($userAboutData[0]->lives_in)? $userAboutData[0]->lives_in : "",
+               'aInspirationalFeed'=>$aInspirationalFeed, 
+               'aEventsList'=>$aEventsList,
+               'userLightPhotoData' => $userLightPhotoData,
+               "dob_line" => $dobOn,
+               "iUserIdCheck" => $id,
+               'userVideoData'=>$userVideoData,
+               'userPhotoData'=>$userPhotoData,
+               'userFollowingData' => $userFollowingData,
+               'userFollowersData' => $userFollowersData,
+               'userAboutData'=>$userAboutData, 
+               "firstName" => $explodeName[0],
+               "lastName" => $explodeName[1], 
+               "userEducationData" => $userEducationData, 
+               "userPlacesLivedData" => $userPlacesLivedData, 
+               'userFamilyData' => $userFamilyData
+               ]);
      }
 
 }
