@@ -5,30 +5,45 @@
 .feed-usercomment .form-control {
     width: 100% !important;
 }
+ul.ui-tabs-nav.ui-corner-all.ui-helper-reset.ui-helper-clearfix.ui-widget-header {
+    background: none;
+    border: none;
+}
+widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-button, html .ui-button.ui-state-disabled:hover, html .ui-button.ui-state-disabled:active {
+    border: none !important;
+    background: none !important; 
+}
+.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited {
+    color: blue !important;
+}
+.ui-widget-content {
+    border: none !important;
+    background: none !important;
+}
 </style>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script>
+  $( function() {
+    $( "#tabs_profile" ).tabs();
+  } );
+</script>
 <div class="inner-page">
   <div class="container">
-      
-    <div class="inner-title">My Profile</div>
-     
     <div class="userprofile-page">
      <div class="row">
         <div class="col-md-2">
             <div class="userprofile-col">
               <div class="userprofile-pic"><img src="{{ !empty($aLoggedInUserDetail->profile_pic) ? asset('images/profile/'.$aLoggedInUserDetail->profile_pic) : '' }}" alt="" data-pagespeed-url-hash="3548533874" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></div>
-              <div class="userprofile-camera" onclick="document.getElementById('profilePic').click();"><a href="javascript:void(0)"><img src="{{ asset('images/camera-settings.png') }}" alt="" data-pagespeed-url-hash="1144822072" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a></div> 
-              <form id="profilePicUpload" enctype="multipart/form-data" action="{{ url('profile') }}" method="post"> 
-                @csrf
-                <input type="file" accept="image/png, image/jpg, image/jpeg" name="profilePic" id="profilePic" style="display: none;" />  
-              </form>
-         </div>
+            </div>
          </div>
          <script>
              $('#profilePic').on('change', function() {
                  $('#profilePicUpload').submit();
              });
          </script>
-         
         <div class="col-md-10">
           <div class="profile-right-sec">
             <div class="profile-top-head">
@@ -36,77 +51,45 @@
                 <!-- <span class="profile-txdate">June 15, 1989</span> -->
               </h1></div>
               <div class="profile-edit-top">
-                  <div class="profile-search">
-                  <form class="search-form" name="cform" method="post">
-                    <div class="form-group mb-0">
-                    <input type="text" class="form-control" name="" id="search_user" onkeyup="searchUser();" placeholder="Search..." required="">
-                    <div id="search_result" style="background: #f1f7f1;"></div>
-                    </div>
-                    <button type="submit" class="search-ico"><i class="las la-search"></i></button> 
-                </form>
-                </div>      
-                  <!-- <a href="#"><i class="las la-user-plus"></i> Follow</a> -->
+                   <a href="#"><i class="las la-user-plus"></i> Follow</a> 
               </div>
               <!-- <div class="profile-edit-top"><a href="javascript:void(0)"><img src="{{ asset('images/follow-ico-blue.png') }}" alt="" data-pagespeed-url-hash="1581428935" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> Follow</a></div>  -->   
             </div><!--profile-top-head-->
-              
-            <div class="profile-navs">
-              <ul class="pronavbar-nav">
-                <li class="pronav-item pronav-active"><a href="{{url('profile')}}">Profile</a></li>
-                <li class="pronav-item"><a href="{{url('edit_details')}}">About</a></li>
-                <li class="pronav-item"><a href="{{url('edit_followers')}}">Followers</a></li>   
-                <li class="pronav-item"><a href="{{url('edit_following')}}">Following</a></li>		
-                <li class="pronav-item"><a href="{{url('edit_photos')}}">Photos</a></li>
-                <li class="pronav-item"><a href="{{url('edit_video')}}">Testimony</a></li>		
-                </ul>  
-            </div>  
-              
             <div class="profile-main-right">
-              <div class="row">
-                  
-                <div class="col-md-6 profile-custome-5">
-                    
-                  <div class="profile-main-lefside">
-                    <div class="profile-pstabout profile-whitebox">
-                      <div class="profile-white-head">About</div> 
-                      <div class="post-about-para">{{$about_line}}</div>
-                      <div class="profile-pst-short">
-                        <p><i class="las la-home"></i> Lives in <a href="javascript:void(0)">{{$livesin_line}}</a></p>
-                        <p><i class="las la-map-marker"></i> From <a href="javascript:void(0)">{{$from_line}}</a></p>  
-                        <p><i class="las la-clock"></i> Joined on {{$joinedOn}}</p>
-                        <p><i class="las la-birthday-cake"></i> Born in {{$dob_line}}</p>
-                        <p><i class="las la-rss"></i> Followed by <a href="javascript:void(0)">0 people</a></p>    
-                      </div>   
-                        
-                         
-                        
-                      <a href="{{url('edit_details')}}">Edit Details <i class="las la-angle-double-right"></i></a>    
-                    </div>
-                        
-                     
-                    <div class="profile-photo-box">
-                     <div class="top-profile-photo-box"><span>Photos</span> <a href="{{url('edit_photos')}}">See All Photos</a></div>
-                        
-                     <div class="inner-profile-photo-box">
-                      @foreach ($userLightPhotoData as $userPhotoDataResult)
-                      <a href="{{ asset('images/userphotos/'.$userPhotoDataResult->url)}}"><img src="{{ asset('images/userphotos/'.$userPhotoDataResult->url)}}" alt="" data-pagespeed-url-hash="523810136" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a>
-                      @endforeach
-                     </div>       
-                    </div>
-                      
-                  </div>
-
-                </div><!--profile-custome-5-->
-                  
-                  
-                <div class="col-md-6 profile-custome-7">
-                  <div class="profile-main-righside">
-                      
-               
-                       
-                       <!--Timeline setup start-->
-
-@php
+              <div class="row" style="margin-left: -31px;margin-top: 7px;">
+                <div class="col-md-12">
+                  <div class="container">                  
+                    <div class="tab-content">
+                      <div id="tabs_profile">
+                        <div class="profile-navs">
+                          <ul class="pronavbar-nav">
+                            <li><a href="#tabs-1-diff">Profile</a></li>
+                            <li><a href="#tabs-2-diff">About</a></li>
+                            <li><a href="#tabs-3-diff">Followers</a></li>
+                            <li><a href="#tabs-4-diff">Following</a></li>
+                            <li><a href="#tabs-5-diff">Photo</a></li>
+                            <li><a href="#tabs-6-diff">Testimony</a></li>
+                          </ul>
+                        </div>
+                        <div id="tabs-1-diff">
+                          <div class="row">
+                          <div class="col-md-6 profile-custome-5">
+                            <div class="profile-pstabout profile-whitebox">
+                              <div class="profile-white-head">About</div> 
+                              <div class="post-about-para">{{$about_line}}</div>
+                              <div class="profile-pst-short">
+                                <p><i class="las la-home"></i> Lives in <a href="javascript:void(0)">{{$livesin_line}}</a></p>
+                                <p><i class="las la-map-marker"></i> From <a href="javascript:void(0)">{{$from_line}}</a></p>  
+                                <p><i class="las la-clock"></i> Joined on {{$joinedOn}}</p>
+                                <p><i class="las la-birthday-cake"></i> Born in {{$dob_line}}</p>
+                                <p><i class="las la-rss"></i> Followed by <a href="javascript:void(0)">0 people</a></p>    
+                              </div>   
+                            </div>
+                          </div>
+                           <div class="col-md-6 profile-custome-7">
+                            <div class="profile-main-righside">
+                              <!--Timeline setup start-->
+                              @php
 
 $iUserId  = getLoggedInUserId();
 
@@ -118,38 +101,11 @@ $sLoggedInUserProfileImage = getValueByColumnNameAndId('users','id',$iUserId,'pr
 
 
     @include('admin.layouts.session_message')
-
-    <div class="row">
+      <div class="row">
 
       <div class="">
 
         <input type="hidden" id="sLoggedInUserName" value="{{ getLoggedInUserName() }}"/>
-
-        <div class="user-activity-sec white-box">
-
-          <div class="user-activity-head">    
-
-            <div class="user-pic"><a href="javascript:void(0)"><img width="40px" height="23px" src="{{ !empty($sLoggedInUserProfileImage) ? asset('images/profile/'.$sLoggedInUserProfileImage) : asset('images/avtar1.png') }}" alt="" data-pagespeed-url-hash="399097396" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a></div>
-
-            <div class="user-input"><input type="text" class="activity-input" placeholder="Inspire others with your love, blessings, gratitude"></div>    
-
-          </div>
-
-          
-
-          <div class="user-activity-btns">
-
-           <div class="user-live-btn"><a href="javascript:void(0)" data-toggle="modal" data-target="#postlivemodal"><img src="{{ asset('images/live-video-icon.png') }}" alt="" data-pagespeed-url-hash="1806690493" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> Testimony</a></div>
-
-           <div class="user-photo-btn"><a href="javascript:void(0)" data-toggle="modal" data-target="#postmediamodal" class="postmediamodal"><img src="{{ asset('images/camera-icon.png') }}" alt="" data-pagespeed-url-hash="676148810" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> Photo</a></div>
-
-           <div class="user-feel-btn"><a href="javascript:void(0)" data-toggle="modal" data-target="#postfeelingmodal"><img src="{{ asset('images/smiley-icon.png') }}" alt="" data-pagespeed-url-hash="1049116682" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> Feeling /Activity</a></div>     
-
-         </div>    
-
-       </div>
-
-
 
        <div class="newsfeed-wrapper">
 
@@ -361,18 +317,6 @@ $sLoggedInUserProfileImage = getValueByColumnNameAndId('users','id',$iUserId,'pr
 
 
 
-     {{-- <div class="newsfeed-liked-col">
-
-      <div class="row align-items-center">
-
-       <div class="col-6"><div class="totalshares"><a href="javascript:void(0)">View previous comments</a> </div></div>
-
-       <div class="col-6 text-right"><div class="totalcomenshare">2 of 150 </div></div>
-
-     </div>
-
-   </div> --}}
-
    <div id="commentSectionIndividualPost{{$aInspirational->id}}">
 
      @if($aCommentLists && count($aCommentLists) > 0)
@@ -493,11 +437,6 @@ $sLoggedInUserProfileImage = getValueByColumnNameAndId('users','id',$iUserId,'pr
 
 
 
-          {{-- <div class="newsfeed-commenting-rply">
-
-           <div class="rplyicon"><a href="javascript:void(0)"><img src="images/reply-icon.png" alt="" data-pagespeed-url-hash="2931494377" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> 1 Reply</a></div>
-
-         </div>    --}}
 
 
 
@@ -511,29 +450,7 @@ $sLoggedInUserProfileImage = getValueByColumnNameAndId('users','id',$iUserId,'pr
 
    </div>
 
-   {{-- <div class="newsfeed-usercoments">
-
-     <div class="newsfeed-commenting-userpic"><a href="javascript:void(0)"><img src="images/user-2.jpg" alt="" data-pagespeed-url-hash="2808585493" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a></div>    
-
-     <div class="newsfeed-commenting-comments">
-
-      <div class="commenting-comments1"><a href="javascript:void(0)">Sophia Holden</a> <a href="javascript:void(0)">Angie Walters</a></div>
-
-
-
-      <div class="commenting-comments2">
-
-       <a href="javascript:void(0)">Like</a>
-
-       <a href="javascript:void(0)">Reply</a>
-
-       <span> March 21 at 4:34pm</span>
-
-     </div>    
-
-   </div>
-
- </div><!--newsfeed-usercoments-->   --}}
+   
 
  <div id="commentSection{{$aInspirational->id}}" style="display: none">
 
@@ -777,111 +694,7 @@ function sharePostOnTimeLine(iUserId,iPostId) {
 
 </script>
 
-{{-- <div class="newsfeed-sec">
 
-
-
- <div class="newsfeed-tophead">     
-
-  <div class="newsfeed-top-sec">
-
-    <div class="news-userpic"><img src="images/newsuserpic-2.jpg" alt="" data-pagespeed-url-hash="297758938" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></div>
-
-    <div class="newsfeed-text"><h3>Bloomberg <span><img src="images/verified.png" alt="" data-pagespeed-url-hash="3749702213" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></span></h3> <p>March 21 at 2:29pm</p></div>
-
-  </div>
-
-
-
-  <div class="newsfeed-arrow">
-
-   <div class="dropdown">
-
-    <button type="button" class="dropdown-toggle" data-toggle="dropdown">
-
-      <img src="images/event-arrow-icon.png" alt="" data-pagespeed-url-hash="603205129" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
-
-    </button>
-
-    <div class="dropdown-menu">
-
-     <a class="dropdown-item" href="javascript:void(0)"><i class="las la-eye-slash"></i> Hide</a>
-
-     <a class="dropdown-item" href="javascript:void(0)"><i class="las la-flag"></i> Report</a>
-
-   </div>
-
- </div>
-
-</div>
-
-
-
-</div><!--newsfeed-tophead-->  
-
-
-
-<div class="newsfeed-desc"><p>The tiny Caribbean paradise is now at the center of the biggest data leak in history. It’s a real-world Treasure Island, a tiny Caribbean paradise that, on paper, is home to nearly half a million companies.</p></div>
-
-
-
-
-
-<div class="newsfeed-mainpic"><img src="images/newsfeed-pic-2.jpg" alt="" data-pagespeed-url-hash="984524616" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></div>
-
-
-
-<div class="newsfeed-licosh-col">
-
- <div class="feednewlikes"><a href="javascript:void(0)"><img src="images/like-ico.png" alt="" data-pagespeed-url-hash="1279223300" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> <span>Like</span></a> </div>
-
- <div class="feednewcomment"><a href="javascript:void(0)"><img src="images/comment-ico.png" alt="" data-pagespeed-url-hash="1033231412" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> <span>Comments</span></a> </div>
-
- <div class="feednewprayer"><a href="javascript:void(0)"><img src="images/prayer-icon.png" alt="" data-pagespeed-url-hash="3948427328" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> <span>Prayer</span></a> </div>
-
- <div class="feednewshare"><a href="javascript:void(0)"><img src="images/post-share-ico.png" alt="" data-pagespeed-url-hash="4226147923" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">  <span>Shares</span></a> </div>   
-
-</div>
-
-
-
-<div class="feed-maincomment-sec">
-
-
-
- <div class="newsfeed-liked-col">
-
-  <div class="row align-items-center">
-
-   <div class="col-6"><div class="totalshares">195 shares </div></div>
-
-   <div class="col-6 text-right"><div class="totalcomenshare">102 comments </div></div>
-
- </div>
-
-</div>       
-
-
-
-<div class="feednew-comment">
-
-  <div class="exis-userpic"><img src="images/newsuserpic.png" alt="" data-pagespeed-url-hash="2338652753" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></div>
-
-  <div class="feed-usercomment"><input type="text" name="comment" placeholder="Write a comment..." class="form-control">
-
-  </div>
-
-</div>
-
-
-
-</div><!--feed-comment-main-->     
-
-
-
-
-
-</div> --}}
 
 
 
@@ -901,15 +714,6 @@ function sharePostOnTimeLine(iUserId,iPostId) {
 
 </div>
 
-
-
-
-
-
-
-</div>      
-
-</div>
 
 <script>
 
@@ -940,9 +744,6 @@ function sharePostOnTimeLine(iUserId,iPostId) {
 });
 
 </script>
-
-
-
 <!----- create event modal start ----->  
 
 <div class="modal fade common-modal" id="createeventmodal" tabindex="-1" role="dialog" aria-labelledby="createeventmodalTitle" aria-hidden="true">
@@ -1083,14 +884,9 @@ function sharePostOnTimeLine(iUserId,iPostId) {
 
 </div>
 
-</div>
+
 
 <!----- create event modal start ----->  
-
-
-
-
-
 <!----- group modal start ----->  
 
 
@@ -1202,25 +998,15 @@ function sharePostOnTimeLine(iUserId,iPostId) {
       </div>
 
     </div>
-
-  </div>
-
-
-
+</div>
+</div>
+</div>
 </div>
 
-</div>
-
-</div>
 
 <!----- group modal end ----->
 
-
-
 <!----live modal---->
-
-
-
 <div class="modal fade common-modal" id="postlivemodal" tabindex="-1" role="dialog" aria-labelledby="postlivemodalTitle" aria-hidden="true">
 
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -1319,10 +1105,6 @@ function sharePostOnTimeLine(iUserId,iPostId) {
 
 </div>  
 
-
-
-
-
 <!----activity modal---->
 
 
@@ -1383,11 +1165,9 @@ function sharePostOnTimeLine(iUserId,iPostId) {
 
                     <input type="text" class="form-control" name="feeling_search" id="feeling_search" placeholder="Search...">
 
-                    {{-- <p class="formError feeling_search"></p> --}}
 
                   </div>
 
-                  {{-- <button type="button" id="btnFeelingSearch" class="search-ico"><i class="las la-search"></i></button>   --}}
 
                 </form>
 
@@ -1429,11 +1209,9 @@ function sharePostOnTimeLine(iUserId,iPostId) {
 
                     <input type="text" class="form-control" name="activity_search" id="activity_search" placeholder="Search...">
 
-                    {{-- <p class="formError activity_search"></p> --}}
 
                   </div>
 
-                  {{-- <button type="button" id="btnActivitySearch" class="search-ico"><i class="las la-search"></i></button>  --}}
 
                 </form>
 
@@ -1471,7 +1249,6 @@ function sharePostOnTimeLine(iUserId,iPostId) {
 
 
 
-        {{-- <div class="common-box"><a href="javascript:void(0)" class="common-btn w-100">Post</a></div>    --}}
 
 
 
@@ -1487,8 +1264,7 @@ function sharePostOnTimeLine(iUserId,iPostId) {
 
 </div>
 
-</div>      
-
+</div> 
 <script>
 
   /*------------------ click on feeling on activity or feeling ---------------*/
@@ -1628,11 +1404,6 @@ $('#activity_search').on('keyup', function() {
 </script>
 
 
-
-<!----post modal---->
-
-
-
 <div class="modal fade common-modal" id="postmediamodal" tabindex="-1" role="dialog" aria-labelledby="postmediamodalTitle" aria-hidden="true">
 
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -1731,6 +1502,13 @@ $('#activity_search').on('keyup', function() {
 </div>
 
 </div>
+
+</div>
+</div>
+
+<!----post modal---->
+
+
 
 
 
@@ -2377,191 +2155,559 @@ $('#activity_search').on('keyup', function() {
 
 
                        <!--Timeline setup end-->
-                   
- 
-                   </div>
-                </div><!--profile-custome-7-->  
-                
-                
+
+
+                              <!--Timeline setup end-->
+                           </div>
+                          </div><!--profile-custome-7-->  
+                        </div>
+                      </div>
+                        <div id="tabs-2-diff">
+                            <div class="profile-main-right">
+                          <div class="row">
+                            <div class="col-md-6 profile-custome-5">
+                              <div class="profile-main-lefside">
+                                <div class="profile-pstabout profile-whitebox">
+                                <div class="profile-white-head">About</div>
+                                <div class="profile-aboutpst-col">
+                                 <ul>
+                                    <li class="section_1 profile-abactive"><a href="javascript:void(0)" onclick="show_panel(1);">Overview</a></li>
+                                    <li class="section_2"><a href="javascript:void(0)" onclick="show_panel(2);">Work and education</a></li>
+                                    <li class="section_3"><a href="javascript:void(0)" onclick="show_panel(3);">Places Lived</a></li>
+                                    <li class="section_4"><a href="javascript:void(0)" onclick="show_panel(4);">Contact &amp; basic</a></li>
+                                    <li class="section_5"><a href="javascript:void(0)" onclick="show_panel(5);">Family and relationships</a></li>   
+                                 </ul>  
+                                </div>
+                              </div>
+                              </div>
+                            </div><!--profile-custome-5-->
+                            <div class="col-md-6 profile-custome-7">
+                             
+                             <!--About display content start-->
+                             <div class="profile-pstrightabout profile-whitebox" id="about_display">
+                                <div class="timeline-postabout">
+                                 <div class="timeline-pst1">
+                                  @foreach ($userAboutData as $userAboutDataResult)
+                                    <p><i class="las la-graduation-cap"></i> Studied at {{$userAboutDataResult->studied_at}} </p>
+                                    <p><i class="las la-home"></i> Lives in <a href="#">{{$userAboutDataResult->lives_in}}</a></p>  
+                                    <p><i class="las la-map-marker"></i> From <a href="#">{{$userAboutDataResult->from}}</a></p>   
+                                    <p><i class="las la-heart"></i> {{$userAboutDataResult->marital_status}}</p>
+                                    <p><i class="las la-phone"></i> {{$userAboutDataResult->phone}}</p> 
+                                    <hr> 
+                                    <h5 class="small-title3">About You</h5> 
+                                    <p>{{$userAboutDataResult->about}}</p> 
+                                    <hr> 
+                                    <h5 class="small-title3">Account Info</h5> 
+                                    <p>{{$firstName}}<small>First Name</small></p> 
+                                    <p>{{$lastName}} <small>Last Name</small></p>
+                                    <p>{{$aLoggedInUserDetail->username}} <small>Username</small></p>
+                                    <p>{{$aLoggedInUserDetail->email}} <small>Email</small></p>
+                                    <p>******** <small>Password</small></p>
+                                    <p>{{$userAboutDataResult->zipcode}} <small>Zip Code</small></p>
+                                    <p>{{$userAboutDataResult->denomination}} <small>Denomination</small></p>
+                                    <p>Member <small>{{$userAboutDataResult->member}}</small></p> 
+                                    @endforeach
+                                  </div>  
+                                </div>  
+                             </div>
+                             <!--About display content end-->
+
+                             <!--Work and education display content start-->
+                             <div class="profile-pstrightabout profile-whitebox" id="work_edu_display" style="display:none;">
+                                
+                                <div class="timeline-postabout">
+                                 <div class="timeline-pst1">
+                                     <h5 class="small-title3">Work</h5>
+                                     <hr>
+                                     @foreach ($userEducationData as $userEducationDataResult)
+                                     <h5 class="small-title3">{{$userEducationDataResult->type}}</h5>
+                                     <p>
+                                      @if($userEducationDataResult->type =='High School' || $userEducationDataResult->type =='Intermediate')         
+                                        <i class="las la-university"></i>         
+                                      @elseif($userEducationDataResult->type =='Work')
+                                        <i class="las la-briefcase"></i>
+                                      @else
+                                        <i class="las la-graduation-cap"></i>    
+                                      @endif
+                                      Went to {{$userEducationDataResult->description}} <small>Joining year {{$userEducationDataResult->joining_year}} | Completion year {{$userEducationDataResult->completion_year}} | <a href="javascript:void(0)" class="blue-text" data-toggle="modal" data-target="#editEducationModal" onclick="modal_education({{$userEducationDataResult->id}});"><i class="las la-pen"></i></a>&nbsp;<a href="javascript:void(0)" onclick="delete_education({{$userEducationDataResult->id}});" class="blue-text"><i class="las la-trash"></i></a></small>
+                                      </p>
+                                     
+                                     <hr>
+                                     @endforeach
+                                  </div>  
+                                </div> 
+                                
+                              </div>
+                             <!--Work and education display content end-->
+
+                             <!--Places lived display content start-->
+                             <div class="profile-pstrightabout profile-whitebox" id="places_lived_display" style="display:none;">
+                                <div class="timeline-postabout">
+                                 <div class="timeline-pst1">
+                                     <h5 class="small-title3">Places Lived</h5>
+                                     @foreach ($userPlacesLivedData as $userPlacesLivedDataResult)
+                                     <p>
+                                      <i class="las la-map-marker"></i> 
+                                      {{$userPlacesLivedDataResult->desc}} <small>{{$userPlacesLivedDataResult->type}} | <a href="javascript:void(0)" class="blue-text" data-toggle="modal" data-target="#editPlacesLivedModal" onclick="modal_placeslived({{$userPlacesLivedDataResult->id}});"><i class="las la-pen"></i></a>&nbsp;<a href="javascript:void(0)" onclick="delete_places({{$userPlacesLivedDataResult->id}});" class="blue-text"><i class="las la-trash"></i></a></small>
+                                      </p>
+                                     @endforeach
+                                  </div> 
+                                </div>  
+                              </div>
+                             <!--Places lived display content end-->
+
+                             <!--Contact info display content start-->
+                             <div class="profile-pstrightabout profile-whitebox"  id="contact_info_display" style="display:none;"> 
+                                <div class="timeline-postabout">
+                                 <div class="timeline-pst1">
+                                     <h5 class="small-title3">Contact info</h5>
+                                    <p><i class="las la-phone"></i> {{$aLoggedInUserDetail->mobile}} <small>Mobile</small></p>
+                                    <p><i class="las la-map-marked"></i> {{$aLoggedInUserDetail->address}}  <small>Address</small></p>
+                                    <p><i class="las la-envelope"></i> {{$aLoggedInUserDetail->email}} <small>Email</small></p>
+                                    <hr> 
+                                    <h5 class="small-title3">Basic info</h5> 
+                                    <p><i class="las la-user"></i> {{$aLoggedInUserDetail->gender}} <small>Gender</small></p>
+                                    <p><i class="las la-birthday-cake"></i> {{$aLoggedInUserDetail->dob}} <small>Birth date</small></p> 
+                                    <p><i class="las la-calendar-check"></i> {{$aLoggedInUserDetail->year}} <small>Birth year</small></p>
+                                    <p><i class="las la-language"></i> {{$aLoggedInUserDetail->languages}} <small>Languages</small></p> 
+                                    <p><i class="las la-female"></i> {{$aLoggedInUserDetail->interested_in}} <small>Interested in</small></p>
+                                  </div>  
+                                </div>  
+                              </div>
+                             <!--Contact info display content end-->
+
+                             <!--Family info display content start-->
+                             <div class="profile-pstrightabout profile-whitebox" id="family_info_display" style="display:none;">
+                                <div class="timeline-postabout">
+                                 <div class="timeline-pst1">
+                                     <h5 class="small-title3">Family members</h5>
+                                     @foreach ($userFamilyData as $userFamilyDataResult)
+                                     <p>
+                                      <span class="user-pic mr-2">
+                                        <img src="{{ !empty($userFamilyDataResult->image) ? asset('images/profile/'.$userFamilyDataResult->image) : asset('images/avtar1.png') }}" width="40px" alt="" data-pagespeed-url-hash="399097396" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                                      </span> 
+                                      {{$userFamilyDataResult->name}} <small>{{$userFamilyDataResult->relation}} | <a href="javascript:void(0)" class="blue-text" data-toggle="modal" data-target="#editFamilyModal" onclick="modal_family({{$userFamilyDataResult->id}});"><i class="las la-pen"></i></a>&nbsp;<a href="javascript:void(0)" onclick="delete_family({{$userFamilyDataResult->id}});" class="blue-text"><i class="las la-trash"></i></a></small>
+                                      </p>
+                                     @endforeach
+                                  </div> 
+                                </div>  
+                              </div>
+                             <!--Family info display content end-->
+
+                             <!--------------------------------Edit forms section------------------------------------>
+
+                             <!--About display edit content start-->
+                             <div class="profile-pstrightabout profile-whitebox" id="about_display_edit" style="display:none;">
+                                <div class="timeline-postabout">
+                                 <div class="timeline-pst1">
+                                  <form action="" method="post" id="about_display_edit_form">
+                                    @foreach ($userAboutData as $userAboutDataResult)
+                                    <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+                                    <p> 
+                                      <div class="form-group">
+                                      <div class="contact-form-name">
+                                        <input type="text" size="30" value="{{$userAboutDataResult->studied_at}}" name="studied_at" id="studied_at" class="form-control" placeholder="Studied At" required="">
+                                      </div>
+                                      </div>
+                                    </p>
+                                    <p>
+                                      <div class="form-group">
+                                      <div class="contact-form-name">
+                                        <input type="text" size="30" value="{{$userAboutDataResult->lives_in}}" name="lives_in" id="lives_in" class="form-control" placeholder="Lives In" required="">
+                                      </div>
+                                      </div>
+                                    </p>  
+                                    <p> 
+                                      <div class="form-group">
+                                      <div class="contact-form-name">
+                                        <input type="text" size="30" value="{{$userAboutDataResult->from}}" name="from_city" id="from_city" class="form-control" placeholder="From" required="">
+                                      </div>
+                                      </div>
+                                    </p>   
+                                    <p>
+                                      <div class="form-group">
+                                      <div class="contact-form-name">
+                                        <select name="marital_status" id="marital_status" class="form-control">
+                                          <option value="">Marital Status</option>
+                                          <option value="Married" {{ ( $userAboutDataResult->marital_status == 'Married') ? 'selected' : '' }}>Married</option>
+                                          <option value="Single" {{ ( $userAboutDataResult->marital_status == 'Single') ? 'selected' : '' }}>Single</option>
+                                        </select>
+                                      </div>
+                                      </div>
+                                    </p>
+                                    <p>
+                                      <div class="form-group">
+                                      <div class="contact-form-name">
+                                        <input type="text" size="30" value="{{$userAboutDataResult->phone}}" name="phone_no" id="phone_no" class="form-control" placeholder="Phone" required="">
+                                      </div>
+                                      </div>
+                                    </p> 
+                                    <hr> 
+                                    <h5 class="small-title3">About You</h5> 
+                                    <p>
+                                      <div class="form-group">
+                                      <div class="contact-form-name">
+                                        <textarea name="about_info" id="about_us" class="form-control" placeholder="About You">{{$userAboutDataResult->about}}</textarea>
+                                      </div>
+                                      </div>
+                                    </p> 
+                                    <hr> 
+                                    <h5 class="small-title3">Account Info</h5> 
+                                    <p><div class="form-group">
+                                      <div class="contact-form-name">
+                                        <input type="text" size="30" value="{{$firstName}}" name="first_name" id="first_name" class="form-control" placeholder="First Name" required="">
+                                      </div>
+                                      </div></p> 
+                                    <p><div class="form-group">
+                                      <div class="contact-form-name">
+                                        <input type="text" size="30" value="{{$lastName}}" name="last_name" id="last_name" class="form-control" placeholder="Last Name" required="">
+                                      </div>
+                                      </div></p>
+                                    <p><div class="form-group">
+                                      <div class="contact-form-name">
+                                        <input type="text" size="30" value="{{$aLoggedInUserDetail->username}}" name="username" id="username" class="form-control" placeholder="Username" required="">
+                                      </div>
+                                      </div></p>
+                                    <p><div class="form-group">
+                                      <div class="contact-form-name">
+                                        <input type="text" size="30" value="{{$aLoggedInUserDetail->email}}" name="email" id="email" class="form-control" placeholder="Email" required="">
+                                      </div>
+                                      </div></p>
+                                    <p><div class="form-group">
+                                      <div class="contact-form-name">
+                                        <input type="text" size="30" value="{{$aLoggedInUserDetail->password}}" name="password" id="password" class="form-control" placeholder="Password" required="">
+                                      </div>
+                                      </div></p>
+                                    <p><div class="form-group">
+                                      <div class="contact-form-name">
+                                        <input type="text" size="30" value="{{$userAboutDataResult->zipcode}}" name="zipcode" id="zipcode" class="form-control" placeholder="Zipcode" required="">
+                                      </div>
+                                      </div></p>
+                                    <p><div class="form-group">
+                                      <div class="contact-form-name">
+                                        <select name="denomination" id="denomination" class="form-control">
+                                          <option value="Denomination">Denomination</option>
+                                          <option value="Roman Catholic" {{ ( $userAboutDataResult->denomination == 'Roman Catholic') ? 'selected' : '' }}>Roman Catholic</option>
+                                        </select>
+                                      </div>
+                                      </div></p>
+                                    <p><div class="form-group">
+                                      <div class="contact-form-name">
+                                        <select name="member" id="member" class="form-control">
+                                          <option value="Member">Member</option>
+                                          <option value="Other Nonprofit Organization" {{ ( $userAboutDataResult->member == 'Other Nonprofit Organization') ? 'selected' : '' }}>Other Nonprofit Organization</option>
+                                          <option value="Schools" {{ ( $userAboutDataResult->member == 'Schools') ? 'selected' : '' }}>Schools</option>
+                                          <option value="Others" {{ ( $userAboutDataResult->member == 'Others') ? 'selected' : '' }}>Others</option>
+                                        </select>
+                                      </div>
+                                      </div></p>
+                                    <div class="form-group">
+                                      <input type="butto" name="btnSubmitAbout" class="smallcommon-btn" id="quote-submit" value="Update" onclick="updateAboutInfo()"> 
+                                    </div>
+                                       @endforeach
+                                  </form>
+                                 </div>  
+                                </div>  
+                             </div>
+                             <!--About display edit content end-->
+
+                              <!--Work edu display edit content start-->
+                             <div class="profile-pstrightabout profile-whitebox" id="work_edu_display_edit" style="display:none;">
+                                <div class="timeline-postabout">
+                                 <div class="timeline-pst1">
+                                  <form action="" method="post" id="work_edu_display_edit_form">
+                                    <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+                                    <p>
+                                      <div class="form-group">
+                                      <div class="contact-form-name">
+                                        <select name="type" id="type" class="form-control">
+                                          <option value="">Type</option>
+                                          <option value="High School">High School</option>
+                                          <option value="Intermediate">Intermediate</option>
+                                          <option value="Graduation">Graduation</option>
+                                          <option value="Post Graduation">Post Graduation</option>
+                                          <option value="Work">Work</option>
+                                          <option value="Other">Other</option>
+                                        </select>
+                                      </div>
+                                      </div>
+                                    </p>
+                                    <p>
+                                      <div class="form-group">
+                                      <div class="contact-form-name">
+                                        <textarea name="edu_description" id="edu_description" class="form-control" placeholder="Description"></textarea>
+                                      </div>
+                                      </div>
+                                    </p>
+                                    <p> 
+                                      <div class="form-group">
+                                      <div class="contact-form-name">
+                                        <input type="date" size="30" name="joining_year" id="joining_year" class="form-control" placeholder="Joining Year" required="">
+                                      </div>
+                                      </div>
+                                        </p> 
+                                    <p><div class="form-group">
+                                      <div class="contact-form-name">
+                                      <p> 
+                                      <div class="form-group">
+                                      <div class="contact-form-name">
+                                        <input type="date" size="30" name="completion_year" id="completion_year" class="form-control" placeholder="Completion Year" required="">
+                                      </div>
+                                      </div>
+                                        </p>
+                                      </div>
+                                      </div></p>
+                                    <div class="form-group">
+                                      <input type="butto" name="btnSubmitAbout" class="smallcommon-btn" id="quote-submit" value="Add" onclick="updateEducationInfo()"> 
+                                    </div>
+                                  </form>
+                                 </div>  
+                                </div>  
+                             </div>
+                             <!--Work edu display edit content end-->
+
+                             <!--Places lived edit content start-->
+                             <div class="profile-pstrightabout profile-whitebox" id="places_display_edit" style="display:none;">
+                                <div class="timeline-postabout">
+                                 <div class="timeline-pst1">
+                                  <form action="" method="post" id="places_lived_display_edit_form">
+                                    <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+                                    <p>
+                                      <div class="form-group">
+                                      <div class="contact-form-name">
+                                        <select name="place_type" id="place_type" class="form-control">
+                                          <option value="">Type</option>
+                                          <option value="Home Town">Home Town</option>
+                                          <option value="Current town/city">Current town/city</option>
+                                        </select>
+                                      </div>
+                                      </div>
+                                    </p>
+                                    <p>
+                                      <div class="form-group">
+                                      <div class="contact-form-name">
+                                        <textarea name="place_description" id="place_description" class="form-control" placeholder="Description"></textarea>
+                                      </div>
+                                      </div>
+                                    </p>
+                                    <div class="form-group">
+                                      <input type="butto" name="btnSubmitAbout" class="smallcommon-btn" id="quote-submit" value="Add" onclick="updatePlacesLivedInfo()"> 
+                                    </div>
+                                  </form>
+                                 </div>  
+                                </div>  
+                             </div>
+                             <!--Places lived edit content end-->
+
+                             <!--Contact display edit content start-->
+                             <div class="profile-pstrightabout profile-whitebox" id="contact_display_edit" style="display:none;">
+                                <div class="timeline-postabout">
+                                 <div class="timeline-pst1">
+                                  <form action="" method="post" id="contact_display_edit_form">
+                                    <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+                                    <h5 class="small-title3">Contact info</h5>
+                                    <p> 
+                                      <div class="form-group">
+                                      <div class="contact-form-name">
+                                        <input type="text" size="30" value="{{$aLoggedInUserDetail->mobile}}" name="contact_mobile" id="contact_mobile" class="form-control" placeholder="Mobile" required="">
+                                      </div>
+                                      </div>
+                                    </p>
+                                    <p>
+                                      <div class="form-group">
+                                      <div class="contact-form-name">
+                                        <input type="text" size="30" value="{{$aLoggedInUserDetail->address}}" name="contact_address" id="contact_address" class="form-control" placeholder="Address" required="">
+                                      </div>
+                                      </div>
+                                    </p>  
+                                    <hr> 
+                                    <h5 class="small-title3">Basic Info</h5>
+                                    <p>
+                                      <div class="form-group">
+                                      <div class="contact-form-name">
+                                        <input type="text" size="30" value="{{$aLoggedInUserDetail->gender}}" name="contact_gender" id="contact_gender" class="form-control" placeholder="Gender" required="">
+                                      </div>
+                                      </div>
+                                    </p>
+                                    <p>
+                                      <div class="form-group">
+                                      <div class="contact-form-name">
+                                        <input type="date" size="30" value="{{$aLoggedInUserDetail->dob}}" name="contact_dob" id="contact_dob" class="form-control" placeholder="DOB" required="">
+                                      </div>
+                                      </div>
+                                    </p>
+                                     <p>
+                                      <div class="form-group">
+                                      <div class="contact-form-name">
+                                        <input type="text" size="30" value="{{$aLoggedInUserDetail->year}}" name="contact_year" id="contact_year" class="form-control" placeholder="Year" required="">
+                                      </div>
+                                      </div>
+                                    </p>
+                                    <p>
+                                      <div class="form-group">
+                                      <div class="contact-form-name">
+                                        <input type="text" size="30" value="{{$aLoggedInUserDetail->languages}}" name="contact_languages" id="contact_languages" class="form-control" placeholder="Languages" required="">
+                                      </div>
+                                      </div>
+                                    </p>
+                                    <p>
+                                      <div class="form-group">
+                                      <div class="contact-form-name">
+                                        <input type="text" size="30" value="{{$aLoggedInUserDetail->interested_in}}" name="contact_interested_in" id="contact_interested_in" class="form-control" placeholder="Interested In" required="">
+                                      </div>
+                                      </div>
+                                    </p>
+                                    <div class="form-group">
+                                      <input type="butto" name="btnSubmitAbout" class="smallcommon-btn" id="quote-submit" value="Update" onclick="updateContactInfo()"> 
+                                    </div>
+                                  </form>
+                                 </div>  
+                                </div>  
+                             </div>
+                             <!--Contact display edit content end-->
+
+                              <!--Family edit content start-->
+                             <div class="profile-pstrightabout profile-whitebox" id="family_info_display_edit" style="display:none;">
+                                <div class="timeline-postabout">
+                                 <div class="timeline-pst1">
+                                  <form action="" method="post" id="family_display_edit_form" enctype="multipart/form-data">
+                                    <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+                                     <p> 
+                                      <div class="form-group">
+                                      <div class="contact-form-name">
+                                            <input type="file" id="family_pic" name="family_pic" multiple="" accept="image/x-png,image/gif,image/jpeg"/>
+                                      </div>
+                                      </div>
+                                     </p>
+                                     <p> 
+                                      <div class="form-group">
+                                      <div class="contact-form-name">
+                                        <input type="text" size="30" name="family_name" id="family_name" class="form-control" placeholder="Name" required="">
+                                      </div>
+                                      </div>
+                                    </p>
+                                    <p> 
+                                      <div class="form-group">
+                                      <div class="contact-form-name">
+                                        <input type="text" size="30" name="family_relation" id="family_relation" class="form-control" placeholder="Relationship" required="">
+                                      </div>
+                                      </div>
+                                    </p>
+                                    <div class="form-group">
+                                      <input type="butto" name="btnSubmitAbout" class="smallcommon-btn" id="quote-submit" value="Add" onclick="updateFamilyInfo()">
+                                    </div>
+                                  </form>
+                                 </div>  
+                                </div>  
+                             </div>
+                             <!--Family edit content end-->
+
+                            </div><!--profile-custome-7-->                  
+                          </div>  
+                        </div> 
+                        </div>
+                        <div id="tabs-3-diff">
+                         <div class="profile-main-right">
+                          <div class="profile-following-page profile-whitebox">
+                            <div class="community-columns">
+                              <div class="row">
+                              @foreach ($userFollowersData as $userFollowersDataResult)
+                               @php
+                                    $results = DB::select( DB::raw("SELECT * FROM users WHERE id = :var1"), array(
+                                        'var1' => $userFollowersDataResult->followed_by_user_by,
+                                    ));
+                               @endphp
+                              <div class="col-md-4 col-xl-3 col-6">
+                                <div class="community-col"><a href="#">
+                                <div class="community-fig"><img src="{{asset('/images/profile/'.$results[0]->profile_pic)}}" alt="" data-pagespeed-url-hash="1112664575" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></div>
+                                <div class="community-text">
+                                  <h4>{!! str_replace('_*_', ' ',$results[0]->name) !!}</h4>
+                                </div>
+                                </a></div>  
+                              </div>
+                              @endforeach
+                              </div>        
+                              </div>      
+                          </div>
+                        </div> 
+                        </div>
+                        <div id="tabs-4-diff">
+                          <div class="profile-main-right">
+                            <div class="profile-following-page profile-whitebox">
+                              <div class="community-columns">
+                                <div class="row">
+                                  @foreach ($userFollowingData as $userFollowingDataResult)
+                                      @php
+                                        $results = DB::select( DB::raw("SELECT * FROM users WHERE id = :var1"), array(
+                                            'var1' => $userFollowingDataResult->following_user_id,
+                                        ));
+                                      @endphp
+                                <div class="col-md-4 col-xl-3 col-6">
+                                  <div class="community-col"><a href="#">
+                                  <div class="community-fig"><img src="{{asset('/images/profile/'.$userFollowingDataResult->profile_pic)}}" alt="" data-pagespeed-url-hash="1112664575" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></div>
+                                  <div class="community-text">
+                                    <h4>{!! str_replace('_*_', ' ',$results[0]->name) !!}</h4>
+                                  </div>
+                                  </a></div>  
+                                </div>
+                                @endforeach
+                            </div>
+                            </div>      
+                          </div>
+                        </div> 
+                        </div>
+                        <div id="tabs-5-diff">
+                          <div class="profile-main-right">
+                            <div class="profile-following-page profile-whitebox">
+                              <div class="clearfix"></div>
+                              <div class="clearfix"></div>
+                              <div id="gallery">  
+                              <div class="profilegallery-sec gallery">
+                                 @foreach ($userPhotoData as $userPhotoDataResult)
+                                  <div class="profile-phots-col">
+                                    <a href="{{ asset('images/userphotos/'.$userPhotoDataResult->url)}}"><img src="{{ asset('images/userphotos/'.$userPhotoDataResult->url)}}" alt="" data-pagespeed-url-hash="1247596316" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a>    
+                                  </div>
+                                 @endforeach
+                              </div>
+                              </div>
+                            </div>  
+                          </div>
+                        </div>
+                        <div id="tabs-6-diff">
+                          <div class="profile-main-right">
+                              <div class="profile-following-page profile-whitebox">
+                               <div class="upload-div">
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="clearfix"></div>
+                                <div class="video-gallery-pg">  
+                                  <div class="row no-gutters">
+                                    @foreach ($userVideoData as $userVideoDataResult)
+                                    <div class="col-lg-3 col-md-4 col-sm-6">
+                                      <div class="inner-videogal-col">
+                                        <video controls="">
+                                          <source src="{{ asset('images/uservideo/'.$userVideoDataResult->url)}}" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                      </div> 
+                                    </div>
+                                    @endforeach
+                                  </div>
+                                </div>
+                              </div>  
+                            </div> 
+                          </div>                
+                        </div>
+                      </div>
+                  </div>
+                </div>
+              </div>   
               </div>  
             </div>  
-           
           </div> 
-         
         </div><!--col-md-10--> 
-        
      </div>   
     </div>
-      
   </div>      
 </div>
-
-
-
-
 @endsection
-<!----Add testimony---->
-<div class="modal fade common-modal" id="postlivemodal" tabindex="-1" role="dialog" aria-labelledby="postlivemodalTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true"><i class="las la-times"></i></span>
-      </button>
-      <div class="modal-body p-0">
-       <div class="login-wrapper">
-         <div class="login-form-col">
-          <h1>Create Testimony</h1>
-          <p></p>
-          <form id="inspirationalFeedCreateTestimony" onsubmit="return submitCreateTestimonyInspirationalFeed()">
-            @csrf
-            <div class="user-postmedia-head">    
-              <div class="user-pic"><a href="javascript:void(0)"><img src="{{ !empty($sLoggedInUserProfileImage) ? asset('images/profile/'.$sLoggedInUserProfileImage) : asset('images/avtar1.png') }}" width="40px" alt="" data-pagespeed-url-hash="399097396" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a></div>
-              <div class="user-input"><input type="text" name="whats_on_your_mind" id="whats_on_your_mind" class="activity-input" placeholder="What’s on your mind?">
-               <p class="formError whats_on_your_mind"></p>
-             </div>
-             <input type="file" accept="video/*" name="testimony_videos" id="testimony_videos" style="display: none;" />
-             <input type="hidden" name="feeling_id_testimony" id="feeling_id_testimony">
-             <input type="hidden" name="activity_id_testimony" id="activity_id_testimony">
-           </div>    
-
-           <div class="postlive-popcol">
-            <video autoplay="true" id="videoElement" class="w-100"></video>
-          </div>
-          <div class="testimonypostadd-icons">
-           <div class="testimonypostadd-camera">
-             <a href="javascript:void(0)" onclick="document.getElementById('testimony_videos').click();"><img src="{{ asset('images/camera-3Dicon.png') }}" alt="" data-pagespeed-url-hash="141198199" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> Browse Testimony video</a>   
-           </div>
-           <div class="testimonypostadd-emoji"><a href="javascript:void(0)" data-toggle="modal" data-target="#postfeelingmodal" title="Feeling /Activity"><img src="{{ asset('images/smiley-3Dicon.png') }}" alt="" data-pagespeed-url-hash="1141578551" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a></div>
-         </div>    
-         <div class="common-box">
-          <button type="submit" class="common-btn w-100">Upload Testimony</button>
-        </div>   
-      </form>
-    </div>
-  </div>
-</div>
-</div>
-</div>
-</div>
-<!----Add testimony---->
-
-<!----Photo upload---->
-<div class="modal fade common-modal" id="postmediamodal" tabindex="-1" role="dialog" aria-labelledby="postmediamodalTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true"><i class="las la-times"></i></span>
-      </button>
-      <div class="modal-body p-0">
-       <div class="login-wrapper">
-         <div class="login-form-col">
-          <h1>Create Post</h1>
-          <p></p>
-          <form class="itemcreation-form" onsubmit="return submitCreatePostInspirationalFeed()" name="cform" id="inspirationalFeedCreatePost" method="post">
-            @csrf
-            <div class="postmedia-popcol">
-              <div class="user-postmedia-head">    
-                <div class="user-pic"><a href="javascript:void(0)"><img width="40px" src="{{ !empty($sLoggedInUserProfileImage) ? asset('images/profile/'.$sLoggedInUserProfileImage) : asset('images/avtar1.png') }}" alt="" data-pagespeed-url-hash="399097396" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a></div>
-                <div class="user-input"><input type="text" class="activity-input" id="whats_on_your_mind_post" name="whats_on_your_mind_post" placeholder="What’s on your mind?">
-                  <p class="formError whats_on_your_mind_post"></p>
-                </div>    
-              </div>
-              <div class="postmedia-inner">
-               <div class="file-loading">
-                 <input id="file-1" type="file" accept="image/jpg, image/png, image/jpeg" name="file" class="file" data-overwrite-initial="false" data-min-file-count="2">
-               </div>         
-             </div>    
-           </div>
-           <div class="postadd-icons">
-            <div class="postadd-txt">Add to your post</div>
-            <div class="postadd-emoji">
-             <a href="javascript:void(0)" title=""><img src="{{ asset('images/camera-3Dicon.png') }}" alt="" data-pagespeed-url-hash="141198199" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> Upload Photos</a>
-             <a href="javascript:void(0)" data-toggle="modal" data-target="#postfeelingmodal" title="Feeling /Activity"><img src="{{ asset('images/smiley-3Dicon.png') }}" alt="" data-pagespeed-url-hash="1141578551" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a>   
-           </div>    
-         </div>    
-         <input type="hidden" name="feeling_id_post" id="feeling_id_post">
-         <input type="hidden" name="activity_id_post" id="activity_id_post">
-         <div class="common-box">
-          <button type="submit" class="common-btn w-100">Post Now</button>
-        </div>   
-      </form>
-    </div>
-  </div>
-</div>
-</div>
-</div>
-</div>
-<!----Photo upload---->
-
-<!----Feeling/Activity---->
-<div class="modal fade common-modal" id="postfeelingmodal" tabindex="-1" role="dialog" aria-labelledby="postfeelingmodalTitle" aria-hidden="true" style="z-index: 99999">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true"><i class="las la-times"></i></span>
-      </button>
-      <div class="modal-body p-0">
-       <div class="login-wrapper">
-         <div class="login-form-col">
-          <h1>How are you feeling?</h1>
-          <div class="post-feeling-col">
-           <ul class="nav nav-pills mb-2" id="pills-tab" role="tablist">
-            <li class="nav-item">
-              <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Feelings</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Activities</a>
-            </li>
-          </ul>
-          <div class="tab-content" id="pills-tabContent">
-            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-              <div class="postfeeling-inner">
-                <form class="search-form" name="cform" method="post">
-                  <div class="form-group mb-0">
-                    <input type="text" class="form-control" name="feeling_search" id="feeling_search" placeholder="Search...">
-                    {{-- <p class="formError feeling_search"></p> --}}
-                  </div>
-                  {{-- <button type="button" id="btnFeelingSearch" class="search-ico"><i class="las la-search"></i></button>   --}}
-                </form>
-                <div class="postfeeling-list">
-                  <ul>  
-                    @if($aFeelingLists && count($aFeelingLists) > 0)
-                    @foreach ($aFeelingLists as $aFeeling)
-                    <li><a href="javascript:void(0)" onclick="showFeelingAndActivity('{{$aFeeling->name}}','{{asset($aFeeling->image)}}',{{ $aFeeling->id }},'')"><span class="feelsmilyicon"><img src="{{ asset($aFeeling->image)}}" alt="" data-pagespeed-url-hash="1699137061" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></span> <span class="feelsmilytxt">{{$aFeeling->name}}</span></a></li>   
-                    @endforeach 
-                    @endif
-                  </ul>
-                </div>    
-
-              </div> 
-            </div><!--tab1--> 
-            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-              <div class="postfeeling-inner2">
-                <form class="search-form" name="cform" method="post">
-                  <div class="form-group mb-0">
-                    <input type="text" class="form-control" name="activity_search" id="activity_search" placeholder="Search...">
-                    {{-- <p class="formError activity_search"></p> --}}
-                  </div>
-                  {{-- <button type="button" id="btnActivitySearch" class="search-ico"><i class="las la-search"></i></button>  --}}
-                </form>
-                <div class="postfeeling-list2">
-                  <ul>  
-                    @if($aActivityLists && count($aActivityLists) > 0)
-                    @foreach ($aActivityLists as $aActivity)
-                    <li><a href="javascript:void(0)" onclick="showFeelingAndActivity('{{$aActivity->name}}','{{asset($aActivity->image)}}','',{{ $aActivity->id }})"><span class="feelsmilyicon"><img src="{{ asset($aActivity->image) }}" alt="" data-pagespeed-url-hash="1592760396" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></span> <span class="feelsmilytxt">{{ $aActivity->name }}</span> <i class="las la-angle-right"></i></a></li>
-                    @endforeach 
-                    @endif 
-                  </ul> 
-                </div>      
-              </div>
-            </div><!--tab2-->    
-          </div>    
-        </div>    
-        {{-- <div class="common-box"><a href="javascript:void(0)" class="common-btn w-100">Post</a></div>    --}}
-      </div>
-    </div>
-  </div>
-</div>
-</div>
-</div>  
-<!----Feeling/Activity---->

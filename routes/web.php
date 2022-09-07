@@ -117,6 +117,8 @@ Route::group(['middleware' => 'auth_user'],function () {
     Route::post('markAllRead', [MyProfile::class, 'markAllRead'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
     Route::post('getUsersList', [MyProfile::class, 'getUsersList'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+
+    Route::any('view-profile/{id}', [MyProfile::class, 'viewDifferentProfile']);
 });
 
 /*--------------------------------------- user routes ----------------------*/

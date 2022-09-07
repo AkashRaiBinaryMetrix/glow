@@ -93,7 +93,7 @@
             <div class="top-notify"><img src="{{ asset('images/bell-ico.png')}}" alt="" data-pagespeed-url-hash="6734172" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> 
 
                 @php
-                    $resultsCount = DB::select( DB::raw("SELECT count(*) as notify_count FROM notification WHERE for_user = :var1 and status='unread' order by id"), array(
+                    $resultsCount = DB::select( DB::raw("SELECT count(*) as notify_count FROM notification WHERE for_user = :var1 and status='unread'"), array(
                         'var1' => $iUserId,
                     ));
                 @endphp
@@ -124,7 +124,14 @@
         </header>
         <div class="notification-wrapper">
   <div id="notification" class="notification-bar" style="display: none;">
+    
+   @if (Session::has('isUserLoggedIn'))
+           @php
+               $iUserId  = getLoggedInUserId();
+               $sLoggedInUserProfileImage = getValueByColumnNameAndId('users','id',$iUserId,'profile_pic');
+           @endphp
     <div class="noti-head"><h3>Notifications</h3> <a href="javascript:void(0)" onclick="mark_all_read({{$iUserId}});">Mark All As Read</a></div>
+
     
     <div class="inner-noti-sec">
          
@@ -147,7 +154,7 @@
       @endforeach
   
     </div>  
-      
+      @endif
   </div>    
 </div>
      @if(empty($sCURL))
