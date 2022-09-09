@@ -1150,7 +1150,11 @@ class MyProfile extends Controller
 
           $html .='<div class="table-responsive"><table class="table table bordered">';
           
-          if(count($userData) == 0){
+          if(empty($post["query"])){
+               $html .='<tr>
+                              <td>Search string empty</td>
+                    </tr>';
+          }else if(count($userData) == 0){
                $html .='<tr>
                               <td>No data found</td>
                     </tr>';
