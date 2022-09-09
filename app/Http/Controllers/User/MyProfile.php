@@ -661,7 +661,10 @@ class MyProfile extends Controller
           //get photos
           $userPhotoData = DB::table('userphoto')->where([['user_id',$iUserId]])->get();
 
-          return view('myuser.profile.editPhoto',['aLoggedInUserDetail'=>$aLoggedInUserDetail, 'userName' => $userName, 'joinedOn' => $joinedOn, 'aFeelingLists'=>$aFeelingLists,'aActivityLists'=>$aActivityLists,'userPhotoData'=>$userPhotoData]);
+          //get feed photos
+          $userFeedPhotoData = DB::table('insprational_feed')->where([['user_id',$iUserId],['photo','!=',""]])->get();
+
+          return view('myuser.profile.editPhoto',['aLoggedInUserDetail'=>$aLoggedInUserDetail, 'userName' => $userName, 'joinedOn' => $joinedOn, 'aFeelingLists'=>$aFeelingLists,'aActivityLists'=>$aActivityLists,'userPhotoData'=>$userPhotoData,'userFeedPhotoData'=>$userFeedPhotoData]);
      }
 
      public function deletePhoto(Request $request) {
@@ -794,10 +797,13 @@ class MyProfile extends Controller
 
           $explodeName = explode(" ",$userName);
      
-          //get photos
+          //get videos
           $userVideoData = DB::table('uservideo')->where([['user_id',$iUserId]])->get();
 
-          return view('myuser.profile.editVideo',['aLoggedInUserDetail'=>$aLoggedInUserDetail, 'userName' => $userName, 'joinedOn' => $joinedOn, 'aFeelingLists'=>$aFeelingLists,'aActivityLists'=>$aActivityLists,'userVideoData'=>$userVideoData]);
+          //get feed videos
+          $userFeedVideoData = DB::table('insprational_feed')->where([['user_id',$iUserId],['videos','!=',""]])->get();
+
+          return view('myuser.profile.editVideo',['aLoggedInUserDetail'=>$aLoggedInUserDetail, 'userName' => $userName, 'joinedOn' => $joinedOn, 'aFeelingLists'=>$aFeelingLists,'aActivityLists'=>$aActivityLists,'userVideoData'=>$userVideoData,'userFeedVideoData'=>$userFeedVideoData]);
      }
 
      public function uploadVideo(Request $request) {

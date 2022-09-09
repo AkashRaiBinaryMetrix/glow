@@ -65,6 +65,16 @@
                       </div> 
                     </div>
                     @endforeach
+                    @foreach ($userFeedVideoData as $userFeedVideoDataResult)
+                    <div class="col-lg-3 col-md-4 col-sm-6">
+                      <div class="inner-videogal-col">
+                        <video controls="">
+                          <source src="{{ asset('videos/inspirational_feed/'.$userFeedVideoDataResult->videos)}}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    </div>
+                    @endforeach
                   </div>
                 </div>
               </div>  
