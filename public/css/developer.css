@@ -39,3 +39,13 @@
     padding: 0px;
     border-radius: 0px;
 }
+#search_result{
+    background: #f1f7f1;
+    position: absolute;
+    z-index: 9;
+    height 200px: ;
+    overflow-y: scroll;
+    height: 200px;
+    width: -webkit-fill-available;
+    display: none;
+}

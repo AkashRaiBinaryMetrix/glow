@@ -5,6 +5,9 @@
 .feed-usercomment .form-control {
     width: 100% !important;
 }
+.table-responsive{
+  overflow-x:  hidden !important;
+}
 </style>
 <div class="inner-page">
   <div class="container">
@@ -36,11 +39,11 @@
                 <!-- <span class="profile-txdate">June 15, 1989</span> -->
               </h1></div>
               <div class="profile-edit-top">
-                  <div class="profile-search">
+                  <div class="profile-search" style="">
                   <form class="search-form" name="cform" method="post">
                     <div class="form-group mb-0">
                     <input type="text" class="form-control" name="" id="search_user" onkeyup="searchUser();" placeholder="Search..." required="">
-                    <div id="search_result" style="background: #f1f7f1;"></div>
+                    <div id="search_result"></div>
                     </div>
                     <button type="submit" class="search-ico"><i class="las la-search"></i></button> 
                 </form>
