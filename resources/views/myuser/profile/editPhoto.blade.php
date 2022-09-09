@@ -61,7 +61,13 @@
                       <div class="pdelete-ico" onclick="delete_photo({{$userPhotoDataResult->id}},'{{$userPhotoDataResult->url}}');"><i class="las la-times"></i></div>    
                     </div>
                    @endforeach
+                   @foreach ($userFeedPhotoData as $userFeedPhotoDataResult)
+                    <div class="profile-phots-col">
+                      <a href="{{ asset('images/inspirational_feed/'.$userFeedPhotoDataResult->photo)}}"><img src="{{ asset('images/inspirational_feed/'.$userFeedPhotoDataResult->photo)}}" alt="" data-pagespeed-url-hash="1247596316" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a>
+                    </div>
+                   @endforeach
                 </div>
+                
                 </div>
               </div>  
             </div> 

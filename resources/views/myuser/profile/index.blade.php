@@ -238,7 +238,7 @@ $sLoggedInUserProfileImage = getValueByColumnNameAndId('users','id',$iUserId,'pr
 
             <div class="dropdown-menu">
 
-             <a class="dropdown-item" href="javascript:void(0)" onclick="hideInspirationalFeed({{ $aInspirational->id }},'hide')"><i class="las la-eye-slash"></i> Hide</a>
+             <a class="dropdown-item" href="javascript:void(0)" onclick="hideInspirationalFeed({{ $aInspirational->id }},'hide')"><i class="las la-eye-slash"></i> Delete</a>
 
              <a class="dropdown-item" href="javascript:void(0)" onclick="hideInspirationalFeed({{ $aInspirational->id }},'hide')"><i class="las la-flag"></i> Report</a>
 
