@@ -384,39 +384,28 @@
          <div class="login-wrapper">
       <div class="login-form-col">
         <h1>Invite friends to this group</h1>
-      <form class="invitefrnd-form" name="cform" method="post">
+      <form class="invitefrnd-form" name="cform" action="{{ url('send_invitation') }}" method="post">
+        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+
         <div class="form-group search-form">
-                  <input type="text" class="form-control" name="" id="search" placeholder="Search..." required="">
+          <input type="hidden" name="group_id" value="{{$groupIdCheck}}">
+<input type="text" class="form-control" name="" id="search_user_invite" onkeyup="searchUserInvite();" placeholder="Search...">
                    <button type="submit" class="search-ico"><i class="las la-search"></i></button>      
                 </div>
-                <div class="invitefrnd-list-col">
+                <div class="invitefrnd-list-col" id="invitefrnd-list-col-1">
+                  @foreach($userDetails as $userDetailsResult)
+                  @php
+                    $final_name = str_replace("_*_"," ",$userDetailsResult->name);
+                  @endphp
                   <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
-                    <label class="custom-control-label" for="customCheck"><span class="invitefrnd-pic"><img src="https://binarymetrix.in/glow/images/avatar-3.jpg" alt=""></span> John Carter</label>
+                    <input type="checkbox" class="" id="group_invite_checkbox" name="group_invite_checkbox[]" value="{{$userDetailsResult->email}}">
+                   <span class="invitefrnd-pic"><img src="{{ !empty($userDetailsResult->profile_pic) ? asset('images/profile/'.$userDetailsResult->profile_pic) : asset('images/dummy.png') }}" alt=""></span> {{$final_name}}
                   </div>
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="customCheck2" name="example2">
-                    <label class="custom-control-label" for="customCheck2"><span class="invitefrnd-pic"><img src="https://binarymetrix.in/glow/images/avatar-2.jpg" alt=""></span> Christopher</label>
-                  </div>
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="customCheck3" name="example3">
-                    <label class="custom-control-label" for="customCheck3"><span class="invitefrnd-pic"><img src="https://binarymetrix.in/glow/images/avatar-4.jpg" alt=""></span> Matthew Daniel</label>
-                  </div>
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="customCheck4" name="example4">
-                    <label class="custom-control-label" for="customCheck4"><span class="invitefrnd-pic"><img src="https://binarymetrix.in/glow/images/avatar-5.jpg" alt=""></span> Anthony</label>
-                  </div>
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="customCheck5" name="example5">
-                    <label class="custom-control-label" for="customCheck5"><span class="invitefrnd-pic"><img src="https://binarymetrix.in/glow/images/avatar-6.jpg" alt=""></span> Andrew Paul</label>
-                  </div>
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="customCheck6" name="example6">
-                    <label class="custom-control-label" for="customCheck6"><span class="invitefrnd-pic"><img src="https://binarymetrix.in/glow/images/avatar-7.jpg" alt=""></span> Alexander </label>
-                  </div>    
+                  @endforeach
                 </div> 
+                <div class="invitefrnd-list-col" id="invitefrnd-list-col-2" style="display:none;"></div>
          <div class="form-group">
-                <input type="reset" name="cancel" class="common-btn common-btn2" id="invitefrnd-cancel" value="Cancel">      
+                <input type="reset" name="cancel" class="common-btn common-btn2" id="invitefrnd-cancel" value="Cancel" data-dismiss="modal" aria-label="Close">      
         <input type="submit" name="submit" class="common-btn" id="invitefrnd-submit" value="Send Invitations"> 
         </div>
         </form>   

@@ -592,3 +592,32 @@ function searchUser(){
         },
     });
 }
+
+function searchUserInvite(){
+     $.ajax({
+        type: "POST",
+        url: sBASEURL + "getUsersListInvite",
+        data: {
+            query: $("#search_user_invite").val(),
+            _token: '{{csrf_token()}}'
+        },
+        success: function(data) {
+            if($("#search_user_invite").val()==""){
+                $("#invitefrnd-list-col-1").show();
+                $("#invitefrnd-list-col-2").hide();
+            }  
+
+            if(data == "<span>No data found</span>" || data == "<span>Search string empty</span>"){
+                $("#invitefrnd-list-col-2").hide();
+                $("#invitefrnd-list-col-1").show();
+            }else{
+                $("#invitefrnd-list-col-1").hide();
+                $("#invitefrnd-list-col-2").empty().html(data).show();
+            }
+            
+        },
+        error: function(data, textStatus, errorThrown) {
+            console.log(data);
+        },
+    });
+}

@@ -11,6 +11,13 @@ use App\Models\Userplaces;
 use App\Models\Userfamily;
 use App\Models\Following;
 use App\Models\Notification;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
+use Laravel\Socialite\Facades\Socialite;
+use GuzzleHttp\Client;
+use Exception;
 
 class MyProfile extends Controller
 {
@@ -1282,6 +1289,79 @@ class MyProfile extends Controller
                'logged_in_userid' =>  $iUserId,
                'view_profile_userid' => $id
                ]);
+     }
+
+     public function getUsersListInvite(Request $request){
+          $iUserId = getLoggedInUserId();
+          $post = $request->input();
+          $sCurrentDateTime = getCurrentLocalDateTime();
+
+          $html ="";
+
+          //get all users list
+          $userData = DB::table('users')->where([['id','!=',$iUserId],['status',1],['name','like','%' .$post["query"].'%']])->get();
+
+          
+          if(empty($post["query"])){
+               $html .='<span>Search string empty</span>';
+          }else if(count($userData) == 0){
+               $html .='<span>No data found</span>';
+          }else{
+              foreach($userData as $userDataResult){
+
+                    $img = (empty($userDataResult->profile_pic))?asset('images/dummy.png') : asset('images/profile/'.$userDataResult->profile_pic);
+
+                    $html .='<div class="custom-control custom-checkbox">';
+
+                    $html .='<input type="checkbox" class="" id="group_invite_checkbox" name="group_invite_checkbox[]" value="'.$userDataResult->email.'">
+                    <span class="invitefrnd-pic"><img src="'.$img.'" alt="" data-pagespeed-url-hash="2338652753" onload="pagespeed.CriticalImages.checkImageForCriticality(this);" style=""></span>'.$userDataResult->name;
+
+                    $html .="</div>";
+              }  
+          }
+
+          echo $html;
+     }
+
+     public function send_invitation(Request $request){
+          $iUserId = getLoggedInUserId();
+          $post = $request->input();
+          $sCurrentDateTime = getCurrentLocalDateTime();
+
+          //get emails
+          $group_invite_checkbox = $post["group_invite_checkbox"];
+
+          //inviting_person_name
+          $inviting_person_name = DB::table('users')->where([['id','=',$iUserId]])->get();
+          $final_inviting_person_name = str_replace("_*_"," ",$inviting_person_name[0]->name);
+
+          //get group name
+          $aGroupDetail = DB::table('groups')
+                    ->where([['id',$post["group_id"]]])
+                    ->get();
+
+          //send mail
+          foreach($group_invite_checkbox as $email){
+               //invited_to
+               $invited_to = DB::table('users')->where([['email','=',$group_invite_checkbox]])->get();
+               $final_invited_to = str_replace("_*_"," ",$invited_to[0]->name);
+
+               Mail::send('myuser.mail_template.sendGroupInvite', ['inviting_person_name' => $final_inviting_person_name,'invited_to' => $final_invited_to, 'group_name' => $aGroupDetail[0]->name], function ($message) use ($email) {
+                             $message->to($email)
+                                 ->subject(SITE_NAME . ' Group Invitation')
+                                 ->from(MAIL_FROM_ADDRESS);
+                         });
+
+               //create notification
+               DB::table('notification')->insertGetId([
+                    'for_user' => $invited_to[0]->id,
+                    'by_user' => $iUserId,
+                    'type' => 'group_invite',
+                    'status' => 'unread',
+                    'description' => $final_inviting_person_name.' is inviting you to join group '.$aGroupDetail[0]->name,
+                    'created_at' => $sCurrentDateTime
+               ]);
+          }
      }
 
 }
