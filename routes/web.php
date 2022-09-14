@@ -118,7 +118,11 @@ Route::group(['middleware' => 'auth_user'],function () {
 
     Route::post('getUsersList', [MyProfile::class, 'getUsersList'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
+    Route::post('getUsersListInvite', [MyProfile::class, 'getUsersListInvite'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+
     Route::any('view-profile/{id}', [MyProfile::class, 'viewDifferentProfile']);
+
+    Route::post('send_invitation', [MyProfile::class, 'send_invitation']);
 });
 
 /*--------------------------------------- user routes ----------------------*/

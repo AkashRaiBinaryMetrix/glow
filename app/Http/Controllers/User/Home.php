@@ -244,7 +244,13 @@ class Home extends Controller
                     ->get();
        /*--------------- get events post by admin ---------------------------*/
 
-        return view('myuser.groups.detail',['aEventsList'=>$aEventsList,'aGroupLists'=>$aGroupLists,'aGroupDetail'=>$aGroupDetail]);
+       //get list of active users
+       $userDetails = DB::table('users')
+                    ->where([['status',1]])
+                    ->orderBy('name','asc')
+                    ->get();
+
+        return view('myuser.groups.detail',['aEventsList'=>$aEventsList,'aGroupLists'=>$aGroupLists,'aGroupDetail'=>$aGroupDetail,'userDetails' => $userDetails, 'groupIdCheck' => $iGroupId]);
     }
     public function discoverGroupsList() {
         $iUserId = getLoggedInUserId();
