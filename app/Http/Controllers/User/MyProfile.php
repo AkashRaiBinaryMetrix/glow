@@ -1167,8 +1167,8 @@ class MyProfile extends Controller
           }else{
               foreach($userData as $userDataResult){
                     $html .='<tr>
-                              <td><img src="'.asset('images/profile/'.$userDataResult->profile_pic).'" alt="" data-pagespeed-url-hash="2338652753" onload="pagespeed.CriticalImages.checkImageForCriticality(this);" style="width: 56px;height: 53px;overflow: hidden;border-radius: 50%;"></td>
-                              <td style="vertical-align: middle;border-top: 0px solid #dee2e6;"><a href="view-profile/'.$userDataResult->id.'" id="profile-edit-top-anchor"><p style="margin-right: 99px;margin-top: 19px;">'.str_replace("_*_", " ", $userDataResult->name).'</p></a></td>
+                              <td><img src="'.asset('images/profile/'.$userDataResult->profile_pic).'" alt="" data-pagespeed-url-hash="2338652753" onload="pagespeed.CriticalImages.checkImageForCriticality(this);" style=""></td>
+                              <td style=""><a href="view-profile/'.$userDataResult->id.'" id="profile-edit-top-anchor"><p style="">'.str_replace("_*_", " ", $userDataResult->name).'</p></a></td>
                     </tr>';
               }  
           }
@@ -1278,7 +1278,9 @@ class MyProfile extends Controller
                "lastName" => $explodeName[1], 
                "userEducationData" => $userEducationData, 
                "userPlacesLivedData" => $userPlacesLivedData, 
-               'userFamilyData' => $userFamilyData
+               'userFamilyData' => $userFamilyData,
+               'logged_in_userid' =>  $iUserId,
+               'view_profile_userid' => $id
                ]);
      }
 

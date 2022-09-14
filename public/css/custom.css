@@ -2753,6 +2753,20 @@ button.btn.btn-kv.btn-default.btn-outline-secondary.btn-borderless, button.btn.b
 
 .krajee-default.file-preview-frame .kv-file-content{ height:100%; }
 
+#search_result{ background: #fff;
+    position: absolute;
+    z-index: 9;
+    max-height: 200px;
+    overflow-y: scroll;
+    width: -webkit-fill-available;
+    display: none;
+    border: 1px solid #ccc;
+    margin-top:5px; 
+}
+
+#search_result td{ padding:2px; }
+#search_result td img{ width:40px !important; height:40px !important; object-fit:cover; }
+
 
 
 
