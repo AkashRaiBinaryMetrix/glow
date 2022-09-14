@@ -14,11 +14,22 @@ widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-butto
     background: none !important; 
 }
 .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited {
-    color: blue !important;
+    color: #02CBFE !important;
 }
 .ui-widget-content {
     border: none !important;
     background: none !important;
+}
+.profile-navs{
+  margin-bottom: -19px !important;
+  margin-left: -11px !important;
+  margin-top: -20px !important;
+}
+li.pronav-item.ui-tabs-tab.ui-corner-top.ui-state-default.ui-tab.ui-tabs-active.ui-state-active {
+    font-family: 'Poppins', sans-serif !important;
+}
+.ui-tabs .ui-tabs-nav .ui-tabs-anchor {
+    padding: 0px !important;
 }
 </style>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
@@ -50,9 +61,23 @@ widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-butto
               <div class="profile-name-top"><h1>{{$userName}}
                 <!-- <span class="profile-txdate">June 15, 1989</span> -->
               </h1></div>
+
+              @php
+                $results = DB::select( DB::raw("SELECT * FROM follow_following WHERE following_user_id = :var1 and followed_by_user_by = :var2"), array(
+                    'var1' => $view_profile_userid,
+                    'var2' => $logged_in_userid,
+                ));
+              @endphp
+
+              @if(count($results) == 0)
               <div class="profile-edit-top">
-                   <a href="#"><i class="las la-user-plus"></i> Follow</a> 
+                   <a href="#" onclick="button_follow({{$view_profile_userid}},{{$logged_in_userid}});"><i class="las la-user-plus"></i> Follow</a> 
               </div>
+              @else
+                <div class="profile-edit-top">
+                   <a href="#" onclick="button_unfollow({{$view_profile_userid}},{{$logged_in_userid}});"><i class="las la-user-minus"></i> Un-Follow</a> 
+              </div>
+              @endif 
               <!-- <div class="profile-edit-top"><a href="javascript:void(0)"><img src="{{ asset('images/follow-ico-blue.png') }}" alt="" data-pagespeed-url-hash="1581428935" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> Follow</a></div>  -->   
             </div><!--profile-top-head-->
             <div class="profile-main-right">
@@ -63,12 +88,12 @@ widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-butto
                       <div id="tabs_profile">
                         <div class="profile-navs">
                           <ul class="pronavbar-nav">
-                            <li><a href="#tabs-1-diff">Profile</a></li>
-                            <li><a href="#tabs-2-diff">About</a></li>
-                            <li><a href="#tabs-3-diff">Followers</a></li>
-                            <li><a href="#tabs-4-diff">Following</a></li>
-                            <li><a href="#tabs-5-diff">Photo</a></li>
-                            <li><a href="#tabs-6-diff">Testimony</a></li>
+                            <li class="pronav-item"><a href="#tabs-1-diff">Profile</a></li>
+                            <li class="pronav-item"><a href="#tabs-2-diff">About</a></li>
+                            <li class="pronav-item"><a href="#tabs-3-diff">Followers</a></li>
+                            <li class="pronav-item"><a href="#tabs-4-diff">Following</a></li>
+                            <li class="pronav-item"><a href="#tabs-5-diff">Photo</a></li>
+                            <li class="pronav-item"><a href="#tabs-6-diff">Testimony</a></li>
                           </ul>
                         </div>
                         <div id="tabs-1-diff">
