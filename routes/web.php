@@ -123,6 +123,8 @@ Route::group(['middleware' => 'auth_user'],function () {
     Route::any('view-profile/{id}', [MyProfile::class, 'viewDifferentProfile']);
 
     Route::post('send_invitation', [MyProfile::class, 'send_invitation']);
+
+    Route::post('send_invitation_event', [MyProfile::class, 'send_invitation_event']);
 });
 
 /*--------------------------------------- user routes ----------------------*/

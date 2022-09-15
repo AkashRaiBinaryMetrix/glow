@@ -53,7 +53,9 @@
                                <a href="javascript:void(0)" id="isUserGoing{{$aEventDetail->id}}" onclick="isUserGoingInEvent({{$aEventDetail->id}})"><i class="las la-check-circle"></i> Go</a>
                           @endif
                           
-                          <a href="javascript:void(0)"><i class="las la-envelope"></i> Invite</a>
+<!--                           <a href="javascript:void(0)"><i class="las la-envelope"></i> Invite</a>
+ -->                          <a href="javascript:void(0)" data-toggle="modal" data-target="#invitefrndmodal"><i class="las la-envelope"></i> Invite</a>
+
                           <a data-a2a-url="{{ url('event-detail/'.$aEventDetail->id) }}" data-a2a-title="{{!empty($aEventDetail->name) ? $aEventDetail->name : ''}}" class="a2a_dd" href="https://www.addtoany.com/share"><i class="las la-share"></i> Share </a>
                           {{-- {!!Share::page(url('event-detail/'.$aEventDetail->id), $aEventDetail->name,["class"=>"social"])
                             ->facebook()
@@ -191,6 +193,49 @@
       
   </div>      
 </div>
+<!-----Invite modal-----> 
+<div class="modal fade common-modal" id="invitefrndmodal" tabindex="-1" role="dialog" aria-labelledby="invitefrndmodalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"><i class="las la-times"></i></span>
+        </button>
+      <div class="modal-body p-0">
+         <div class="login-wrapper">
+      <div class="login-form-col">
+        <h1>Invite friends to this group</h1>
+      <form class="invitefrnd-form" name="cform" action="{{ url('send_invitation_event') }}" method="post">
+        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+
+        <div class="form-group search-form">
+          <input type="hidden" name="event_id" value="{{$iEventId}}">
+<input type="text" class="form-control" name="" id="search_user_invite" onkeyup="searchUserInvite();" placeholder="Search...">
+                   <button type="submit" class="search-ico"><i class="las la-search"></i></button>      
+                </div>
+                <div class="invitefrnd-list-col" id="invitefrnd-list-col-1">
+                  @foreach($userDetails as $userDetailsResult)
+                  @php
+                    $final_name = str_replace("_*_"," ",$userDetailsResult->name);
+                  @endphp
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="" id="group_invite_checkbox" name="group_invite_checkbox[]" value="{{$userDetailsResult->email}}">
+                   <span class="invitefrnd-pic"><img src="{{ !empty($userDetailsResult->profile_pic) ? asset('images/profile/'.$userDetailsResult->profile_pic) : asset('images/dummy.png') }}" alt=""></span> {{$final_name}}
+                  </div>
+                  @endforeach
+                </div> 
+                <div class="invitefrnd-list-col" id="invitefrnd-list-col-2" style="display:none;"></div>
+         <div class="form-group">
+                <input type="reset" name="cancel" class="common-btn common-btn2" id="invitefrnd-cancel" value="Cancel" data-dismiss="modal" aria-label="Close">      
+        <input type="submit" name="submit" class="common-btn" id="invitefrnd-submit" value="Send Invitations"> 
+        </div>
+        </form>   
+      </div>
+     </div>
+      </div>
+    </div>
+  </div>
+</div> 
+<!-----Invite modal----->   
 <script>
   function showInterestInEvent(iEventId) {
         if(iEventId!='' && iEventId!=null && iEventId!=undefined) {
