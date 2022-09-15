@@ -1343,10 +1343,10 @@ class MyProfile extends Controller
           //send mail
           foreach($group_invite_checkbox as $email){
                //invited_to
-               $invited_to = DB::table('users')->where([['email','=',$group_invite_checkbox]])->get();
+               $invited_to = DB::table('users')->where([['email','=',$email]])->get();
                $final_invited_to = str_replace("_*_"," ",$invited_to[0]->name);
 
-               Mail::send('myuser.mail_template.sendGroupInvite', ['inviting_person_name' => $final_inviting_person_name,'invited_to' => $final_invited_to, 'group_name' => $aGroupDetail[0]->name], function ($message) use ($email) {
+               Mail::send('myuser.mail_template.sendGroupInvite', ['inviting_person_name' => $final_inviting_person_name,'invited_to' => $final_invited_to, 'group_name' => $aGroupDetail[0]->name,'group_id' => $post["group_id"]], function ($message) use ($email) {
                              $message->to($email)
                                  ->subject(SITE_NAME . ' Group Invitation')
                                  ->from(MAIL_FROM_ADDRESS);
@@ -1359,6 +1359,47 @@ class MyProfile extends Controller
                     'type' => 'group_invite',
                     'status' => 'unread',
                     'description' => $final_inviting_person_name.' is inviting you to join group '.$aGroupDetail[0]->name,
+                    'created_at' => $sCurrentDateTime
+               ]);
+          }
+     }
+
+     public function send_invitation_event(Request $request){
+          $iUserId = getLoggedInUserId();
+          $post = $request->input();
+          $sCurrentDateTime = getCurrentLocalDateTime();
+
+          //get emails
+          $group_invite_checkbox = $post["group_invite_checkbox"];
+
+          //inviting_person_name
+          $inviting_person_name = DB::table('users')->where([['id','=',$iUserId]])->get();
+          $final_inviting_person_name = str_replace("_*_"," ",$inviting_person_name[0]->name);
+
+          //get group name
+          $aEventDetail = DB::table('events')
+                    ->where([['id',$post["event_id"]]])
+                    ->get();
+
+          //send mail
+          foreach($group_invite_checkbox as $email){
+               //invited_to
+               $invited_to = DB::table('users')->where([['email','=',$email]])->get();
+               $final_invited_to = str_replace("_*_"," ",$invited_to[0]->name);
+
+               Mail::send('myuser.mail_template.sendEventInvite', ['inviting_person_name' => $final_inviting_person_name,'invited_to' => $final_invited_to, 'event_name' => $aEventDetail[0]->name,'event_id' => $post["event_id"]], function ($message) use ($email) {
+                             $message->to($email)
+                                 ->subject(SITE_NAME . ' Event Invitation')
+                                 ->from(MAIL_FROM_ADDRESS);
+                         });
+
+               //create notification
+               DB::table('notification')->insertGetId([
+                    'for_user' => $invited_to[0]->id,
+                    'by_user' => $iUserId,
+                    'type' => 'event_invite',
+                    'status' => 'unread',
+                    'description' => $final_inviting_person_name.' is inviting you to join event '.$aEventDetail[0]->name,
                     'created_at' => $sCurrentDateTime
                ]);
           }

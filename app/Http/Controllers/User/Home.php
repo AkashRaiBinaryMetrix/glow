@@ -65,6 +65,7 @@ class Home extends Controller
 
         return view('myuser.events.index', ['aEventsList'=>$aEventsList,'aGroupLists'=>$aGroupLists]);
     }
+    
     public function eventDetail(Request $request, $iEventId) {
         $aEventDetail = DB::table('events')
                     ->where([['id',$iEventId],['events.status',ACTIVE],['events.is_deleted',N]])
@@ -77,9 +78,17 @@ class Home extends Controller
                     ->orderBy('id','desc')
                     ->get();
        /*--------------- get events post by admin ---------------------------*/
+
+       //get list of active users
+       $userDetails = DB::table('users')
+                    ->where([['status',1]])
+                    ->orderBy('name','asc')
+                    ->get();
+
         return view('myuser.events.detail',['aEventDetail'=>$aEventDetail,
-          'aEventsList'=>$aEventsList]);
+          'aEventsList'=>$aEventsList,'iEventId' => $iEventId, 'userDetails' => $userDetails]);
     }
+
     public function showInterestInEvent(Request $request) {
           $post = $request->input();
           $iEventId = $post['iEventId'];

@@ -4,7 +4,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Group Invitation</title>
+    <title>Event Invitation</title>
 </head>
 
 <body style="margin: 0 auto;background: #fff">
@@ -73,9 +73,9 @@
                                                         style="font-size:14px;font-family:Arial;padding:0px 15px;line-height:22px">
                                                         <b style="font-size:16px;">
                                                         You have been invited by your friend
-                                                            {{ $inviting_person_name }} to join the group {{$group_name}}</b></p>
+                                                            {{ $inviting_person_name }} to join the event {{$event_name}}</b></p>
 
-                                                    <br/><p><a href="{{ url('group-detail/'.$group_id) }}">Click here to join and view group details</a></p>
+                                                    <br/><p><a href="{{ url('event-detail/'.$event_id) }}">Click here to join and view event details</a></p>
                                                 </td>
                                             </tr>
                                         </tbody>
