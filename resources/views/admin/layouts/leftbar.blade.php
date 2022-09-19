@@ -30,6 +30,12 @@
         <span class="menu-title">Banners</span>
       </a>
     </li>
+    <li class="nav-item" id="leftEvents">
+      <a class="nav-link" href="{{ url('admin/groups-list') }}">
+        <i class="icon-head menu-icon"></i>
+        <span class="menu-title">Groups</span>
+      </a>
+    </li>
     <script>
          $(function(){
            setTimeout(() => {

@@ -9,6 +9,7 @@ use App\Http\Controllers\User\SignUp;
 use App\Http\Controllers\User\InspirationalFeed;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Events;
+use App\Http\Controllers\Admin\Group;
 use App\Http\Controllers\Admin\CMSPage;
 use App\Http\Controllers\User\Home;
 use App\Http\Controllers\User\MyProfile;
@@ -151,10 +152,16 @@ Route::group(['middleware' => 'auth_admin'], function () {
 
     /*------------------- events route ------------------*/
     Route::get('/admin/events-list', [Events::class, 'index']);
+    Route::get('/admin/groups-list', [Group::class, 'index']);
     Route::get('/admin/add-event', [Events::class, 'addEvent']);
+    Route::get('/admin/add-group', [Group::class, 'addGroup']);
     Route::post('/admin/addUpdateEvent', [Events::class, 'addUpdateEvent']);
+    Route::post('/admin/addUpdateGroup', [Group::class, 'addUpdateGroup']);
     Route::any('/admin/edit-event/{id}', [Events::class, 'editEvent']);
+    Route::any('/admin/edit-group/{id}', [Group::class, 'editGroup']);
     Route::any('/admin/fetchEventsData', [Events::class, 'fetchEventsData']);
+    Route::any('/admin/fetchGroupsData', [Group::class, 'fetchGroupsData']);
+
    /*------------------- events route ------------------*/
 
     /*------------------- cms page route ------------------*/
@@ -175,6 +182,7 @@ Route::group(['middleware' => 'auth_admin'], function () {
    Route::any('/admin/fetchBannersData', [Banners::class, 'fetchBannersData']);
   /*------------------- banners route ------------------*/
 
+  
 });
 
 /*------------------------------admin route ---------------------------*/
