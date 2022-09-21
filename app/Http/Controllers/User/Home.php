@@ -14,6 +14,11 @@ class Home extends Controller
          /*--------------- get banners data ----------------*/
          return view('myuser.home.index', ['aBannersLists'=>$aBannersLists]);
     }
+
+    public function privacy_policy(){
+         return view('myuser.home.privacy_policy', []);
+    }
+
     public function eventsList() {
         /*--------------- get all events list ------------------*/
         $aEventsList = DB::table('events')
