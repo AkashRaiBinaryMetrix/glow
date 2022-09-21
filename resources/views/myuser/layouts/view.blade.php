@@ -174,7 +174,7 @@
                <div class="footer-links">   
                    <a href="javascript:void(0)">Contact</a>
                    <a href="javascript:void(0)">About</a>
-                   <a href="javascript:void(0)">Privacy</a>
+                   <a href="privacy-policy">Privacy</a>
                </div>  
                  
              </div>

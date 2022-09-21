@@ -27,6 +27,7 @@ use App\Http\Controllers\User\MyProfile;
 
 /*--------------------------------------- user routes ----------------------*/
 Route::get('/', [Home::class, 'index']);
+Route::get('privacy-policy', [Home::class, 'privacy_policy']);
 Route::get('sign-up', [SignUp::class, 'register']);
 Route::post('signIn', [SignUp::class, 'signIn']);
 Route::get('login', [SignUp::class, 'login']);
@@ -40,6 +41,7 @@ Route::get('testimony', [Home::class, 'spiritualTestimony']);
 Route::get('holy-spirit', [Home::class, 'powerOfHolySpirit']);
 Route::get('tips', [Home::class, 'godLuvTips']);
 Route::get('give', [Home::class, 'give']);
+
 
 Route::get('auth-facebook', [SignUp::class, 'redirectToFB']);
 Route::get('auth-facebook-callback', [SignUp::class, 'handleFacebookCallback']);
