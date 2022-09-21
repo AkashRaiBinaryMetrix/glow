@@ -44,6 +44,8 @@
               <div class="mainevent-content">
                       <div class="mainevent-title">{{ !empty($aGroupDetail->name) ? $aGroupDetail->name : ''}}</div>
                       <div class="mainevent-location" id="totalGroupMembers{{$aGroupDetail->id}}"><i class="las la-map-marker-alt"></i> {{ !empty($aGroupDetail->group_type) ? $aGroupDetail->group_type : ''}} group · {{ !empty ($iTotalUsersJoinedGroups) ? formatNumber($iTotalUsersJoinedGroups) : ''}}</div>
+
+                      <div class="mainevent-location">{{$aGroupDetail->group_category}}</div>
                   
                       <div class="detailevent-links">
                           <a href="javascript:void(0)" onclick="joinGroup({{$aGroupDetail->id}})" id="joinedGroup{{$aGroupDetail->id}}"><i class="lar la-star"></i> {{$isGroupCreatedByUserOrJoinedByUser && $isGroupCreatedByUserOrJoinedByUser == YES ? 'Joined' : 'Join Group'}}</a>

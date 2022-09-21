@@ -64,6 +64,7 @@ class InspirationalFeed extends Controller
          $post =  $request->input();
          $groupName = $post['groupName'] ?? '';
          $privacyType = $post['privacyType'] ?? '';
+         $groupType = $post['groupType'] ?? '';
          $description = $post['description'] ?? '';
          /*-------------- check group exists --------------------*/
            $isExists = DB::table('groups')->where([['name',$groupName],['is_deleted',N]])->count();
@@ -82,7 +83,8 @@ class InspirationalFeed extends Controller
               'name'=>$groupName,
               'group_type'=>$privacyType,
               'description'=>$description,
-              'created_at'=> $sCurrentDateTime
+              'created_at'=> $sCurrentDateTime,
+              'group_category'=>$groupType,
          ];
          if($request->file('image')){
           $file= $request->file('image');

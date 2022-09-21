@@ -53,6 +53,23 @@
                   </select>
                 </div>
               </div>
+
+              <div class="form-group row">
+                <label for="exampleInputPassword2" class="col-sm-3 col-form-label">Group Type</label>
+                <div class="col-sm-9">
+                  <select name="group_type" id="group_type" class="form-control">
+                      <option value="Prayer">Prayer</option>
+                      <option value="Exercise">Exercise</option>
+                      <option value="Dancing">Dancing</option>
+                      <option value="Foodie">Foodie</option>
+                      <option value="Pets">Pets</option>
+                      <option value="Travel">Travel</option>
+                      <option value="Others">Others</option>
+                  </select>
+                </div>
+              </div>
+
+
                  <div class="form-group row">
                 <label for="Image" class="col-sm-3 col-form-label">Image<span style="color:red">*</span></label>
                 <div class="col-sm-9">

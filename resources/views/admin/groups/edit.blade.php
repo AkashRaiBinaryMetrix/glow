@@ -18,7 +18,7 @@
               <div class="col-md-9">
                 <h4 class="card-title">Edit Group | enter group details and submit</h4>
               </div>
-              <div class="col-md-3"><a href="{{url('admin/group-list')}}">Back To List</a></div>
+              <div class="col-md-3"><a href="{{url('admin/groups-list')}}">Back To List</a></div>
             </div>
             
             <form action="{{ url('admin/addUpdateGroup') }}" enctype="multipart/form-data" method="post" class="forms-sample">
@@ -51,6 +51,22 @@
                   </select>
                 </div>
               </div>
+
+               <div class="form-group row">
+                <label for="exampleInputPassword2" class="col-sm-3 col-form-label">Group Type</label>
+                <div class="col-sm-9">
+                  <select name="group_type" id="group_type" class="form-control">
+                      <option value="Prayer" {{ ($aDetail->group_category == 'Prayer') ?  'selected' : '' }}>Prayer</option>
+                      <option value="Exercise" {{ ($aDetail->group_category == 'Exercise') ?  'selected' : '' }}>Exercise</option>
+                      <option value="Dancing" {{ ($aDetail->group_category == 'Dancing') ?  'selected' : '' }}>Dancing</option>
+                      <option value="Foodie" {{ ($aDetail->group_category == 'Foodie') ?  'selected' : '' }}>Foodie</option>
+                      <option value="Pets" {{ ($aDetail->group_category == 'Pets') ?  'selected' : '' }}>Pets</option>
+                      <option value="Travel" {{ ($aDetail->group_category == 'Travel') ?  'selected' : '' }}>Travel</option>
+                      <option value="Others" {{ ($aDetail->group_category == 'Others') ?  'selected' : '' }}>Others</option>
+                  </select>
+                </div>
+              </div>
+
               <div class="form-group row">
                 <label for="Image" class="col-sm-3 col-form-label">Image<span style="color:red">*</span></label>
                 <div class="col-sm-9">

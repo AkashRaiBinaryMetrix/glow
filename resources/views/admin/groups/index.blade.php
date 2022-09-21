@@ -22,15 +22,31 @@
                  </div>
                  
             </div>
+            <br/>
             <div class="row">
               <div class="col-md-3">
                  <input type="text" class="form-control" name="search" id="search" placeholder="Search">
               </div>
-              <div class="col-md-3">
+              <div class="col-md-2">
                  <select class="form-control" onchange="filterByStatus(this.value)" name="status" id="status">
                        <option value="">Filter By Status</option>
                        <option value="<?=ACTIVE?>">Active</option>
                        <option value="<?=INACTIVE?>">Inactive</option>
+                 </select>
+              </div>
+              <div class="col-md-2">
+                 <input type="date" onchange="filterByDate(this.value)" class="form-control" name="created_at" id="created_at" placeholder="Search">
+              </div>
+               <div class="col-md-2">
+                <select class="form-control" onchange="filterByGroupType(this.value)" name="group_category" id="group_category">
+                       <option value="">Filter By Group Type</option>
+                       <option value="Prayer">Prayer</option>
+                       <option value="Excercise">Excercise</option>
+                       <option value="Dancing">Dancing</option>
+                       <option value="Foodie">Foodie</option>
+                       <option value="Pets">Pets</option>
+                       <option value="Travel">Travel</option>
+                       <option value="Others">Others</option>
                  </select>
               </div>
               <div class="col-md-3">
@@ -89,6 +105,20 @@ success: function(data) {
 
 /*-------------- filter by status ------------------------------------*/
 function filterByStatus(filterStatus) {
+var sort_by = $('#hidden_column_name').val();
+var sort_type = $('#hidden_sort_type').val();
+var query = $('#search').val();
+fetchData(1, sort_type, sort_by, query,filterStatus);
+}
+
+function filterByGroupType(filterStatus){
+var sort_by = $('#hidden_column_name').val();
+var sort_type = $('#hidden_sort_type').val();
+var query = $('#search').val();
+fetchData(1, sort_type, sort_by, query,filterStatus);
+}
+
+function filterByDate(filterStatus){
 var sort_by = $('#hidden_column_name').val();
 var sort_type = $('#hidden_sort_type').val();
 var query = $('#search').val();

@@ -44,8 +44,17 @@ class Group extends Controller
            } else {
               $filterStatusType  = [ACTIVE,INACTIVE];
            }
-           
 
+           $groupCategory = array("Prayer","Exercise","Dancing","Foodie","Pets","Travel","Others");
+           print_r($filterStatus);
+           if(in_array( $filterStatus,$groupCategory)){
+            $groupCategoryType = [$filterStatus];
+           }else{
+            $groupCategoryType = $groupCategory;
+           }
+
+           
+           
           /*------------------- filter ----------------------*/
           /*---------------------- get per page paging record show ------------------------------*/
             $iPerPagePagination  = perPagePaging();
@@ -53,16 +62,48 @@ class Group extends Controller
 
          /*------------ get paginate data ------------------*/
          DB::enableQueryLog();
-         $sListQuery = DB::table('groups')
+
+         if(is_numeric(strtotime($filterStatus))){
+                $filterDate = [$filterStatus];
+                $sListQuery = DB::table('groups')
              ->select('groups.*')
              ->where('groups.is_deleted', N)
              ->whereIn('groups.status',$filterStatusType)
+             ->whereIn('groups.group_category',$groupCategoryType)
+             ->whereDate('groups.created_at', '=', $filterDate)
              ->where(function ($query) use ($search) {
                if(!empty($search)) {
                   $query->where('groups.name', 'LIKE', '%' . $search . '%');
                }
              })
              ->orderBy('groups.'.$sort_by, $sort_type);
+         }elseif(empty($filterStatus)){
+                $sListQuery = DB::table('groups')
+             ->select('groups.*')
+             ->where('groups.is_deleted', N)
+             ->whereIn('groups.status',$filterStatusType)
+             ->whereIn('groups.group_category',$groupCategoryType)
+             ->where(function ($query) use ($search) {
+               if(!empty($search)) {
+                  $query->where('groups.name', 'LIKE', '%' . $search . '%');
+               }
+             })
+             ->orderBy('groups.'.$sort_by, $sort_type);
+         }else{
+$sListQuery = DB::table('groups')
+             ->select('groups.*')
+             ->where('groups.is_deleted', N)
+             ->whereIn('groups.status',$filterStatusType)
+             ->whereIn('groups.group_category',$groupCategoryType)
+             ->where(function ($query) use ($search) {
+               if(!empty($search)) {
+                  $query->where('groups.name', 'LIKE', '%' . $search . '%');
+               }
+             })
+             ->orderBy('groups.'.$sort_by, $sort_type);
+         }
+
+         
              
              $aLists  = $sListQuery->paginate($iPerPagePagination);
             
@@ -114,7 +155,7 @@ class Group extends Controller
            $description = $post['description'];
            $status = $post['status'];
            $privacy = $post['privacy'];
-           
+           $group_type = $post['group_type'];
            
            /*------------------- get current date time -------------------*/
             $sCurrentDateTime = getCurrentLocalDateTime();
@@ -125,7 +166,8 @@ class Group extends Controller
               'description'=>$description,
               'status'=>$status,
               'created_at'=>$sCurrentDateTime,
-              'group_type' => ($privacy == 6)? "Public" : "Private"
+              'group_type' => ($privacy == 6)? "Public" : "Private",
+              'group_category' => $group_type
            ];
 
            if($request->file('Image')){
