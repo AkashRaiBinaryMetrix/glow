@@ -62,7 +62,7 @@ class Events extends Controller
            $post = $request->input();
            $id = !empty($post['id'])  ? $post['id'] : '';
            $name = $post['name'];
-           $location = $port["location"];
+           $location = $post["location"];
            $description = $post['description'];
            $status = $post['status'];
            $privacy = $post['privacy'];

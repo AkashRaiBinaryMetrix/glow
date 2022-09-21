@@ -101,6 +101,9 @@
                 </div>
               </div>
 
+              
+
+
               <button type="submit" class="btn btn-primary mr-2">Submit</button>
               <a href="{{url('admin/events-list')}}" class="btn btn-light">Cancel</a>
             </form>

@@ -1331,6 +1331,22 @@ function sharePostOnTimeLine(iUserId,iPostId) {
 
           </div>
 
+          <div class="form-group">
+            <p class="contact-form-email">
+              <select class="form-control" name="groupType" id="groupType">
+                <option value="">Choose Group Type </option>
+                <option value="Prayer">Prayer</option>
+                <option value="Exercise">Exercise</option>
+                <option value="Dancing">Dancing</option>
+                <option value="Foodie">Foodie</option>
+                <option value="Pets">Pets</option>
+                <option value="Travel">Travel</option>
+                <option value="Others">Others</option>
+              </select>
+            </p>
+            <p class="formError groupType"></p>
+          </div>
+
 
 
           <div class="form-group">
@@ -2220,13 +2236,15 @@ $('#activity_search').on('keyup', function() {
 
       <script>
 
-        let groupNameError=0,privacyTypeError=0,imageError=0;
+        let groupNameError=0,privacyTypeError=0,groupTypeError=0,imageError=0;
 
         function createGroup() {
 
           let groupName = $('#groupName').val();
 
           let privacyType = $('#privacyType').val();
+          
+          let groupType = $('#groupType').val();
 
           let image = $('#image').val();
 
@@ -2257,6 +2275,20 @@ $('#activity_search').on('keyup', function() {
            $('.privacyType').html(``);
 
            privacyTypeError = 0;
+
+         }
+
+         if(groupType=='' || groupType==undefined || groupType==null) {
+
+           $('.groupType').html(`Group type is required`);
+
+           groupTypeError++;
+
+         } else {
+
+           $('.groupType').html(``);
+
+           groupTypeError = 0;
 
          }
 
